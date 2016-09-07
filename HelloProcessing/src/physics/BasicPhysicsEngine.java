@@ -14,4 +14,8 @@ public class BasicPhysicsEngine {
 			}
 		}
 	}
+	
+	public void addObject(PhysicsObject pObject){
+		pObjects.add(pObject);
+	}
 }

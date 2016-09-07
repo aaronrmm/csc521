@@ -1,6 +1,9 @@
 import java.awt.Rectangle;
 import java.awt.Shape;
 
+import physics.BasicPhysicsEngine;
+import physics.PhysicsObject;
+import physics.Vector2d;
 import processing.core.PApplet;
 
 public class UsingProcessing extends PApplet {
@@ -8,8 +11,14 @@ public class UsingProcessing extends PApplet {
 	final int number_of_obstacles = 5;
 	final int PLAYER_SPEED = 1;
 	final int BACKGROUND_COLOR = 250;
+	int previous_time = 0;
+	
+	//systems manual startup
+	BasicPhysicsEngine physics = new BasicPhysicsEngine();
+	
+	
 	Rectangle[] obstacles = new Rectangle[number_of_obstacles];
-	Rectangle player;
+	PhysicsObject player;
 
 	public static void main(String[] args) {
 		PApplet.main("UsingProcessing");
@@ -30,14 +39,21 @@ public class UsingProcessing extends PApplet {
 			obstacles[i] = rectangle;
 			position += width;
 		}
-		player = new Rectangle((int) (width / 2), (int) (height / 2), (int) (width / 2), (int) (height / 2));
-		System.out.println("in setup");
+		player = new PhysicsObject(new Rectangle((int) (width / 2), (int) (height / 2), (int) (width / 2), (int) (height / 2)));
+		physics.addObject(player);
+		player.addConstantForce(new Vector2d(0,1));//applying gravity
 	}
 
 	public void draw() {
 		//game logic
 		
 		//physics
+		int current_time = this.millis();
+		int delta = this.millis()-previous_time;
+		System.out.println(delta);
+		physics.tick(delta/10);//todo justify slowing this down
+		previous_time=current_time;
+		
 		
 		//display
 		fill(BACKGROUND_COLOR);
@@ -55,29 +71,13 @@ public class UsingProcessing extends PApplet {
 	public void keyPressed() {
 		System.out.println(key);
 		if(key=='a')
-			move(player,player.x-PLAYER_SPEED,player.y);
+			player.addImpulseForce(new Vector2d(-PLAYER_SPEED,0));
 		if(key=='w')
-			move(player,player.x,player.y-PLAYER_SPEED);
+			player.addImpulseForce(new Vector2d(0,-PLAYER_SPEED));
 		if(key=='s')
-			move(player,player.x,player.y+PLAYER_SPEED);
+			player.addImpulseForce(new Vector2d(0,PLAYER_SPEED));
 		if(key=='d')
-			move(player,player.x+PLAYER_SPEED,player.y);
+			player.addImpulseForce(new Vector2d(PLAYER_SPEED,0));
 		
-		System.out.println(player.x+","+player.y);
-	}
-	
-	public void move(Shape shape, int x, int y){
-		for(int i=0;i<obstacles.length;i++){
-			if(shape==obstacles[i]) continue;
-			if(obstacles[i].intersects(x,y,shape.getBounds2D().getWidth(),shape.getBounds2D().getHeight())){
-				if (OnCollide(shape, obstacles[i])){
-					
-				}
-			}
-		}
-	}
-	
-	public boolean OnCollide(Shape shapeA, Shape shapeB){
-		return false;
 	}
 }
