@@ -12,6 +12,10 @@ public class BasicPhysicsEngine {
 			for(Vector2d force : pObject.constantForces){
 				pObject.translate(force, milliseconds);
 			}
+			for(Vector2d force : pObject.impulseForces){
+				pObject.translate(force, milliseconds);
+			}
+			pObject.impulseForces.clear();
 		}
 	}
 	

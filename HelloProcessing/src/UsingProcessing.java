@@ -1,5 +1,4 @@
 import java.awt.Rectangle;
-import java.awt.Shape;
 
 import physics.BasicPhysicsEngine;
 import physics.PhysicsObject;
