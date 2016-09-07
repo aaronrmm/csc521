@@ -35,6 +35,11 @@ public class UsingProcessing extends PApplet {
 	}
 
 	public void draw() {
+		//game logic
+		
+		//physics
+		
+		//display
 		fill(BACKGROUND_COLOR);
 		this.rect(0, 0, width, height);
 		for (int i = 0; i < number_of_obstacles; i++) {
@@ -65,7 +70,7 @@ public class UsingProcessing extends PApplet {
 		for(int i=0;i<obstacles.length;i++){
 			if(shape==obstacles[i]) continue;
 			if(obstacles[i].intersects(x,y,shape.getBounds2D().getWidth(),shape.getBounds2D().getHeight())){
-				if (OnCollide(shape, obstacles[i]){
+				if (OnCollide(shape, obstacles[i])){
 					
 				}
 			}
