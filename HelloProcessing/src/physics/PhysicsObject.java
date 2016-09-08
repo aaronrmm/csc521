@@ -7,6 +7,7 @@ public class PhysicsObject {
 
 	ArrayList<Vector2d> constantForces = new ArrayList<Vector2d>();
 	ArrayList<Vector2d> impulseForces = new ArrayList<Vector2d>();
+	Vector2d speed = new Vector2d(0,0);
 	private Rectangle shape;
 
 	public PhysicsObject(Rectangle player){

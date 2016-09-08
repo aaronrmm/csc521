@@ -51,7 +51,6 @@ public class UsingProcessing extends PApplet {
 		//physics
 		int current_time = this.millis();
 		int delta = this.millis()-previous_time;
-		System.out.println(delta);
 		physics.tick(delta/10);//todo justify slowing this down
 		previous_time=current_time;
 		
