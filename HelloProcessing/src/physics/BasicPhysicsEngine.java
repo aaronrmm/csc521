@@ -1,5 +1,6 @@
 package physics;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class BasicPhysicsEngine {
@@ -10,7 +11,14 @@ public class BasicPhysicsEngine {
 		//apply each force to its object
 		for(PhysicsObject pObject: pObjects){
 			for(Vector2d force : pObject.constantForces){
-				pObject.translate(force, milliseconds);
+				boolean collision_found = false;
+				Rectangle path = pObject.getPath(force, milliseconds);
+				for(PhysicsObject obstacle: pObjects)
+					if( obstacle!=pObject)
+						if (obstacle.intersects(path))
+							collision_found = true;
+				if(! collision_found)
+					pObject.translate(force, milliseconds);
 			}
 			for(Vector2d force : pObject.impulseForces){
 				pObject.translate(force, milliseconds);

@@ -1,5 +1,6 @@
 package physics;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class PhysicsObject {
@@ -11,16 +12,28 @@ public class PhysicsObject {
 	public PhysicsObject(Rectangle player){
 		this.shape = player;
 	}
-	
+
+	public Rectangle getPath(Vector2d force, int milliseconds) {
+		int newX = (int)this.shape.getX()+force.x*milliseconds;
+		int newY = (int)this.shape.getY()+force.y*milliseconds;
+		Rectangle path = new Rectangle(newX, newY, this.shape.width, this.shape.height);
+		return path;
+		
+	}
 	public void translate(Vector2d force, int milliseconds) {
 		int newX = (int)this.shape.getX()+force.x*milliseconds;
 		int newY = (int)this.shape.getY()+force.y*milliseconds;
 		this.shape.setLocation(newX, newY);
 	}
+
+	public boolean intersects(Rectangle2D other){
+		return shape.intersects(other);
+	}
 	
 	public boolean intersects(PhysicsObject other){
-		return shape.intersects(other.shape.getBounds2D());
+		return this.intersects(other.shape.getBounds2D());
 	}
+	
 
 	public void addConstantForce(Vector2d vector){
 		this.constantForces.add(vector);
