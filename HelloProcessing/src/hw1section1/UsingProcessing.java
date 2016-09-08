@@ -22,7 +22,7 @@ public class UsingProcessing extends PApplet {
 	PhysicsObject player;
 
 	public static void main(String[] args) {
-		PApplet.main("UsingProcessing");
+		PApplet.main(UsingProcessing.class.getName());
 	}
 
 	public void settings() {// runs first
