@@ -1,0 +1,8 @@
+OriginalForkExample: The unmodified code
+
+DeadlockingForkExample
+
+ThirdThreadUnlockingExample: A third thread finds two threads in deadlock and unlocks them
+
+JobPassingExample: When one thread had a job requiring results from a second thread that is busy,
+ instead of waiting, it passes the busy thread the job to finish.
