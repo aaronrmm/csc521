@@ -1,5 +1,7 @@
 package hw1section4;
 
+import hw1section4.Input.Movement;
+
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +11,8 @@ import physics.PhysicsObject;
 import physics.Vector2d;
 
 public class GameEngine {
-	final int PLAYER_SPEED = 1;
-	final int JUMP_SPEED = 2;
+	final int PLAYER_SPEED = 2;
+	final int JUMP_SPEED = 4;
 	private ArrayList<Rectangle>drawables = new ArrayList<Rectangle>();
 	public ArrayList<Rectangle> getDrawables(){
 		drawables.clear();
@@ -34,7 +36,12 @@ public class GameEngine {
 			physics.addObject(player);
 			player.addConstantForce(new Vector2d(0,1));
 		}
-		player.addImpulseForce(new Vector2d(0, -JUMP_SPEED));
+		if(input.movement==Movement.right)
+			player.addImpulseForce(new Vector2d(PLAYER_SPEED,0));
+		if(input.movement==Movement.left)
+			player.addImpulseForce(new Vector2d(-PLAYER_SPEED,0));
+		if(input.movement==Movement.jump)
+			player.addImpulseForce(new Vector2d(0,-JUMP_SPEED));
 		
 	}
 	
