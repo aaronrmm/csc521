@@ -9,7 +9,7 @@ public class Input implements Serializable{
 	public Input(){
 		this.isNew = true;
 	}
-	
+	public transient ClientHandler client = null;
 	public transient Input nextInput = null;
 	/**
 	 * 

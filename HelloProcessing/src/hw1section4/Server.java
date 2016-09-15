@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
 import physics.BasicPhysicsEngine;
+import physics.Vector2d;
 import processing.core.PApplet;
 
 public class Server extends PApplet{
@@ -17,9 +18,8 @@ public class Server extends PApplet{
 	int previous_time = 0;
 	//concurrent collections
 	static ConcurrentHashMap<Socket, ClientHandler> clients = new ConcurrentHashMap<Socket, ClientHandler>();
-	static ConcurrentHashMap<Socket, Object>inputs = new ConcurrentHashMap<Socket, Object>();
 	//system engines
-	BasicPhysicsEngine physics = new BasicPhysicsEngine();
+	GameEngine gameE = new GameEngine();
 	
 	public void setup(){
 		try {
@@ -36,7 +36,7 @@ public class Server extends PApplet{
 								while(true){
 									try {
 										ObjectInputStream oos = new ObjectInputStream(s.getInputStream());
-										inputs.put(s, oos.readObject());
+										clients.get(s).addNewInput((Input) oos.readObject());
 										
 									} catch (IOException e) {
 										e.printStackTrace();
@@ -56,23 +56,21 @@ public class Server extends PApplet{
 		}
 	}
 	public void draw(){
-		for(Object input: inputs.values()){
-			processInput((Input) input);
-		}
-		
-		int current_time = this.millis();
-		int delta = this.millis()-previous_time;
-		physics.tick(delta/10);//todo justify slowing this down
-		previous_time=current_time;
-		for(ClientHandler client: clients.values()){
-			client.update();
-		}
-	}
-	
-	private void processInput(Input input){
 		//act on the new inputs from each client
 		for (ClientHandler client: clients.values()){
-			client.getNewInputs();
+			Input input = client.getNewInputs();
+			while(input != null){
+				gameE.processInput(input);
+				input = input.nextInput;
+			}
+		}
+		int current_time = this.millis();
+		int delta = this.millis()-previous_time;
+		gameE.tick(delta/10);//todo justify slowing this down
+		previous_time=current_time;
+		
+		for(ClientHandler client: clients.values()){
+			client.update();
 		}
 	}
 		
