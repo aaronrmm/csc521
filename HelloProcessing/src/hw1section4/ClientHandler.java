@@ -13,7 +13,7 @@ public class ClientHandler {
 	}
 	public void addNewInput(Input input){
 		input.client = this;
-		if(this.last_unread_input==null){
+		if(this.first_unread_input==null){
 			this.first_unread_input = input;
 			this.last_unread_input = input;
 		}

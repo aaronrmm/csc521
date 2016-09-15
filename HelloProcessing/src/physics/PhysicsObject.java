@@ -47,5 +47,6 @@ public class PhysicsObject {
 	public int getY(){ return shape.y; }
 	public int getWidth(){ return shape.width; }
 	public int getHeight(){ return shape.height; }
+	public Rectangle getRectangle(){return shape; }
 	
 }
