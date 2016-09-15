@@ -1,8 +1,8 @@
 package hw1section1;
-import java.awt.Rectangle;
 
 import physics.BasicPhysicsEngine;
 import physics.PhysicsObject;
+import physics.Rectangle;
 import physics.Vector2d;
 import processing.core.PApplet;
 

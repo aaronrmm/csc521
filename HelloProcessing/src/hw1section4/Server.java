@@ -1,12 +1,12 @@
 package hw1section4;
 
-import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
+import physics.Rectangle;
 import processing.core.PApplet;
 
 public class Server extends PApplet {
@@ -87,7 +87,12 @@ public class Server extends PApplet {
 		previous_time = current_time;
 		draw(gameE);
 		for (ClientHandler client : clients.values()) {
-			client.update();
+			new Thread(new Runnable(){
+				@Override
+				public void run(){
+					client.update(gameE.getWorldView(client));
+				}
+			}).start();
 		}
 	}
 

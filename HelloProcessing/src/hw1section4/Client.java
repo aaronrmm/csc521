@@ -3,11 +3,13 @@ package hw1section4;
 import hw1section4.Input.Movement;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 
+import physics.Rectangle;
 import processing.core.PApplet;
 
 public class Client extends PApplet{
@@ -19,7 +21,10 @@ public class Client extends PApplet{
 	final static String HOST = "127.0.0.1";
 	Socket socket;
 	ObjectOutputStream oos;
-
+	ObjectInputStream ois;
+	private HashMap<Long, Rectangle> worldView = new HashMap<Long, Rectangle>();
+	
+	
 	public void settings() {// runs first
 		size(200, 200);
 
@@ -29,9 +34,20 @@ public class Client extends PApplet{
 		try {
 			socket = new Socket(HOST,PORT);
 			oos = new ObjectOutputStream(socket.getOutputStream());
-			@SuppressWarnings("unused")
-			InputStream in = socket.getInputStream();
+			ois = new ObjectInputStream(socket.getInputStream());
 			oos.writeObject(new Input());
+			new Thread(new Runnable(){
+				@Override
+				public void run(){
+					while(true){
+						try {
+							updateView((Rectangle)ois.readObject());
+						} catch (ClassNotFoundException | IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}).start();
 		} catch (UnknownHostException e) {
 			drawError();
 			e.printStackTrace();
@@ -42,9 +58,16 @@ public class Client extends PApplet{
 	}
 	
 	public void draw(){
+		fill(255);
+		this.rect(0, 0, this.width, this.height);
 		//draw self
 		//network
 		//draw others
+		for(Rectangle rect : worldView.values()){
+			fill(0);
+			this.rect(rect.x, rect.y, rect.width, rect.height);
+		}
+		
 	}
 	
 	private void drawError(){
@@ -70,5 +93,9 @@ public class Client extends PApplet{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateView(Rectangle rectangle){
+		worldView.put(rectangle.id, rectangle);
 	}
 }

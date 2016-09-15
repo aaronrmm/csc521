@@ -1,15 +1,31 @@
 package hw1section4;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+
+import physics.Rectangle;
 
 public class ClientHandler {
 	
 	@SuppressWarnings("unused")
 	private Socket socket;
+	private ObjectOutputStream oos;
 	private Input first_unread_input;
 	private Input last_unread_input;
 	public ClientHandler(Socket s) {
 		this.socket = s;
+		try {
+			this.oos = new ObjectOutputStream(s.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				s.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 	public void addNewInput(Input input){
 		input.client = this;
@@ -29,9 +45,13 @@ public class ClientHandler {
 		return newInput;
 	}
 	
-	public void update() {
-
-		
+	public void update(ArrayList<Rectangle> viewObjects) {
+		try {
+			for(Rectangle rect : viewObjects)
+				oos.writeObject(rect);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

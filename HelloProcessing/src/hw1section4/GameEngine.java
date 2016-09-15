@@ -2,12 +2,12 @@ package hw1section4;
 
 import hw1section4.Input.Movement;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import physics.BasicPhysicsEngine;
 import physics.PhysicsObject;
+import physics.Rectangle;
 import physics.Vector2d;
 
 public class GameEngine {
@@ -62,5 +62,10 @@ public class GameEngine {
 
 	public void tick(int delta) {
 		physics.tick(delta);
+	}
+
+	public ArrayList<Rectangle> getWorldView(ClientHandler client) {
+		return this.getDrawables();
+		
 	}
 }
