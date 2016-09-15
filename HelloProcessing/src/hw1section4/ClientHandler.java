@@ -12,6 +12,7 @@ public class ClientHandler {
 		this.socket = s;
 	}
 	public void addNewInput(Input input){
+		input.client = this;
 		if(this.last_unread_input==null){
 			this.first_unread_input = input;
 			this.last_unread_input = input;
@@ -22,16 +23,12 @@ public class ClientHandler {
 		}
 	}
 	
-	public void getNewInputs() {
+	public Input getNewInputs() {
 		Input newInput = first_unread_input;
-		newInput = null;
-		processInputs(newInput);
-		this.notify();
+		first_unread_input = null;
+		return newInput;
 	}
-	private void processInputs(Input newInput) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	public void update() {
 
 		
