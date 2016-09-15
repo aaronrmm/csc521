@@ -12,6 +12,7 @@ public class Server {
 	
 	public static void main(String[]args){
 		try {
+			@SuppressWarnings("resource")
 			ServerSocket ss = new ServerSocket(PORT);
 			Thread acceptor = new Thread(new Runnable(){
 				@Override

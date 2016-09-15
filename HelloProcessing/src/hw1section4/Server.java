@@ -6,8 +6,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
-import physics.BasicPhysicsEngine;
-import physics.Vector2d;
 import processing.core.PApplet;
 
 public class Server extends PApplet{
@@ -20,10 +18,11 @@ public class Server extends PApplet{
 	static ConcurrentHashMap<Socket, ClientHandler> clients = new ConcurrentHashMap<Socket, ClientHandler>();
 	//system engines
 	GameEngine gameE = new GameEngine();
+	ServerSocket ss;
 	
 	public void setup(){
 		try {
-			ServerSocket ss = new ServerSocket(PORT);
+			ss = new ServerSocket(PORT);
 			Thread clientHandler = new Thread(new Runnable(){
 				@Override
 				public void run() {
@@ -74,4 +73,14 @@ public class Server extends PApplet{
 		}
 	}
 		
+	public void keyPressed() {
+		System.out.println(key);
+		if(key=='x')
+			try {
+				ss.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
+	}
 }
