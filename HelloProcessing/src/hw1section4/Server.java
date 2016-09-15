@@ -1,5 +1,7 @@
 package hw1section4;
 
+import hw1section1.UsingProcessing;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
@@ -9,7 +11,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import processing.core.PApplet;
 
 public class Server extends PApplet{
-
+	
+	public static void main(String[] args) {
+		PApplet.main(Server.class.getName());
+	}
+	
 	final static int PORT = 9500;
 	
 
@@ -19,6 +25,11 @@ public class Server extends PApplet{
 	//system engines
 	GameEngine gameE = new GameEngine();
 	ServerSocket ss;
+
+	public void settings() {// runs first
+		size(200, 200);
+
+	}
 	
 	public void setup(){
 		try {
@@ -75,7 +86,7 @@ public class Server extends PApplet{
 		
 	public void keyPressed() {
 		System.out.println(key);
-		if(key=='x')
+		if(key==ESC)
 			try {
 				ss.close();
 			} catch (IOException e) {

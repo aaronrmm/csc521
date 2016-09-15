@@ -15,14 +15,16 @@ public class Client extends PApplet{
 	}
 	final static int PORT = 9500;
 	final static String HOST = "127.0.0.1";
-	
-	public void settings(){
-		
+	Socket socket;
+
+	public void settings() {// runs first
+		size(200, 200);
+
 	}
 	
 	public void setup(){
 		try {
-			Socket socket = new Socket(HOST,PORT);
+			socket = new Socket(HOST,PORT);
 			OutputStream out = socket.getOutputStream();
 			InputStream in = socket.getInputStream();
 			byte[] message = new byte[30];
@@ -48,5 +50,16 @@ public class Client extends PApplet{
 	private void drawError(){
 		fill(255,0,0);
 		this.rect(0, 0, width, height);
+	}
+	
+	public void keyPressed() {
+		System.out.println(key);
+		if(key==ESC)
+			try {
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
 	}
 }
