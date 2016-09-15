@@ -1,7 +1,5 @@
 package hw1section4;
 
-import hw1section1.UsingProcessing;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
@@ -86,7 +84,6 @@ public class Server extends PApplet{
 		
 	public void keyPressed() {
 		System.out.println(key);
-		if(key==ESC)
 			try {
 				ss.close();
 			} catch (IOException e) {
