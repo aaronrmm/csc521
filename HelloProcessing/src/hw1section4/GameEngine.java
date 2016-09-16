@@ -4,6 +4,8 @@ import hw1section4.Input.Movement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import physics.BasicPhysicsEngine;
 import physics.PhysicsObject;
@@ -13,8 +15,8 @@ import physics.Vector2d;
 public class GameEngine {
 	final int PLAYER_SPEED = 2;
 	final int JUMP_SPEED = 4;
-	private ArrayList<Rectangle>drawables = new ArrayList<Rectangle>();
-	public ArrayList<Rectangle> getDrawables(){
+	private ConcurrentLinkedQueue<Rectangle>drawables = new ConcurrentLinkedQueue<Rectangle>();
+	public ConcurrentLinkedQueue<Rectangle> getDrawables(){
 		drawables.clear();
 		for(PhysicsObject physicsO : players.values())
 			drawables.add(physicsO.getRectangle());
@@ -23,7 +25,7 @@ public class GameEngine {
 		return drawables;
 	}
 	
-	HashMap<ClientHandler, PhysicsObject> players = new HashMap<ClientHandler, PhysicsObject>();
+	ConcurrentHashMap<ClientHandler, PhysicsObject> players = new ConcurrentHashMap<ClientHandler, PhysicsObject>();
 	PhysicsObject[]obstacles;
 	
 	private static BasicPhysicsEngine physics = new BasicPhysicsEngine();
@@ -64,7 +66,7 @@ public class GameEngine {
 		physics.tick(delta);
 	}
 
-	public ArrayList<Rectangle> getWorldView(ClientHandler client) {
+	public ConcurrentLinkedQueue<Rectangle> getWorldView(ClientHandler client) {
 		return this.getDrawables();
 		
 	}

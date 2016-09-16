@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import physics.Rectangle;
 
@@ -45,7 +46,7 @@ public class ClientHandler {
 		return newInput;
 	}
 	
-	public void update(ArrayList<Rectangle> viewObjects) {
+	public void update(ConcurrentLinkedQueue<Rectangle> viewObjects) {
 		try {
 			for(Rectangle rect : viewObjects)
 				oos.writeObject(rect);
