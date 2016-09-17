@@ -1,4 +1,4 @@
-package hw1section2;
+package hw1section2.extraForkingExamples;
 
 /*I found a way to ensure Thread 0 locks out Thread 1, but Thread 1
 * never locks out Thread 0. Thread 0 creates a new object

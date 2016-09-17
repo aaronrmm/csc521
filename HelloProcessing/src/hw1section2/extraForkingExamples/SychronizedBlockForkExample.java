@@ -1,4 +1,4 @@
-package hw1section2;
+package hw1section2.extraForkingExamples;
 
 /*I was testing to see if a block of code in Thread A synchronized on an object (synchronized(monitor))
 	would lock out a Thread B that accessed the object without a synchronization, allowing Thread A 
