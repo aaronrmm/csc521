@@ -25,12 +25,11 @@ public class Server extends PApplet {
 	ServerSocket ss;
 
 	public void settings() {// runs first
-		size(200, 200);
+		size(300, 300);
 
 	}
 
 	public void setup() {
-		this.frame.setLocation(200, 200);
 		gameE.initializeLevel(this.height, this.width, 20);
 		try {
 			ss = new ServerSocket(PORT);
@@ -72,7 +71,9 @@ public class Server extends PApplet {
 		}
 	}
 
+	//Main Game Loop
 	public void draw() {
+		this.frame.setLocation(0, 200);
 		// act on the new inputs from each client
 		for (ClientHandler client : clients.values()) {
 			Input input = client.getNewInputs();
@@ -81,26 +82,27 @@ public class Server extends PApplet {
 				input = input.nextInput;
 			}
 		}
+		
+		//run game for some time
 		int current_time = this.millis();
 		int delta = this.millis() - previous_time;
 		gameE.tick(delta / 10);// todo justify slowing this down
 		previous_time = current_time;
+		
+		//draw game
 		draw(gameE);
+		
+		//send game info to each client
 		for (ClientHandler client : clients.values()) {
-			new Thread(new Runnable(){
-				@Override
-				public void run(){
-					client.update(gameE.getWorldView(client));
-				}
-			}).start();
+			client.update(gameE.getRenderableList());
 		}
 	}
 
-	private void draw(GameEngine gameE2) {
+	private void draw(GameEngine gameEngine) {
 		this.fill(0);
 		this.rect(0, 0, this.width, this.height);
 		this.fill(255);
-		for(Rectangle rect : gameE2.getDrawables())
+		for(Rectangle rect : gameEngine.getRenderableList())
 			this.rect(rect.x, rect.y, rect.width, rect.height);
 			
 		

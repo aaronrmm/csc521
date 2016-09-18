@@ -1,32 +1,37 @@
 package hw1section4;
 
-import hw1section4.Input.Movement;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
+import hw1section4.Input.Movement;
 import physics.Rectangle;
 import processing.core.PApplet;
 
 public class Client extends PApplet{
 
 	public static void main(String[]args){
+		if(args.length==2){
+			xPLocation = Integer.parseInt(args[0]);
+			yPLocation = Integer.parseInt(args[1]);
+		}
 		PApplet.main(Client.class.getName());
 	}
 	final static int PORT = 9500;
 	final static String HOST = "127.0.0.1";
+	private static int xPLocation;
+	private static int yPLocation;
 	Socket socket;
 	ObjectOutputStream oos;
 	ObjectInputStream ois;
-	private HashMap<Long, Rectangle> worldView = new HashMap<Long, Rectangle>();
+	private ConcurrentHashMap<Long, Rectangle> worldView = new ConcurrentHashMap<Long, Rectangle>();
 	
 	
 	public void settings() {// runs first
-		size(200, 200);
+		size(200, 300);
 
 	}
 	
@@ -43,6 +48,7 @@ public class Client extends PApplet{
 						try {
 							updateView((Rectangle)ois.readObject());
 						} catch (ClassNotFoundException | IOException e) {
+							drawError();
 							e.printStackTrace();
 						}
 					}
@@ -56,12 +62,11 @@ public class Client extends PApplet{
 			e.printStackTrace();
 		}
 	}
-	
 	public void draw(){
-		fill(255);
+		if(this.frameCount==1)
+			frame.setLocation(xPLocation, yPLocation);//is not working
+		fill(second() * 4 % 255, second() * 8 % 255, second() * 10 % 255);
 		this.rect(0, 0, this.width, this.height);
-		//draw self
-		//network
 		//draw others
 		for(Rectangle rect : worldView.values()){
 			fill(0);
@@ -72,11 +77,10 @@ public class Client extends PApplet{
 	
 	private void drawError(){
 		fill(255,0,0);
-		this.rect(0, 0, width, height);
+		this.rect(0, 0, this.width, this.height);
 	}
 	
 	public void keyPressed() {
-		System.out.println("input");
 		try {
 			if(key=='a')
 				oos.writeObject(new Input(Movement.left));
