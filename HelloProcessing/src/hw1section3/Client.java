@@ -19,6 +19,8 @@ public class Client {
 			in.read(message);
 			System.out.println(new String(message,"UTF-8"));
 			out.write(("Hi, everybody!").getBytes());
+			in.read(message);
+			System.out.println(new String(message,"UTF-8"));
 			socket.close();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

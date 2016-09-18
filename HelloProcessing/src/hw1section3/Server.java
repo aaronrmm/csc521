@@ -29,6 +29,8 @@ public class Server {
 							s.getInputStream().read(shoutout);
 							System.out.println(new String(shoutout,"UTF-8"));
 							
+							s.getOutputStream().write("See ya, buddy.".getBytes());
+							
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
