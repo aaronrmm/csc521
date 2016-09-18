@@ -3,21 +3,28 @@ package hw1section5;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 import physics.Rectangle;
 
 public class ClientHandler {
-	
+
 	@SuppressWarnings("unused")
 	private Socket socket;
 	private ObjectOutputStream oos;
 	private Input first_unread_input;
 	private Input last_unread_input;
+	private ConcurrentHashMap<Long, UpdatedRectangle> updates = new ConcurrentHashMap<Long, UpdatedRectangle>();
+
 	public ClientHandler(Socket s) {
 		this.socket = s;
 		try {
 			this.oos = new ObjectOutputStream(s.getOutputStream());
+			new Thread(new Runnable(){
+				@Override
+				public void run() {
+					clientUpdateLoop();
+				}}).start();
 		} catch (IOException e) {
 			e.printStackTrace();
 			try {
@@ -27,31 +34,46 @@ public class ClientHandler {
 			}
 		}
 	}
-	public void addNewInput(Input input){
+
+	public void addNewInput(Input input) {
 		input.client = this;
-		if(this.first_unread_input==null){
+		if (this.first_unread_input == null) {
 			this.first_unread_input = input;
 			this.last_unread_input = input;
-		}
-		else{
+		} else {
 			this.last_unread_input.nextInput = input;
 			this.last_unread_input = input;
 		}
 	}
-	
+
 	public Input getNewInputs() {
 		Input newInput = first_unread_input;
 		first_unread_input = null;
 		return newInput;
 	}
-	
-	public void update(ArrayList<Rectangle> arrayList) {
-		try {
-			for(Rectangle rect : arrayList)
-				oos.writeObject(rect);
+
+	public void addUpdate(Rectangle rectangle) {
+		if(updates.containsKey(rectangle.id))
+			updates.get(rectangle.id).isNew = true;
+		else
+			updates.put(rectangle.id, new UpdatedRectangle(rectangle));
+	}
+
+	private void clientUpdateLoop() {
+		while (true) {
+			try {
+				for (UpdatedRectangle rect : updates.values()) {
+					rect.isNew = false;
+					oos.writeObject(rect.rectangle);
+				}
 				oos.reset();
-		} catch (IOException e) {
-			e.printStackTrace();
+				Thread.sleep(100);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

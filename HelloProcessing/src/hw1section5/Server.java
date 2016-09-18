@@ -94,7 +94,9 @@ public class Server extends PApplet {
 		
 		//send game info to each client
 		for (ClientHandler client : clients.values()) {
-			client.update(gameE.getRenderableList());
+			for(Rectangle rect : gameE.getRenderableList()){
+				client.addUpdate(rect);
+			}
 		}
 	}
 
