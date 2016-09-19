@@ -1,8 +1,10 @@
-package hw1section2.extraForkingExamples;
+package hw1section2;
+
+import java.util.ArrayList;
 
 /*I was testing to see if a block of code in Thread A synchronized on an object (synchronized(monitor))
 	would lock out a Thread B that accessed the object without a synchronization, allowing Thread A 
-	priority over the object. Unfortuntely for me, that is not how it works. Thread B simply accesses
+	priority over the object. Unfortunately for me, that is not how it works. Thread B simply accesses
 	the object, ignoring any locks by Thread A.
 	
 */
@@ -11,7 +13,8 @@ public class SychronizedBlockForkExample implements Runnable {
 	int i;
 	boolean busy;
 	SychronizedBlockForkExample other;
-	static Object monitored = new Object() {
+	@SuppressWarnings("serial")
+	static ArrayList<Object> monitored = new ArrayList<Object>() {
 		@Override
 		public String toString() {
 			return "Monitored Object";
@@ -33,23 +36,24 @@ public class SychronizedBlockForkExample implements Runnable {
 
 	public void run() {
 		if (i == 0) {
-			while (true) {
-				try {
-					Thread.sleep(4000);
-					synchronized (monitored) {
-						System.out.println("thread 0 accessing " + monitored.toString());
-						Thread.sleep(4000);
+				System.out.println("thread 0 locking down " + monitored.toString());
+				synchronized (monitored) {
+					while(true){
+						try {
+							Thread.sleep(10000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
-				} catch (InterruptedException tie) {
-					tie.printStackTrace();
 				}
-			}
 		} else {
 			while (true) {
 				try {
-					System.out.println("Thread 1 accessing " + monitored.toString());
-					monitored = new Object();
 					Thread.sleep(1000);
+					System.out.println("Thread 1 accessing " + monitored.toString());
+					monitored.add(new Object());
+					monitored = new ArrayList<Object>();
+					System.out.println("Thread 1 finished accessing " + monitored.toString());
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
