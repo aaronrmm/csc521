@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import hw1section5.Input.Movement;
 import physics.Rectangle;
@@ -28,6 +29,7 @@ public class Client extends PApplet{
 	ObjectOutputStream oos;
 	ObjectInputStream ois;
 	private ConcurrentHashMap<Long, Rectangle> worldView = new ConcurrentHashMap<Long, Rectangle>();
+	private ConcurrentLinkedQueue<Input> inputBuffer = new ConcurrentLinkedQueue<Input>();
 	
 	
 	public void settings() {// runs first
@@ -52,6 +54,12 @@ public class Client extends PApplet{
 							e.printStackTrace();
 						}
 					}
+				}
+			}).start();
+			new Thread(new Runnable(){
+				@Override
+				public void run(){
+					InputSendingLoop();
 				}
 			}).start();
 		} catch (UnknownHostException e) {
@@ -83,15 +91,15 @@ public class Client extends PApplet{
 	public void keyPressed() {
 		try {
 			if(key=='a')
-				oos.writeObject(new Input(Movement.left));
+				inputBuffer.add(new Input(Movement.left));
 	//		if(key=='w')
 	//			player.addImpulseForce(new Vector2d(0,-PLAYER_SPEED));
 	//		if(key=='s')
 	//			player.addImpulseForce(new Vector2d(0,PLAYER_SPEED));
 			if(key=='d')
-				oos.writeObject(new Input(Movement.right));
+				inputBuffer.add(new Input(Movement.right));
 			if(key==' ')
-				oos.writeObject(new Input(Movement.jump));
+				inputBuffer.add(new Input(Movement.jump));
 			if(key==ESC)
 				socket.close();
 		} catch (IOException e) {
@@ -101,5 +109,21 @@ public class Client extends PApplet{
 	
 	public void updateView(Rectangle rectangle){
 		worldView.put(rectangle.id, rectangle);
+	}
+	
+	public void InputSendingLoop(){
+		while(true){
+			try {
+				while(true){
+					Input nextInput = inputBuffer.peek();
+					if(nextInput!=null){
+							oos.writeObject(nextInput);
+							inputBuffer.remove();
+					}else break;
+				}Thread.sleep(100);//Temporarily used to reduce processing load for multiple clients.
+			} catch (IOException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
