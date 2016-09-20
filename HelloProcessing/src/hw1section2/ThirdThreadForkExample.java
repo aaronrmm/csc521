@@ -1,22 +1,21 @@
 package hw1section2;
 
-
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ThirdThreadForkExample implements Runnable {
 
 	int i;
-	boolean busy;
 	ThirdThreadForkExample other;
 
 
 	public ThirdThreadForkExample(int i, ThirdThreadForkExample other) {
 		this.i = i;
-		if(i==0) { busy = true; }
+		if(i==0) { this.busy.set(true); }
 		else { this.other = other; }
 	}
 
 
-	public synchronized boolean isBusy() { return busy; } 
+	public AtomicBoolean busy = new AtomicBoolean(false);
 
 
 	public void run() {
@@ -32,7 +31,7 @@ public class ThirdThreadForkExample implements Runnable {
 			}
 		}
 		if(i==1) {
-			while(other.isBusy()) {
+			while(other.busy.get()==true) {
 				System.out.println("Waiting!");
 				try { synchronized(other) { other.wait(); } }
 				catch(InterruptedException tie) { tie.printStackTrace(); }
@@ -45,7 +44,7 @@ public class ThirdThreadForkExample implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			other.busy = false;
+			other.busy.set(false);
 		}
 	}
 
