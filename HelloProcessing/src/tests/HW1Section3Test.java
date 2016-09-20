@@ -12,6 +12,11 @@ public class HW1Section3Test {
 				Server.main(new String[]{""});
 			}
 		}).start();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		new Thread(new Runnable(){
 			@Override
 			public void run(){
