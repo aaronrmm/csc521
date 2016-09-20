@@ -11,7 +11,6 @@ public class UsingProcessing extends PApplet {
 	final int number_of_obstacles = 5;
 	final int PLAYER_SPEED = 1;
 	final int JUMP_SPEED = 20;
-	final int BACKGROUND_COLOR = 250;
 	int previous_time = 0;
 	
 	//systems manual startup
@@ -57,11 +56,11 @@ public class UsingProcessing extends PApplet {
 		
 		
 		//display
-		fill(BACKGROUND_COLOR);
+		fill(second() * 4 % 255, second() * 8 % 255, second() * 10 % 255);
 		this.rect(0, 0, width, height);
 		for (int i = 0; i < number_of_obstacles; i++) {
 			Rectangle rect = obstacles[i];
-			fill(second() * 4 % 255, millis() * 8 % 255, millis() * 10 % 255);
+			fill(0);
 			this.rect((float) rect.getX(), (float) rect.getY(), (float) rect.getWidth(), (float) rect.getHeight());
 		}
 		this.rect((float) player.getX(), (float) player.getY(), (float) player.getWidth(),
