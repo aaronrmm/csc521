@@ -3,6 +3,8 @@ package hw1section5;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import physics.Rectangle;
@@ -14,7 +16,7 @@ public class ClientHandler {
 	private ObjectOutputStream oos;
 	private Input first_unread_input;
 	private Input last_unread_input;
-	private ConcurrentHashMap<Long, UpdatedRectangle> updates = new ConcurrentHashMap<Long, UpdatedRectangle>();
+	private HashMap<Long, UpdatedRectangle> updates = new HashMap<Long, UpdatedRectangle>();
 
 	public ClientHandler(Socket s) {
 		this.socket = s;
@@ -53,10 +55,14 @@ public class ClientHandler {
 	}
 
 	public void addUpdate(Rectangle rectangle) {
+		try{
 		if(updates.containsKey(rectangle.id))
 			updates.get(rectangle.id).isNew = true;
 		else
 			updates.put(rectangle.id, new UpdatedRectangle(rectangle));
+		}catch(ConcurrentModificationException ex){
+			ex.printStackTrace();
+		}
 	}
 
 	private void clientUpdateLoop() {
@@ -72,6 +78,8 @@ public class ClientHandler {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ConcurrentModificationException e){
 				e.printStackTrace();
 			}
 		}
