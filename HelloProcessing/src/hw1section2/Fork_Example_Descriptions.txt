@@ -1,8 +1,9 @@
 OriginalForkExample: The unmodified code
 
 DeadlockingForkExample
+	Deadlock caused by two threads each synchronized on its own Object, and then trying to use synchronized on each other's Objects without releasing their own object.
 
-ThirdThreadUnlockingExample: A third thread finds two threads in deadlock and unlocks them
+ThirdThreadForkExample: A third thread finds two threads in deadlock and unlocks them
 
 JobPassingExample: When one thread had a job requiring results from a second thread that is busy,
  instead of waiting, it passes the busy thread the job to finish.
