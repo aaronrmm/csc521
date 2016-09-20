@@ -19,6 +19,7 @@ public class Client {
 			in.read(message);
 			System.out.println(new String(message,"UTF-8"));
 			out.write(("Hi, everybody!").getBytes());
+			message = new byte[30];
 			in.read(message);
 			System.out.println(new String(message,"UTF-8"));
 			socket.close();
