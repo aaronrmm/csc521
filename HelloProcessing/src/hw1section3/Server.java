@@ -14,30 +14,24 @@ public class Server {
 		try {
 			@SuppressWarnings("resource")
 			ServerSocket ss = new ServerSocket(PORT);
-			Thread acceptor = new Thread(new Runnable(){
-				@Override
-				public void run() {
-					while(true){
-						Socket s;
-						try {
-							s = ss.accept();
-							clients.put(s, new ClientListener(s));
-							String message = clients.values().size()+" clients connected.";
-							
-							s.getOutputStream().write(message.getBytes());
-							byte[] shoutout = new byte[30];
-							s.getInputStream().read(shoutout);
-							System.out.println(new String(shoutout,"UTF-8"));
-							
-							s.getOutputStream().write("See ya, buddy.".getBytes());
-							
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
+			while(true){
+				Socket s;
+				try {
+					s = ss.accept();
+					clients.put(s, new ClientListener(s));
+					String message = clients.values().size()+" clients connected.";
+					
+					s.getOutputStream().write(message.getBytes());
+					byte[] shoutout = new byte[30];
+					s.getInputStream().read(shoutout);
+					System.out.println(new String(shoutout,"UTF-8"));
+					
+					s.getOutputStream().write("See ya, buddy.".getBytes());
+					
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			});
-			acceptor.start();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
