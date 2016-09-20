@@ -5,7 +5,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 import physics.Rectangle;
 
