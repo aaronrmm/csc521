@@ -2,7 +2,7 @@ package physics;
 
 import java.util.ArrayList;
 
-public class BasicPhysicsEngine {
+public class BasicPhysicsEngine implements PhysicsEngine{
 
 	private ArrayList<PhysicsObject> pObjects = new ArrayList<PhysicsObject>();
 	final int MAX_SPEED=4;

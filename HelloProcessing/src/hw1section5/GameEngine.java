@@ -3,8 +3,10 @@ package hw1section5;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 import hw1section5.Input.Movement;
 import physics.BasicPhysicsEngine;
+import physics.PhysicsEngine;
 import physics.PhysicsObject;
 import physics.Rectangle;
 import physics.Vector2d;
@@ -17,7 +19,7 @@ public class GameEngine {
 	ConcurrentHashMap<ClientHandler, PhysicsObject> players = new ConcurrentHashMap<ClientHandler, PhysicsObject>();
 	PhysicsObject[]obstacles;
 	
-	private static BasicPhysicsEngine physics = new BasicPhysicsEngine();
+	private static PhysicsEngine physics = new BasicPhysicsEngine();
 	
 	public void processInput(Input input){
 		PhysicsObject player = players.get(input.client);
