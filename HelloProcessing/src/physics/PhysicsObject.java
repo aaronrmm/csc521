@@ -2,7 +2,9 @@ package physics;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-public class PhysicsObject {
+import common.Component;
+
+public class PhysicsObject implements Component {
 
 	ArrayList<Vector2d> constantForces = new ArrayList<Vector2d>();
 	ArrayList<Vector2d> impulseForces = new ArrayList<Vector2d>();
@@ -47,5 +49,10 @@ public class PhysicsObject {
 	public int getWidth(){ return shape.width; }
 	public int getHeight(){ return shape.height; }
 	public Rectangle getRectangle(){return shape; }
+
+	@Override
+	public void destroy() {
+		
+	}
 	
 }

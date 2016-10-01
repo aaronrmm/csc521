@@ -3,7 +3,7 @@ package hw1section5;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+import common.GameObject;
 import hw1section5.Input.Movement;
 import physics.BasicPhysicsEngine;
 import physics.PhysicsEngine;
@@ -16,26 +16,28 @@ public class GameEngine {
 	final int JUMP_SPEED = 4;
 	private ArrayList<Rectangle>renderableList = new ArrayList<Rectangle>();
 	
-	ConcurrentHashMap<ClientHandler, PhysicsObject> players = new ConcurrentHashMap<ClientHandler, PhysicsObject>();
+	ConcurrentHashMap<ClientHandler, GameObject> players = new ConcurrentHashMap<ClientHandler, GameObject>();
 	PhysicsObject[]obstacles;
 	
 	private static PhysicsEngine physics = new BasicPhysicsEngine();
 	
 	public void processInput(Input input){
-		PhysicsObject player = players.get(input.client);
+		GameObject player = players.get(input.client);
 		if(player == null){
-			player = new PhysicsObject(new Rectangle(20,20,20,20));
+			player = new GameObject();
+			PhysicsObject physicsComponent = new PhysicsObject(new Rectangle(0,0,20,20));
+			player.add(physicsComponent, physicsComponent.getClass().getName());
 			players.put(input.client, player);
-			physics.addObject(player);
-			renderableList.add(player.getRectangle());
-			player.addConstantForce(new Vector2d(0,1));
+			physics.addObject(physicsComponent);
+			renderableList.add(physicsComponent.getRectangle());
+			physicsComponent.addConstantForce(new Vector2d(0,1));
 		}
 		if(input.movement==Movement.right)
-			player.addImpulseForce(new Vector2d(PLAYER_SPEED,0));
+			((PhysicsObject)player.getComponent(PhysicsObject.class.getName())).addImpulseForce(new Vector2d(PLAYER_SPEED,0));
 		if(input.movement==Movement.left)
-			player.addImpulseForce(new Vector2d(-PLAYER_SPEED,0));
+			((PhysicsObject)player.getComponent(PhysicsObject.class.getName())).addImpulseForce(new Vector2d(-PLAYER_SPEED,0));
 		if(input.movement==Movement.jump)
-			player.addImpulseForce(new Vector2d(0,-JUMP_SPEED));
+			((PhysicsObject)player.getComponent(PhysicsObject.class.getName())).addImpulseForce(new Vector2d(0,-JUMP_SPEED));
 		
 	}
 	

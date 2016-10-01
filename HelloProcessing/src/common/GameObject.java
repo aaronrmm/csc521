@@ -1,21 +1,25 @@
 package common;
 
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GameObject {
 
-	private ArrayList<Component> components = new ArrayList<Component>();
+	private ConcurrentHashMap<String, Component> components = new ConcurrentHashMap<String,Component>();
 	
 	public void destroy(){
-		ArrayList<Component>oldComponents = components;
-		components = new ArrayList<Component>();
-		for(Component component:oldComponents){
+		ConcurrentHashMap<String, Component>oldComponents = components;
+		components = new ConcurrentHashMap<String, Component>();
+		for(Component component:oldComponents.values()){
 			component.destroy();
 		}
 		components.clear();
 	}
 	
-	public void add(Component component){
-		this.components.add(component);
+	public void add(Component component, String className){
+		this.components.put(className,component);
+	}
+
+	public Component getComponent(String name) {
+		return this.components.get(name);
 	}
 }
