@@ -6,6 +6,8 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 
+import common.TimingComponent;
+
 
 public class JBox2dWrapper implements PhysicsEngine{
 
@@ -28,6 +30,11 @@ public class JBox2dWrapper implements PhysicsEngine{
 	@Override
 	public void tick(int delta) {
 		world.step((float)delta, 1, 1);
+		
+	}
+	@Override
+	public void registerTimer(TimingComponent timer) {
+		// TODO Auto-generated method stub
 		
 	}
 

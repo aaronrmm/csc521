@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import common.GameObject;
+import common.OscillatingController;
 import hw1section5.Input.Movement;
 import physics.BasicPhysicsEngine;
 import physics.PhysicsComponent;
@@ -43,8 +44,30 @@ public class GameEngine {
 	
 	public void initializeLevel(int height, int width, int number_of_obstacles){
 		this.obstacles = new GameObject[number_of_obstacles];
+		
+		//moving platforms at mid-height
 		int position = 0;
-		for (int i = 0; i < number_of_obstacles; i++) {
+		for (int i = 0; i < number_of_obstacles/2; i++) {
+			Rectangle rect = new Rectangle();
+			rect.width = (int) (Math.random() * width *5 / number_of_obstacles);
+			rect.height = (int) (Math.random() * height / number_of_obstacles);
+			rect.x = position;
+			rect.y = height/2-rect.height;
+			obstacles[i] = new GameObject();
+			PhysicsComponent physicsComponent = new PhysicsComponent(rect);
+			obstacles[i].add(physicsComponent, PhysicsComponent.class.getName());
+			OscillatingController timer = new OscillatingController(physicsComponent);
+			obstacles[i].add(timer, OscillatingController.class.getName());
+			physics.registerTimer(timer);
+			
+			physics.addObject(physicsComponent);
+			renderableList.add(physicsComponent.getRectangle());
+			position += rect.width;
+		}
+		
+		//stationary platforms at bottom of screen
+		position = 0;
+		for (int i = 0; i < number_of_obstacles/2; i++) {
 			Rectangle rect = new Rectangle();
 			rect.width = (int) (Math.random() * width *5 / number_of_obstacles);
 			rect.height = (int) (Math.random() * height / number_of_obstacles);
@@ -53,7 +76,6 @@ public class GameEngine {
 			obstacles[i] = new GameObject();
 			PhysicsComponent physicsComponent = new PhysicsComponent(rect);
 			obstacles[i].add(physicsComponent, PhysicsComponent.class.getName());
-			
 			physics.addObject(physicsComponent);
 			renderableList.add(physicsComponent.getRectangle());
 			position += rect.width;
