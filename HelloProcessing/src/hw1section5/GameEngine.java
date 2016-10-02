@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import common.GameObject;
 import hw1section5.Input.Movement;
 import physics.BasicPhysicsEngine;
+import physics.PhysicsComponent;
 import physics.PhysicsEngine;
-import physics.PhysicsObject;
 import physics.Rectangle;
 import physics.Vector2d;
 
@@ -17,7 +17,7 @@ public class GameEngine {
 	private ArrayList<Rectangle>renderableList = new ArrayList<Rectangle>();
 	
 	ConcurrentHashMap<ClientHandler, GameObject> players = new ConcurrentHashMap<ClientHandler, GameObject>();
-	PhysicsObject[]obstacles;
+	GameObject[]obstacles;
 	
 	private static PhysicsEngine physics = new BasicPhysicsEngine();
 	
@@ -25,7 +25,7 @@ public class GameEngine {
 		GameObject player = players.get(input.client);
 		if(player == null){
 			player = new GameObject();
-			PhysicsObject physicsComponent = new PhysicsObject(new Rectangle(0,0,20,20));
+			PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(0,0,20,20));
 			player.add(physicsComponent, physicsComponent.getClass().getName());
 			players.put(input.client, player);
 			physics.addObject(physicsComponent);
@@ -33,16 +33,16 @@ public class GameEngine {
 			physicsComponent.addConstantForce(new Vector2d(0,1));
 		}
 		if(input.movement==Movement.right)
-			((PhysicsObject)player.getComponent(PhysicsObject.class.getName())).addImpulseForce(new Vector2d(PLAYER_SPEED,0));
+			((PhysicsComponent)player.getComponent(PhysicsComponent.class.getName())).addImpulseForce(new Vector2d(PLAYER_SPEED,0));
 		if(input.movement==Movement.left)
-			((PhysicsObject)player.getComponent(PhysicsObject.class.getName())).addImpulseForce(new Vector2d(-PLAYER_SPEED,0));
+			((PhysicsComponent)player.getComponent(PhysicsComponent.class.getName())).addImpulseForce(new Vector2d(-PLAYER_SPEED,0));
 		if(input.movement==Movement.jump)
-			((PhysicsObject)player.getComponent(PhysicsObject.class.getName())).addImpulseForce(new Vector2d(0,-JUMP_SPEED));
+			((PhysicsComponent)player.getComponent(PhysicsComponent.class.getName())).addImpulseForce(new Vector2d(0,-JUMP_SPEED));
 		
 	}
 	
 	public void initializeLevel(int height, int width, int number_of_obstacles){
-		this.obstacles = new PhysicsObject[number_of_obstacles];
+		this.obstacles = new GameObject[number_of_obstacles];
 		int position = 0;
 		for (int i = 0; i < number_of_obstacles; i++) {
 			Rectangle rect = new Rectangle();
@@ -50,9 +50,12 @@ public class GameEngine {
 			rect.height = (int) (Math.random() * height / number_of_obstacles);
 			rect.x = position;
 			rect.y = height-rect.height;
-			obstacles[i] = new PhysicsObject(rect);
-			physics.addObject(obstacles[i]);
-			renderableList.add(obstacles[i].getRectangle());
+			obstacles[i] = new GameObject();
+			PhysicsComponent physicsComponent = new PhysicsComponent(rect);
+			obstacles[i].add(physicsComponent, PhysicsComponent.class.getName());
+			
+			physics.addObject(physicsComponent);
+			renderableList.add(physicsComponent.getRectangle());
 			position += rect.width;
 		}
 	}

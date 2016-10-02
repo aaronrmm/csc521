@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class BasicPhysicsEngine implements PhysicsEngine{
 
-	private ArrayList<PhysicsObject> pObjects = new ArrayList<PhysicsObject>();
+	private ArrayList<PhysicsComponent> pObjects = new ArrayList<PhysicsComponent>();
 	final int MAX_SPEED=4;
 	
 	public void tick(int milliseconds){
 		//apply each force to its object
-		for(PhysicsObject pObject: pObjects){
+		for(PhysicsComponent pObject: pObjects){
 			for(Vector2d force : pObject.constantForces){
 				pObject.speed.add(force);
 			}
@@ -24,7 +24,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			if(pObject.speed.y<-MAX_SPEED)pObject.speed.y=-MAX_SPEED;
 			boolean collision_found = false;
 			Rectangle path = pObject.getPath(pObject.speed, milliseconds);
-			for(PhysicsObject obstacle: pObjects)
+			for(PhysicsComponent obstacle: pObjects)
 				if( obstacle!=pObject)
 					if (obstacle.intersects(path)){
 						collision_found = true;
@@ -36,7 +36,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 		}
 	}
 	
-	public void addObject(PhysicsObject pObject){
+	public void addObject(PhysicsComponent pObject){
 		pObjects.add(pObject);
 	}
 }

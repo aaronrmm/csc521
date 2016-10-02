@@ -1,7 +1,7 @@
 package hw1section1;
 
 import physics.BasicPhysicsEngine;
-import physics.PhysicsObject;
+import physics.PhysicsComponent;
 import physics.Rectangle;
 import physics.Vector2d;
 import processing.core.PApplet;
@@ -18,7 +18,7 @@ public class UsingProcessing extends PApplet {
 	
 	
 	Rectangle[] obstacles = new Rectangle[number_of_obstacles];
-	PhysicsObject player;
+	PhysicsComponent player;
 
 	public static void main(String[] args) {
 		PApplet.main(UsingProcessing.class.getName());
@@ -37,10 +37,10 @@ public class UsingProcessing extends PApplet {
 			int height = (int) (Math.random() * this.height / number_of_obstacles);
 			Rectangle rectangle = new Rectangle(position,  this.height-height, width, height);
 			obstacles[i] = rectangle;
-			physics.addObject(new PhysicsObject(rectangle));
+			physics.addObject(new PhysicsComponent(rectangle));
 			position += width;
 		}
-		player = new PhysicsObject(new Rectangle(0, 0, (int) (width / 20), (int) (height / 20)));
+		player = new PhysicsComponent(new Rectangle(0, 0, (int) (width / 20), (int) (height / 20)));
 		physics.addObject(player);
 		player.addConstantForce(new Vector2d(0,1));//applying gravity
 	}

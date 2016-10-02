@@ -3,15 +3,16 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import common.Component;
+import common.Shape;
 
-public class PhysicsObject implements Component {
+public class PhysicsComponent implements Component {
 
 	ArrayList<Vector2d> constantForces = new ArrayList<Vector2d>();
 	ArrayList<Vector2d> impulseForces = new ArrayList<Vector2d>();
 	Vector2d speed = new Vector2d(0,0);
 	private Rectangle shape;
 
-	public PhysicsObject(Rectangle player){
+	public PhysicsComponent(Rectangle player){
 		this.shape = player;
 	}
 
@@ -32,7 +33,7 @@ public class PhysicsObject implements Component {
 		return shape.intersects(other);
 	}
 	
-	public boolean intersects(PhysicsObject other){
+	public boolean intersects(PhysicsComponent other){
 		return this.intersects(other.shape.getBounds2D());
 	}
 	
@@ -53,6 +54,10 @@ public class PhysicsObject implements Component {
 	@Override
 	public void destroy() {
 		
+	}
+
+	public Shape getShape() {
+		return Shape.rectangle;
 	}
 	
 }

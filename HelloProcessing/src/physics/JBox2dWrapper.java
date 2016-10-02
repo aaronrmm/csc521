@@ -10,13 +10,13 @@ import org.jbox2d.dynamics.World;
 public class JBox2dWrapper implements PhysicsEngine{
 
 	private World world;
-	private HashMap<PhysicsObject, Body> objectMap = new HashMap<PhysicsObject,Body>();
+	private HashMap<PhysicsComponent, Body> objectMap = new HashMap<PhysicsComponent,Body>();
 	
 	public JBox2dWrapper(){
 		world = new World(null, false);
 	}
 	@Override
-	public void addObject(PhysicsObject player) {
+	public void addObject(PhysicsComponent player) {
 		BodyDef bodyD = new BodyDef();
 		bodyD.userData = player;
 		bodyD.position = new Vec2(player.getX(), player.getY());
