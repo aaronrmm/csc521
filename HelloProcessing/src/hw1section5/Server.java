@@ -30,7 +30,7 @@ public class Server extends PApplet {
 	}
 
 	public void setup() {
-		gameE.initializeLevel(this.height, this.width, 20);
+		gameE.initializeLevel(this.height, this.width, 2);
 		try {
 			ss = new ServerSocket(PORT);
 			Thread clientHandler = new Thread(new Runnable() {

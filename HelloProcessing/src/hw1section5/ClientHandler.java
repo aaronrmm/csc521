@@ -55,9 +55,6 @@ public class ClientHandler {
 
 	public void addUpdate(Rectangle rectangle) {
 		try{
-		if(updates.containsKey(rectangle.id))
-			updates.get(rectangle.id).isNew = true;
-		else
 			updates.put(rectangle.id, new UpdatedRectangle(rectangle));
 		}catch(ConcurrentModificationException ex){
 			ex.printStackTrace();

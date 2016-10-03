@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import common.GameObject;
 import common.OscillatingController;
+import common.RenderableComponent;
 import hw1section5.Input.Movement;
 import physics.BasicPhysicsEngine;
 import physics.PhysicsComponent;
@@ -15,7 +16,7 @@ import physics.Vector2d;
 public class GameEngine {
 	final int PLAYER_SPEED = 2;
 	final int JUMP_SPEED = 4;
-	private ArrayList<Rectangle>renderableList = new ArrayList<Rectangle>();
+	private ArrayList<RenderableComponent>renderableList = new ArrayList<RenderableComponent>();
 	
 	ConcurrentHashMap<ClientHandler, GameObject> players = new ConcurrentHashMap<ClientHandler, GameObject>();
 	GameObject[]obstacles;
@@ -30,7 +31,9 @@ public class GameEngine {
 			player.add(physicsComponent, physicsComponent.getClass().getName());
 			players.put(input.client, player);
 			physics.addObject(physicsComponent);
-			renderableList.add(physicsComponent.getRectangle());
+			RenderableComponent renderable = new RenderableComponent(physicsComponent);
+			player.add(renderable, renderable.getClass().getName());
+			renderableList.add(renderable);
 			physicsComponent.addConstantForce(new Vector2d(0,1));
 		}
 		if(input.movement==Movement.right)
@@ -59,9 +62,10 @@ public class GameEngine {
 			OscillatingController timer = new OscillatingController(physicsComponent);
 			obstacles[i].add(timer, OscillatingController.class.getName());
 			physics.registerTimer(timer);
-			
 			physics.addObject(physicsComponent);
-			renderableList.add(physicsComponent.getRectangle());
+			RenderableComponent renderable = new RenderableComponent(physicsComponent);
+			obstacles[i].add(renderable, renderable.getClass().getName());
+			renderableList.add(renderable);
 			position += rect.width;
 		}
 		
@@ -77,7 +81,9 @@ public class GameEngine {
 			PhysicsComponent physicsComponent = new PhysicsComponent(rect);
 			obstacles[i].add(physicsComponent, PhysicsComponent.class.getName());
 			physics.addObject(physicsComponent);
-			renderableList.add(physicsComponent.getRectangle());
+			RenderableComponent renderable = new RenderableComponent(physicsComponent);
+			obstacles[i].add(renderable, renderable.getClass().getName());
+			renderableList.add(renderable);
 			position += rect.width;
 		}
 	}
@@ -87,6 +93,10 @@ public class GameEngine {
 	}
 	
 	public ArrayList<Rectangle> getRenderableList(){
-		return renderableList;
+		ArrayList<Rectangle>rectangles = new ArrayList<Rectangle>();
+		for(RenderableComponent renderable:renderableList){
+			rectangles.add(renderable.render());
+		}
+		return rectangles;
 	}
 }
