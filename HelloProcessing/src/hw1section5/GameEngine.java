@@ -113,11 +113,22 @@ public class GameEngine {
 			case 2: killzoneBotRect = new Rectangle(-5,0,10,height); break;
 			case 3: killzoneBotRect = new Rectangle(width-5,0,10,height); break;
 			}
-			PhysicsComponent killzoneBotP = new PhysicsComponent(killzoneBotRect);
+			PhysicsComponent killzoneBotP = new PhysicsComponent(killzoneBotRect){
+				@Override
+				public void onCollision(PhysicsComponent pObject){
+					Rectangle respawn = spawnPoints.getLast();
+					spawnPoints.add(respawn);
+					
+					pObject.getRectangle().x = respawn.x;
+					pObject.getRectangle().y = respawn.y;
+				}
+			};
 			physics.addObject(killzoneBotP);
+			killzoneBot.add(killzoneBotP, PhysicsComponent.class.getName());
 			if(DEBUG_MODE){
 				RenderableComponent renderable = new RenderableComponent(killzoneBotP);
 				this.renderableList.add(renderable);
+				killzoneBot.add(renderable, RenderableComponent.class.getName());
 			}
 		}
 	}

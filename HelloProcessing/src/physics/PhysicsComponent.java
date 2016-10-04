@@ -9,10 +9,16 @@ public class PhysicsComponent implements Component {
 	ArrayList<Vector2d> constantForces = new ArrayList<Vector2d>();
 	ArrayList<Vector2d> impulseForces = new ArrayList<Vector2d>();
 	Vector2d speed = new Vector2d(0,0);
+	boolean isSolid;
 	private Rectangle shape;
 
 	public PhysicsComponent(Rectangle player){
 		this.shape = player;
+	}
+	
+	public PhysicsComponent(Rectangle shape, boolean isSolid){
+		this.shape = shape;
+		this.isSolid = isSolid;
 	}
 
 	public Rectangle getPath(Vector2d force, int milliseconds) {
@@ -53,5 +59,13 @@ public class PhysicsComponent implements Component {
 	@Override
 	public void destroy() {
 		
+	}
+
+	public boolean blocksObject(PhysicsComponent pObject) {
+		if (this.isSolid) return true;
+		return false;
+	}
+
+	public void onCollision(PhysicsComponent pObject) {
 	}
 }

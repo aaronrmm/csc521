@@ -31,17 +31,22 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			if(pObject.speed.x<-MAX_SPEED)pObject.speed.x=-MAX_SPEED;
 			if(pObject.speed.y>MAX_SPEED)pObject.speed.y=MAX_SPEED;
 			if(pObject.speed.y<-MAX_SPEED)pObject.speed.y=-MAX_SPEED;
-			boolean collision_found = false;
+			boolean path_blocked = false;
 			Rectangle path = pObject.getPath(pObject.speed, milliseconds);
 			for(PhysicsComponent obstacle: pObjects)
 				if( obstacle!=pObject)
 					if (obstacle.intersects(path)){
-						collision_found = true;
-						pObject.speed.x=0;
-						pObject.speed.y=0;
+						if(obstacle.blocksObject(pObject))
+							path_blocked = true;
+						obstacle.onCollision(pObject);
+						pObject.onCollision(obstacle);
 					}
-			if(! collision_found)
+			if(! path_blocked)
 				pObject.translate(pObject.speed, milliseconds);
+			else{
+				pObject.speed.x=0;
+				pObject.speed.y=0;
+			}
 		}
 	}
 	
