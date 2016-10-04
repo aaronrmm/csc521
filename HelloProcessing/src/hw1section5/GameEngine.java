@@ -34,7 +34,7 @@ public class GameEngine {
 			player = new GameObject(EntityClass.PLAYER);
 			Rectangle spawnPoint = spawnPoints.removeLast();
 			spawnPoints.push(spawnPoint);
-			PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(spawnPoint.x,spawnPoint.y,20,20));
+			PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(spawnPoint.x,spawnPoint.y,20,20), true);
 			player.add(physicsComponent, physicsComponent.getClass().getName());
 			players.put(input.client, player);
 			physics.addObject(physicsComponent);
@@ -60,7 +60,7 @@ public class GameEngine {
 		for(int i=0;i<NUMBER_OF_SPAWN_POINTS;i++){
 			GameObject spawn = new GameObject(EntityClass.SPAWNPOINT);
 			Rectangle spawnRect = new Rectangle((width-10)*i/NUMBER_OF_SPAWN_POINTS +10, 0,0,0);
-			PhysicsComponent spawnPhysics = new PhysicsComponent(spawnRect);
+			PhysicsComponent spawnPhysics = new PhysicsComponent(spawnRect, false);
 			spawn.add(spawnPhysics, PhysicsComponent.class.getName());
 			physics.addObject(spawnPhysics);
 			spawnPoints.add(spawnRect);
@@ -74,7 +74,7 @@ public class GameEngine {
 			rect.x = position;
 			rect.y = height/2-rect.height;
 			obstacles[i] = new GameObject(EntityClass.BARRIER);
-			PhysicsComponent physicsComponent = new PhysicsComponent(rect);
+			PhysicsComponent physicsComponent = new PhysicsComponent(rect, true);
 			obstacles[i].add(physicsComponent, PhysicsComponent.class.getName());
 			OscillatingController timer = new OscillatingController(physicsComponent);
 			obstacles[i].add(timer, OscillatingController.class.getName());
@@ -91,11 +91,11 @@ public class GameEngine {
 		for (int i = 0; i < 2; i++) {
 			Rectangle rect = new Rectangle();
 			rect.width = (int) (width/3);
-			rect.height = (int) (Math.random() * 3+1);
+			rect.height = (int) (Math.random() * 3+10);
 			rect.x = (width*2*i)/3;
 			rect.y = height-rect.height;
 			obstacles[i] = new GameObject(EntityClass.BARRIER);
-			PhysicsComponent physicsComponent = new PhysicsComponent(rect);
+			PhysicsComponent physicsComponent = new PhysicsComponent(rect, true);
 			obstacles[i].add(physicsComponent, PhysicsComponent.class.getName());
 			physics.addObject(physicsComponent);
 			RenderableComponent renderable = new RenderableComponent(physicsComponent);
