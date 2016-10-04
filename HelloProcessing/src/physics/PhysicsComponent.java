@@ -3,7 +3,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import common.AbstractComponent;
-import common.Component;
 
 public class PhysicsComponent extends AbstractComponent {
 

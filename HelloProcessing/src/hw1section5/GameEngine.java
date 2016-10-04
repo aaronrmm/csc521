@@ -59,7 +59,7 @@ public class GameEngine {
 		//player spawn points dividing top of screen
 		for(int i=0;i<NUMBER_OF_SPAWN_POINTS;i++){
 			GameObject spawn = new GameObject(EntityClass.SPAWNPOINT);
-			Rectangle spawnRect = new Rectangle(width*i/NUMBER_OF_SPAWN_POINTS, 0,0,0);
+			Rectangle spawnRect = new Rectangle((width-10)*i/NUMBER_OF_SPAWN_POINTS +10, 0,0,0);
 			PhysicsComponent spawnPhysics = new PhysicsComponent(spawnRect);
 			spawn.add(spawnPhysics, PhysicsComponent.class.getName());
 			physics.addObject(spawnPhysics);
@@ -118,8 +118,8 @@ public class GameEngine {
 				@Override
 				public void onCollision(PhysicsComponent pObject){
 					if(pObject.getGameObject().entityClass == EntityClass.PLAYER){
-						Rectangle respawn = spawnPoints.getLast();
-						spawnPoints.add(respawn);
+						Rectangle respawn = spawnPoints.removeLast();
+						spawnPoints.push(respawn);
 						
 						pObject.getRectangle().x = respawn.x;
 						pObject.getRectangle().y = respawn.y;
