@@ -19,10 +19,6 @@ public class RenderableComponent implements Component {
 	public void destroy() {
 	}
 	
-	public Shape getShape(){
-		return physics.getShape();
-	}
-	
 	public int getX(){
 		return physics.getX();
 	}

@@ -3,7 +3,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import common.Component;
-import common.Shape;
 
 public class PhysicsComponent implements Component {
 
@@ -55,9 +54,4 @@ public class PhysicsComponent implements Component {
 	public void destroy() {
 		
 	}
-
-	public Shape getShape() {
-		return Shape.rectangle;
-	}
-	
 }
