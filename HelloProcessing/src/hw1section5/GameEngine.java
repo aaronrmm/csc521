@@ -15,9 +15,10 @@ import physics.Rectangle;
 import physics.Vector2d;
 
 public class GameEngine {
-	final int PLAYER_SPEED = 2;
-	final int JUMP_SPEED = 4;
-	final int NUMBER_OF_SPAWN_POINTS=3;
+	final static int PLAYER_SPEED = 2;
+	final static int JUMP_SPEED = 4;
+	final static int NUMBER_OF_SPAWN_POINTS=3;
+	final static boolean DEBUG_MODE = true; 
 	private ArrayList<RenderableComponent>renderableList = new ArrayList<RenderableComponent>();
 	private LinkedList<Rectangle>spawnPoints = new LinkedList<Rectangle>();
 	
@@ -50,6 +51,7 @@ public class GameEngine {
 		
 	}
 	
+	//todo put level info into separate object implementing some LevelDesign interface
 	public void initializeLevel(int height, int width, int number_of_obstacles){
 		this.obstacles = new GameObject[number_of_obstacles];
 		
@@ -85,11 +87,11 @@ public class GameEngine {
 		
 		//stationary platforms at bottom of screen
 		position = 0;
-		for (int i = 0; i < number_of_obstacles/2; i++) {
+		for (int i = 0; i < 2; i++) {
 			Rectangle rect = new Rectangle();
-			rect.width = (int) (Math.random() * width *5 / number_of_obstacles);
-			rect.height = (int) (Math.random() * height / number_of_obstacles);
-			rect.x = position;
+			rect.width = (int) (width/3);
+			rect.height = (int) (Math.random() * 3+1);
+			rect.x = (width*2*i)/3;
 			rect.y = height-rect.height;
 			obstacles[i] = new GameObject();
 			PhysicsComponent physicsComponent = new PhysicsComponent(rect);
@@ -99,6 +101,24 @@ public class GameEngine {
 			obstacles[i].add(renderable, renderable.getClass().getName());
 			renderableList.add(renderable);
 			position += rect.width;
+		}
+		
+		//killzones at edges of screen
+		for(int i=0;i<4;i++){
+			GameObject killzoneBot = new GameObject();
+			Rectangle killzoneBotRect = null;
+			switch(i){
+			case 0: killzoneBotRect = new Rectangle(0,height-4,width,10); break;
+			case 1: killzoneBotRect = new Rectangle(0,-10,width,10); break;
+			case 2: killzoneBotRect = new Rectangle(-5,0,10,height); break;
+			case 3: killzoneBotRect = new Rectangle(width-5,0,10,height); break;
+			}
+			PhysicsComponent killzoneBotP = new PhysicsComponent(killzoneBotRect);
+			physics.addObject(killzoneBotP);
+			if(DEBUG_MODE){
+				RenderableComponent renderable = new RenderableComponent(killzoneBotP);
+				this.renderableList.add(renderable);
+			}
 		}
 	}
 
