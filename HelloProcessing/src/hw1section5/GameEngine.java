@@ -1,6 +1,7 @@
 package hw1section5;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import common.GameObject;
@@ -16,7 +17,9 @@ import physics.Vector2d;
 public class GameEngine {
 	final int PLAYER_SPEED = 2;
 	final int JUMP_SPEED = 4;
+	final int NUMBER_OF_SPAWN_POINTS=3;
 	private ArrayList<RenderableComponent>renderableList = new ArrayList<RenderableComponent>();
+	private LinkedList<Rectangle>spawnPoints = new LinkedList<Rectangle>();
 	
 	ConcurrentHashMap<ClientHandler, GameObject> players = new ConcurrentHashMap<ClientHandler, GameObject>();
 	GameObject[]obstacles;
@@ -27,7 +30,9 @@ public class GameEngine {
 		GameObject player = players.get(input.client);
 		if(player == null){
 			player = new GameObject();
-			PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(0,0,20,20));
+			Rectangle spawnPoint = spawnPoints.removeLast();
+			spawnPoints.push(spawnPoint);
+			PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(spawnPoint.x,spawnPoint.y,20,20));
 			player.add(physicsComponent, physicsComponent.getClass().getName());
 			players.put(input.client, player);
 			physics.addObject(physicsComponent);
@@ -48,6 +53,15 @@ public class GameEngine {
 	public void initializeLevel(int height, int width, int number_of_obstacles){
 		this.obstacles = new GameObject[number_of_obstacles];
 		
+		//player spawn points dividing top of screen
+		for(int i=0;i<NUMBER_OF_SPAWN_POINTS;i++){
+			GameObject spawn = new GameObject();
+			Rectangle spawnRect = new Rectangle(width*i/NUMBER_OF_SPAWN_POINTS, 0,0,0);
+			PhysicsComponent spawnPhysics = new PhysicsComponent(spawnRect);
+			spawn.add(spawnPhysics, PhysicsComponent.class.getName());
+			physics.addObject(spawnPhysics);
+			spawnPoints.add(spawnRect);
+		}
 		//moving platforms at mid-height
 		int position = 0;
 		for (int i = 0; i < number_of_obstacles/2; i++) {
