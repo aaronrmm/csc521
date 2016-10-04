@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import common.EntityClass;
 import common.GameObject;
 import common.OscillatingController;
 import common.RenderableComponent;
@@ -30,7 +31,7 @@ public class GameEngine {
 	public void processInput(Input input){
 		GameObject player = players.get(input.client);
 		if(player == null){
-			player = new GameObject();
+			player = new GameObject(EntityClass.PLAYER);
 			Rectangle spawnPoint = spawnPoints.removeLast();
 			spawnPoints.push(spawnPoint);
 			PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(spawnPoint.x,spawnPoint.y,20,20));
@@ -57,7 +58,7 @@ public class GameEngine {
 		
 		//player spawn points dividing top of screen
 		for(int i=0;i<NUMBER_OF_SPAWN_POINTS;i++){
-			GameObject spawn = new GameObject();
+			GameObject spawn = new GameObject(EntityClass.SPAWNPOINT);
 			Rectangle spawnRect = new Rectangle(width*i/NUMBER_OF_SPAWN_POINTS, 0,0,0);
 			PhysicsComponent spawnPhysics = new PhysicsComponent(spawnRect);
 			spawn.add(spawnPhysics, PhysicsComponent.class.getName());
@@ -72,7 +73,7 @@ public class GameEngine {
 			rect.height = (int) (Math.random() * height / number_of_obstacles);
 			rect.x = position;
 			rect.y = height/2-rect.height;
-			obstacles[i] = new GameObject();
+			obstacles[i] = new GameObject(EntityClass.BARRIER);
 			PhysicsComponent physicsComponent = new PhysicsComponent(rect);
 			obstacles[i].add(physicsComponent, PhysicsComponent.class.getName());
 			OscillatingController timer = new OscillatingController(physicsComponent);
@@ -93,7 +94,7 @@ public class GameEngine {
 			rect.height = (int) (Math.random() * 3+1);
 			rect.x = (width*2*i)/3;
 			rect.y = height-rect.height;
-			obstacles[i] = new GameObject();
+			obstacles[i] = new GameObject(EntityClass.BARRIER);
 			PhysicsComponent physicsComponent = new PhysicsComponent(rect);
 			obstacles[i].add(physicsComponent, PhysicsComponent.class.getName());
 			physics.addObject(physicsComponent);
@@ -105,7 +106,7 @@ public class GameEngine {
 		
 		//killzones at edges of screen
 		for(int i=0;i<4;i++){
-			GameObject killzoneBot = new GameObject();
+			GameObject killzoneBot = new GameObject(EntityClass.KILLZONE);
 			Rectangle killzoneBotRect = null;
 			switch(i){
 			case 0: killzoneBotRect = new Rectangle(0,height-4,width,10); break;
@@ -116,11 +117,13 @@ public class GameEngine {
 			PhysicsComponent killzoneBotP = new PhysicsComponent(killzoneBotRect){
 				@Override
 				public void onCollision(PhysicsComponent pObject){
-					Rectangle respawn = spawnPoints.getLast();
-					spawnPoints.add(respawn);
-					
-					pObject.getRectangle().x = respawn.x;
-					pObject.getRectangle().y = respawn.y;
+					if(pObject.getGameObject().entityClass == EntityClass.PLAYER){
+						Rectangle respawn = spawnPoints.getLast();
+						spawnPoints.add(respawn);
+						
+						pObject.getRectangle().x = respawn.x;
+						pObject.getRectangle().y = respawn.y;
+					}
 				}
 			};
 			physics.addObject(killzoneBotP);

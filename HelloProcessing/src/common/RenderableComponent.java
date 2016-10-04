@@ -3,7 +3,7 @@ package common;
 import physics.PhysicsComponent;
 import physics.Rectangle;
 
-public class RenderableComponent implements Component {
+public class RenderableComponent extends AbstractComponent implements Component {
 
 	public long id;
 	private static long next_id = 0;

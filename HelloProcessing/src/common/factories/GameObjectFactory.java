@@ -5,6 +5,6 @@ import common.GameObject;
 public class GameObjectFactory {
 
 	public GameObject create(){
-		return new GameObject();
+		return new GameObject(null);
 	}
 }

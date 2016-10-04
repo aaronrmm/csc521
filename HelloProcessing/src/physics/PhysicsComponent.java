@@ -2,9 +2,10 @@ package physics;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import common.AbstractComponent;
 import common.Component;
 
-public class PhysicsComponent implements Component {
+public class PhysicsComponent extends AbstractComponent {
 
 	ArrayList<Vector2d> constantForces = new ArrayList<Vector2d>();
 	ArrayList<Vector2d> impulseForces = new ArrayList<Vector2d>();

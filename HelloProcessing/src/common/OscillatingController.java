@@ -3,8 +3,9 @@ package common;
 import physics.PhysicsComponent;
 import physics.Vector2d;
 
-public class OscillatingController implements TimingComponent{
+public class OscillatingController extends AbstractComponent implements TimingComponent{
 
+	GameObject gameObject;
 	PhysicsComponent physicsComponent;
 	Vector2d left = new Vector2d(-1,0);
 	Vector2d right = new Vector2d(1,0);
@@ -28,5 +29,4 @@ public class OscillatingController implements TimingComponent{
 			this.physicsComponent.addImpulseForce(right);
 		
 	}
-
 }
