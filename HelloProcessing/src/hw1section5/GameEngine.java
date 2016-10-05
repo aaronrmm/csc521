@@ -40,7 +40,7 @@ public class GameEngine {
 			physics.addObject(physicsComponent);
 			RenderableComponent renderable = new RenderableComponent(physicsComponent);
 			player.add(renderable, renderable.getClass().getName());
-			renderableList.add(renderable);
+			this.addRenderableComponent(renderable);
 			physicsComponent.addConstantForce(new Vector2d(0,1));
 		}
 		if(input.movement==Movement.right)
@@ -82,7 +82,7 @@ public class GameEngine {
 			physics.addObject(physicsComponent);
 			RenderableComponent renderable = new RenderableComponent(physicsComponent);
 			obstacles[i].add(renderable, renderable.getClass().getName());
-			renderableList.add(renderable);
+			this.addRenderableComponent(renderable);
 			position += rect.width;
 		}
 		
@@ -100,7 +100,7 @@ public class GameEngine {
 			physics.addObject(physicsComponent);
 			RenderableComponent renderable = new RenderableComponent(physicsComponent);
 			obstacles[i].add(renderable, renderable.getClass().getName());
-			renderableList.add(renderable);
+			this.addRenderableComponent(renderable);
 			position += rect.width;
 		}
 		
@@ -130,7 +130,7 @@ public class GameEngine {
 			killzoneBot.add(killzoneBotP, PhysicsComponent.class.getName());
 			if(DEBUG_MODE){
 				RenderableComponent renderable = new RenderableComponent(killzoneBotP);
-				this.renderableList.add(renderable);
+				this.addRenderableComponent(renderable);
 				killzoneBot.add(renderable, RenderableComponent.class.getName());
 			}
 		}
@@ -146,5 +146,10 @@ public class GameEngine {
 			rectangles.add(renderable.render());
 		}
 		return rectangles;
+	}
+
+	public void addRenderableComponent(RenderableComponent renderable) {
+		this.renderableList.add(renderable);
+		
 	}
 }

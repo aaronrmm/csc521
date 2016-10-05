@@ -6,10 +6,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
+import common.RenderableComponent;
+import common.RenderingEngine;
 import physics.Rectangle;
 import processing.core.PApplet;
 
-public class Server extends PApplet {
+public class Server extends PApplet implements RenderingEngine{
 
 	public static void main(String[] args) {
 		PApplet.main(Server.class.getName());
@@ -117,5 +119,10 @@ public class Server extends PApplet {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+	}
+
+	@Override
+	public void addObject(RenderableComponent renderable) {
+		this.gameE.addRenderableComponent(renderable);
 	}
 }
