@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Input implements Serializable{
 
 	transient boolean isNew = true;
-	Movement movement;
+	public Movement movement;
 	
 	public Input(){
 		this.isNew = true;
