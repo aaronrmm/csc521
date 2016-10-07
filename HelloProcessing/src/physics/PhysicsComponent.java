@@ -2,6 +2,8 @@ package physics;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import org.jbox2d.dynamics.Body;
+
 import common.AbstractComponent;
 
 public class PhysicsComponent extends AbstractComponent {
@@ -11,6 +13,7 @@ public class PhysicsComponent extends AbstractComponent {
 	Vector2d speed = new Vector2d(0,0);
 	boolean isSolid = false;
 	private Rectangle shape;
+	public Body body;
 
 	public PhysicsComponent(Rectangle player){
 		this.shape = player;
@@ -22,15 +25,15 @@ public class PhysicsComponent extends AbstractComponent {
 	}
 
 	public Rectangle getPath(Vector2d force, int milliseconds) {
-		int newX = (int)this.shape.getX()+force.x*milliseconds;
-		int newY = (int)this.shape.getY()+force.y*milliseconds;
+		int newX = (int)(this.shape.getX()+force.x*milliseconds);
+		int newY = (int)(this.shape.getY()+force.y*milliseconds);
 		Rectangle path = new Rectangle(newX, newY, this.shape.width, this.shape.height);
 		return path;
 		
 	}
 	public void translate(Vector2d force, int milliseconds) {
-		int newX = (int)this.shape.getX()+force.x*milliseconds;
-		int newY = (int)this.shape.getY()+force.y*milliseconds;
+		int newX = (int)(this.shape.getX()+force.x*milliseconds);
+		int newY = (int)(this.shape.getY()+force.y*milliseconds);
 		this.shape.setLocation(newX, newY);
 	}
 
@@ -45,13 +48,15 @@ public class PhysicsComponent extends AbstractComponent {
 
 	public void addConstantForce(Vector2d vector){
 		this.constantForces.add(vector);
+		if(body!=null)body.applyForce(vector, body.getPosition());
 	}
 	public void addImpulseForce(Vector2d vector){
 		this.impulseForces.add(vector);
+		if(body!=null)body.applyLinearImpulse(vector, body.getPosition());
 	}
 
-	public int getX(){ return shape.x; }
-	public int getY(){ return shape.y; }
+	public int getX(){ return body==null?shape.x:(int)body.getPosition().x; }
+	public int getY(){ return body==null?shape.y:(int)body.getPosition().y; }
 	public int getWidth(){ return shape.width; }
 	public int getHeight(){ return shape.height; }
 	public Rectangle getRectangle(){return shape; }

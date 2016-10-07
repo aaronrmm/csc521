@@ -37,7 +37,7 @@ public class GameEngine {
 			PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(spawnPoint.x,spawnPoint.y,20,20), true);
 			player.add(physicsComponent, physicsComponent.getClass().getName());
 			players.put(input.client, player);
-			physics.addObject(physicsComponent);
+			physics.addDynamicObject(physicsComponent,spawnPoint.x,spawnPoint.y);
 			RenderableComponent renderable = new RenderableComponent(physicsComponent);
 			player.add(renderable, renderable.getClass().getName());
 			this.addRenderableComponent(renderable);
@@ -62,7 +62,7 @@ public class GameEngine {
 			Rectangle spawnRect = new Rectangle((width-10)*i/NUMBER_OF_SPAWN_POINTS +10, 0,0,0);
 			PhysicsComponent spawnPhysics = new PhysicsComponent(spawnRect, false);
 			spawn.add(spawnPhysics, PhysicsComponent.class.getName());
-			physics.addObject(spawnPhysics);
+			physics.addStaticObject(spawnPhysics, i, i);
 			spawnPoints.add(spawnRect);
 		}
 		//moving platforms at mid-height
@@ -79,7 +79,7 @@ public class GameEngine {
 			OscillatingController timer = new OscillatingController(physicsComponent);
 			obstacles[i].add(timer, OscillatingController.class.getName());
 			physics.registerTimer(timer);
-			physics.addObject(physicsComponent);
+			physics.addStaticObject(physicsComponent,rect.x, rect.y);
 			RenderableComponent renderable = new RenderableComponent(physicsComponent);
 			obstacles[i].add(renderable, renderable.getClass().getName());
 			this.addRenderableComponent(renderable);
@@ -97,7 +97,7 @@ public class GameEngine {
 			obstacles[i] = new GameObject(EntityClass.BARRIER);
 			PhysicsComponent physicsComponent = new PhysicsComponent(rect, true);
 			obstacles[i].add(physicsComponent, PhysicsComponent.class.getName());
-			physics.addObject(physicsComponent);
+			physics.addStaticObject(physicsComponent, rect.x, rect.y);
 			RenderableComponent renderable = new RenderableComponent(physicsComponent);
 			obstacles[i].add(renderable, renderable.getClass().getName());
 			this.addRenderableComponent(renderable);
@@ -126,7 +126,7 @@ public class GameEngine {
 					}
 				}
 			};
-			physics.addObject(killzoneBotP);
+			physics.addStaticObject(killzoneBotP, killzoneBotRect.x, killzoneBotRect.y);
 			killzoneBot.add(killzoneBotP, PhysicsComponent.class.getName());
 			if(DEBUG_MODE){
 				RenderableComponent renderable = new RenderableComponent(killzoneBotP);

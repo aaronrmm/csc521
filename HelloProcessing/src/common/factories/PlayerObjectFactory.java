@@ -30,7 +30,7 @@ public class PlayerObjectFactory {
 		PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(x,y,10,10), true);
 		player.add(physicsComponent, PhysicsComponent.class.getName());
 		physicsComponent.addConstantForce(new Vector2d(0,1));
-		this.physics.addObject(physicsComponent);
+		this.physics.addDynamicObject(physicsComponent, x, y);
 		RenderableComponent renderable = new RenderableComponent(physicsComponent);
 		this.renderer.addObject(renderable);
 		return player;

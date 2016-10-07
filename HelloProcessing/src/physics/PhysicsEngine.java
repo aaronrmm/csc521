@@ -4,10 +4,12 @@ import common.TimingComponent;
 
 public interface PhysicsEngine {
 
-	void addObject(PhysicsComponent player);
-
 	void tick(int delta);
 
 	void registerTimer(TimingComponent timer);
+
+	void addStaticObject(PhysicsComponent physicsComponent, int x, int y);
+
+	void addDynamicObject(PhysicsComponent physicsComponent, int x, int y);
 
 }

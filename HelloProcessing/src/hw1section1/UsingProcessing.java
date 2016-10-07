@@ -37,11 +37,11 @@ public class UsingProcessing extends PApplet {
 			int height = (int) (Math.random() * this.height / number_of_obstacles);
 			Rectangle rectangle = new Rectangle(position,  this.height-height, width, height);
 			obstacles[i] = rectangle;
-			physics.addObject(new PhysicsComponent(rectangle));
+			physics.addStaticObject(new PhysicsComponent(rectangle), rectangle.x, rectangle.y);
 			position += width;
 		}
 		player = new PhysicsComponent(new Rectangle(0, 0, (int) (width / 20), (int) (height / 20)));
-		physics.addObject(player);
+		physics.addDynamicObject(player,0,0);
 		player.addConstantForce(new Vector2d(0,1));//applying gravity
 	}
 

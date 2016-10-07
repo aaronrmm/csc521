@@ -50,7 +50,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 		}
 	}
 	
-	public void addObject(PhysicsComponent pObject){
+	public void addDynamicObject(PhysicsComponent pObject, int x, int y){
 		pObjects.add(pObject);
 	}
 
@@ -58,6 +58,12 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 	public void registerTimer(TimingComponent timer) {
 		timers.add(timer);
 		
+		
+	}
+
+	@Override
+	public void addStaticObject(PhysicsComponent pObject, int x, int y) {
+		pObjects.add(pObject);
 		
 	}
 }

@@ -21,7 +21,7 @@ public class PlatformObjectFactory {
 		GameObject object = new GameObject(EntityClass.BARRIER);
 		PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(x,y, width, height), true);
 		object.add(physicsComponent, PhysicsComponent.class.getName());
-		this.physics.addObject(physicsComponent);
+		this.physics.addStaticObject(physicsComponent, x, y);
 		RenderableComponent renderable = new RenderableComponent(physicsComponent);
 		this.renderer.addObject(renderable);
 		return object;
