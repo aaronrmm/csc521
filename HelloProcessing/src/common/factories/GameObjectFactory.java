@@ -4,7 +4,7 @@ import common.GameObject;
 
 public class GameObjectFactory {
 
-	public GameObject create(int x, int y){
+	public GameObject create(){
 		return new GameObject(null);
 	}
 }
