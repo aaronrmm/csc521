@@ -8,4 +8,6 @@ public interface GameDescription {
 
 	void generateGame(RenderingEngine renderingE, PhysicsEngine physicsE, PlayerObjectFactory playerF, PlatformObjectFactory platformF);
 
+	GameObject spawnPlayer(int x, int y, long clientId);
+
 }

@@ -1,5 +1,6 @@
 package common;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -34,8 +35,15 @@ public class EventManagementEngine {
 	@SuppressWarnings("unchecked")
 	private void handle(Input input) {
 		LinkedList<InputListener>listeners = (LinkedList<InputListener>)registeredListeners.get(InputListener.class);
-		for(InputListener listener : listeners)
-			listener.update(input);
+		if(listeners!=null){
+			try{
+				for(InputListener listener: listeners){
+					listener.update(input);
+				}
+			}catch(ConcurrentModificationException ex){
+				ex.printStackTrace();
+			}
+		}
 	}
 	public void HandleNextEvents(int i) {
 		while(queue!=null && i>0){

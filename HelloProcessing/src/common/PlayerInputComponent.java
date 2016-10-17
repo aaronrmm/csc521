@@ -9,13 +9,15 @@ public class PlayerInputComponent extends AbstractComponent implements InputList
 
 	final static int PLAYER_SPEED = 2;
 	final static int JUMP_SPEED = 3;
+	private long clientId;
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 	}
 	
-	public PlayerInputComponent(EventManagementEngine eventE){
+	public PlayerInputComponent(EventManagementEngine eventE, long clientId){
 		this.listen(eventE, Input.class);
+		this.clientId = clientId;
 	}
 
 	private void listen(EventManagementEngine eventE, Class<Input> class1) {
@@ -24,6 +26,8 @@ public class PlayerInputComponent extends AbstractComponent implements InputList
 
 	@Override
 	public void update(Input input) {
+		if(this.clientId!=input.client.getClientId())
+			return;
 		GameObject player = this.getGameObject();
 		if(input.movement==Movement.right)
 			((PhysicsComponent)player.getComponent(PhysicsComponent.class.getName())).addImpulseForce(new Vector2d(PLAYER_SPEED,0));

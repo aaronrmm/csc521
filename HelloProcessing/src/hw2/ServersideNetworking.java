@@ -42,8 +42,9 @@ public class ServersideNetworking {
 										ObjectInputStream ois = new ObjectInputStream(
 												s.getInputStream());
 										while (true) {
-											eventE.queue(
-													(Input) ois.readObject());
+											Input input = (Input)ois.readObject();
+											input.client = clients.get(s);
+											eventE.queue(input);
 										}
 
 									} catch (IOException e) {

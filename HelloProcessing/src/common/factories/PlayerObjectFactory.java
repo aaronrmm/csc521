@@ -23,9 +23,9 @@ public class PlayerObjectFactory {
 		this.eventE = eventE;
 	}
 	
-	public GameObject create(int x, int y){
+	public GameObject create(int x, int y, long clientId){
 		GameObject player = new GameObject(EntityClass.PLAYER);
-		PlayerInputComponent controller = new PlayerInputComponent(this.eventE);
+		PlayerInputComponent controller = new PlayerInputComponent(this.eventE, clientId);
 		player.add(controller, PlayerInputComponent.class.getName());
 		PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(x,y,10,10), true);
 		player.add(physicsComponent, PhysicsComponent.class.getName());

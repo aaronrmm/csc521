@@ -16,7 +16,7 @@ public class ServerMain {
 		PhysicsEngine physicsE = new BasicPhysicsEngine();
 		PlayerObjectFactory playerF = new PlayerObjectFactory(physicsE, renderingE, eventE);
 		PlatformObjectFactory platformF = new PlatformObjectFactory(physicsE, renderingE);
-		GameDescription game = new TestGameDescription();
+		GameDescription game = new TestGameDescription(eventE);
 		game.generateGame(renderingE, physicsE, playerF, platformF);
 		ServersideNetworking networking = new ServersideNetworking(eventE,9596);
 		

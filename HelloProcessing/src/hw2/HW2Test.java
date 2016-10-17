@@ -4,7 +4,7 @@ public class HW2Test {
 
 	public static void main(String[]args){
 		
-		int clients = 1;
+		int clients = 3;
 		int sleep = 1000;
 		new Thread(new Runnable(){
 			@Override
