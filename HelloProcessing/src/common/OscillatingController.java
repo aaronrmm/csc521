@@ -1,6 +1,7 @@
 package common;
 
 import physics.PhysicsComponent;
+import physics.PhysicsEngine;
 import physics.Vector2d;
 
 public class OscillatingController extends AbstractComponent implements TimingComponent{
@@ -10,8 +11,10 @@ public class OscillatingController extends AbstractComponent implements TimingCo
 	Vector2d left = new Vector2d(-1,0);
 	Vector2d right = new Vector2d(1,0);
 	
-	public OscillatingController(PhysicsComponent physicsComponent){
+	public OscillatingController(PhysicsComponent physicsComponent, PhysicsEngine physicsE){
 		this.physicsComponent = physicsComponent;
+		physicsE.registerTimer(this);
+		
 	}
 	
 	@Override

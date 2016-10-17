@@ -76,9 +76,8 @@ public class GameEngine {
 			obstacles[i] = new GameObject(EntityClass.BARRIER);
 			PhysicsComponent physicsComponent = new PhysicsComponent(rect, true);
 			obstacles[i].add(physicsComponent, PhysicsComponent.class.getName());
-			OscillatingController timer = new OscillatingController(physicsComponent);
+			OscillatingController timer = new OscillatingController(physicsComponent,physics);
 			obstacles[i].add(timer, OscillatingController.class.getName());
-			physics.registerTimer(timer);
 			physics.addStaticObject(physicsComponent,rect.x, rect.y);
 			RenderableComponent renderable = new RenderableComponent(physicsComponent);
 			obstacles[i].add(renderable, renderable.getClass().getName());

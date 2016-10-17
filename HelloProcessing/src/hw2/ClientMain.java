@@ -74,7 +74,7 @@ public class ClientMain extends PApplet{
 	public void draw(){
 		if(this.frameCount==1)
 			frame.setLocation(xPLocation, yPLocation);//is not working
-		fill(second() * 4 % 255, second() * 8 % 255, second() * 10 % 255);
+		fill(200,200,200);
 		this.rect(0, 0, this.width, this.height);
 		//draw others
 		for(Rectangle rect : worldView.values()){
