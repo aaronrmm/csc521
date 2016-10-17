@@ -16,9 +16,12 @@ public class ClientHandler {
 	private Input first_unread_input;
 	private Input last_unread_input;
 	private HashMap<Long, UpdatedRectangle> updates = new HashMap<Long, UpdatedRectangle>();
+	public static long nextId;
+	private long clientId;
 
 	public ClientHandler(Socket s) {
 		this.socket = s;
+		this.clientId = nextId++;
 		try {
 			this.oos = new ObjectOutputStream(s.getOutputStream());
 			new Thread(new Runnable(){
@@ -79,6 +82,10 @@ public class ClientHandler {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public long getClientId() {
+		return clientId;
 	}
 
 }

@@ -6,9 +6,12 @@ public class GameObject {
 
 	public EntityClass entityClass;
 	private ConcurrentHashMap<String, Component> components = new ConcurrentHashMap<String,Component>();
+	private long id;
+	private static long nextId;
 	
 	public GameObject(EntityClass entityClass){
 		this.entityClass = entityClass;
+		this.id = nextId++;
 	}
 	
 	public void destroy(){
@@ -27,5 +30,9 @@ public class GameObject {
 
 	public Component getComponent(String name) {
 		return this.components.get(name);
+	}
+
+	public long getId() {
+		return this.id;
 	}
 }
