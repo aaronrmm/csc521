@@ -17,7 +17,7 @@ import physics.Vector2d;
 
 public class GameEngine {
 	final static int PLAYER_SPEED = 2;
-	final static int JUMP_SPEED = 4;
+	final static int JUMP_SPEED = 20;
 	final static int NUMBER_OF_SPAWN_POINTS=3;
 	final static boolean DEBUG_MODE = true; 
 	private ArrayList<RenderableComponent>renderableList = new ArrayList<RenderableComponent>();
