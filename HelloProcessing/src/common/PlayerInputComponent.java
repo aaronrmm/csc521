@@ -26,6 +26,8 @@ public class PlayerInputComponent extends AbstractComponent implements InputList
 
 	@Override
 	public void update(Input input) {
+		if(input.client==null)
+			return;
 		if(this.clientId!=input.client.getClientId())
 			return;
 		GameObject player = this.getGameObject();
