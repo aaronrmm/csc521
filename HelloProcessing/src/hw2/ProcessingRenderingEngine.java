@@ -1,12 +1,15 @@
 package hw2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import common.EventManagementEngine;
 import common.RenderableComponent;
 import common.RenderingEngine;
 import hw1section5.Input;
 import hw1section5.Input.Movement;
+import physics.Rectangle;
 import processing.core.PApplet;
 
 public class ProcessingRenderingEngine extends PApplet implements RenderingEngine {
@@ -52,5 +55,13 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 		if(key==' ')
 			input.movement = Movement.jump;
 		eventE.queue(input);
+	}
+
+	public List<Rectangle> getRectangles() {
+		ArrayList<Rectangle> rectangles = new ArrayList<Rectangle>();
+		for(RenderableComponent renderable: renderableList.values()){
+			rectangles.add(renderable.render());
+		}
+		return rectangles;
 	}
 }

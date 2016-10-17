@@ -18,10 +18,15 @@ public class ServerMain {
 		PlatformObjectFactory platformF = new PlatformObjectFactory(physicsE, renderingE);
 		GameDescription game = new TestGameDescription();
 		game.generateGame(renderingE, physicsE, playerF, platformF);
+		ServersideNetworking networking = new ServersideNetworking(eventE,9596);
 		
+		networking.start();
 		while(true){
 			physicsE.tick(1);
 			eventE.HandleNextEvents(8);
+			networking.updateClients(renderingE.getRectangles());
+			
+			
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
