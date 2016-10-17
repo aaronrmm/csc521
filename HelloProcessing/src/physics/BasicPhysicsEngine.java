@@ -44,8 +44,20 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			if(! path_blocked)
 				pObject.translate(pObject.speed, milliseconds);
 			else{
-				pObject.speed.x=0;
 				pObject.speed.y=0;
+				path_blocked=false;
+				//try again just going horizontally
+				path = pObject.getPath(pObject.speed, milliseconds);
+				for(PhysicsComponent obstacle: pObjects)
+					if( obstacle!=pObject)
+						if (obstacle.intersects(path)){
+							if(obstacle.blocksObject(pObject))
+								path_blocked = true;
+							obstacle.onCollision(pObject);
+							pObject.onCollision(obstacle);
+						}
+				if(! path_blocked)
+					pObject.translate(pObject.speed, milliseconds);
 			}
 		}
 	}
