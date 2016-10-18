@@ -12,7 +12,7 @@ import physics.Rectangle;
 
 public class SerializableSendingTEst {
 
-	protected static final boolean TO_STRING = true;
+	protected static final boolean TO_STRING = true;//determines which type of message is sent
 	final static int CLIENT_COUNT = 2;
 	final static int ITERATION_COUNT = 100;
 	final static int MOVING_PLATFORM_COUNT = 10;
