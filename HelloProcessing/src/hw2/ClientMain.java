@@ -34,7 +34,7 @@ public class ClientMain extends PApplet{
 	
 	
 	public void settings() {// runs first
-		size(200, 300);
+		size(300, 300);
 
 	}
 	

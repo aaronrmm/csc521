@@ -30,7 +30,7 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 		
 	}
 	public void settings() {// runs first
-		size(400, 300);
+		size(300, 300);
 
 	}
 	
