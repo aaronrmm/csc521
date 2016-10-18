@@ -8,7 +8,7 @@ import physics.Vector2d;
 public class PlayerInputComponent extends AbstractComponent implements InputListener{
 
 	final static int PLAYER_SPEED = 2;
-	final static int JUMP_SPEED = 3;
+	final static int JUMP_SPEED = 30;
 	private long clientId;
 	@Override
 	public void destroy() {
