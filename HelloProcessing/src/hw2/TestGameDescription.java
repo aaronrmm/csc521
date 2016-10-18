@@ -81,7 +81,7 @@ public class TestGameDescription implements GameDescription, InputListener{
 						public void onCollision(PhysicsComponent pObject){
 							if(pObject.getGameObject().entityClass == EntityClass.PLAYER){
 								GameObject respawn = spawnPoints.removeLast();
-								spawnPoints.add(respawn);
+								spawnPoints.push(respawn);
 								PhysicsComponent pComponent = (PhysicsComponent)respawn.getComponent(PhysicsComponent.class.getName());
 								pObject.getRectangle().x = pComponent.getX();
 								pObject.getRectangle().y = pComponent.getY();
