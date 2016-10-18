@@ -10,9 +10,9 @@ public class SeparateClient {
 
 	private static final boolean DEBUG1 = false;
 	private static final boolean DEBUG2 = false;
-	private static final boolean TO_STRING = false;
+	private static final boolean TO_STRING = true;
 	private static final int MOVING_PLATFORM_COUNT = 30;
-	public static int ITERATION_COUNT = 100;
+	public static int ITERATION_COUNT = 1000;
 			final static int PORT = 9595;
 			final static String HOST = "127.0.0.1";
 			

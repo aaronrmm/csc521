@@ -12,11 +12,11 @@ import physics.Rectangle;
 
 public class SerializableSendingTest {
 
-	protected static final boolean TO_STRING = false;//determines which type of message is sent
+	protected static final boolean TO_STRING = true;//determines which type of message is sent
 	final static int CLIENT_COUNT = 2;
-	final static int ITERATION_COUNT = 100;
-	final static int MOVING_PLATFORM_COUNT = 30;
-	final static boolean SEPARATE_CLIENTS = true;
+	final static int MOVING_PLATFORM_COUNT = 500;
+	final static int ITERATION_COUNT = 1000;
+	final static boolean SEPARATE_CLIENTS = false;
 	
 	final static boolean DEBUG1 = false;
 	final static boolean DEBUG2 = false;
@@ -38,7 +38,7 @@ public class SerializableSendingTest {
 
 			@Override
 			public void run() {
-				System.out.println("Running with platforms:"+MOVING_PLATFORM_COUNT+", CLIENTS:"+CLIENT_COUNT+", and CLIENT_ITERATIONS:"+ITERATION_COUNT);
+				System.out.println("Sending message type:"+(TO_STRING?"String":"Object")+" with platforms:"+MOVING_PLATFORM_COUNT+", CLIENTS:"+CLIENT_COUNT+", and CLIENT_ITERATIONS:"+ITERATION_COUNT);
 				//run thread for accepting clients
 				new Thread(new Runnable(){
 
@@ -110,18 +110,13 @@ public class SerializableSendingTest {
 									while(i>server_iteration)
 										Thread.sleep(10);
 									//send all objects
-									StringBuilder sb=null;
-									if(TO_STRING)
-										sb=new StringBuilder();
 									for(Rectangle serializable: serializables){
 										if(TO_STRING){
-											sb.append(serializable.toString()+",");
+											out.writeObject(serializable.toString());
 										}
 										else
 											out.writeObject(serializable);
 									}
-									if(TO_STRING)
-										out.writeObject(sb.toString());
 									out.reset();
 								}
 								System.out.println("Done sending to client");
@@ -183,6 +178,7 @@ public class SerializableSendingTest {
 				@Override
 				public void run() {
 					try {
+						@SuppressWarnings("resource")
 						Socket socket = new Socket(HOST,PORT);
 						ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 						ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
@@ -195,7 +191,6 @@ public class SerializableSendingTest {
 								if(TO_STRING){
 									String string = (String)in.readObject();
 									if(DEBUG2)System.out.println(string);
-									break;
 								}
 								else
 									in.readObject();
@@ -206,9 +201,8 @@ public class SerializableSendingTest {
 							if(running)out.writeObject(lastMessage);
 							out.reset();
 						}
-						socket.close();
-						System.out.println("Client closed socket");
-						finished_sockets++;
+						//socket.close();
+						System.out.println("Client finished");
 					} catch (IOException e) {
 						e.printStackTrace();
 					} catch (ClassNotFoundException e) {
