@@ -58,6 +58,8 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 						}
 				if(! path_blocked)
 					pObject.translate(pObject.speed, milliseconds);
+				else
+					pObject.speed.x=0;
 			}
 		}
 	}
