@@ -10,12 +10,13 @@ import java.util.ArrayList;
 
 import physics.Rectangle;
 
-public class SerializableSendingTEst {
+public class SerializableSendingTest {
 
-	protected static final boolean TO_STRING = true;//determines which type of message is sent
+	protected static final boolean TO_STRING = false;//determines which type of message is sent
 	final static int CLIENT_COUNT = 2;
 	final static int ITERATION_COUNT = 100;
-	final static int MOVING_PLATFORM_COUNT = 10;
+	final static int MOVING_PLATFORM_COUNT = 30;
+	final static boolean SEPARATE_CLIENTS = true;
 	
 	final static boolean DEBUG1 = false;
 	final static boolean DEBUG2 = false;
@@ -56,7 +57,7 @@ public class SerializableSendingTEst {
 				}).start();
 				
 				//create X game objects
-				Serializable[] serializables = new Serializable[MOVING_PLATFORM_COUNT];
+				Rectangle[] serializables = new Rectangle[MOVING_PLATFORM_COUNT];
 				for(int i=0;i<MOVING_PLATFORM_COUNT; i++){
 					serializables[i] = create_platform();
 				}
@@ -99,6 +100,7 @@ public class SerializableSendingTEst {
 												running = false;
 											}
 										}
+										finished_sockets++;
 									}
 								}).start();
 								
@@ -108,13 +110,18 @@ public class SerializableSendingTEst {
 									while(i>server_iteration)
 										Thread.sleep(10);
 									//send all objects
-									for(Serializable serializable: serializables){
+									StringBuilder sb=null;
+									if(TO_STRING)
+										sb=new StringBuilder();
+									for(Rectangle serializable: serializables){
 										if(TO_STRING){
-											out.writeObject(serializable.toString());
+											sb.append(serializable.toString()+",");
 										}
 										else
 											out.writeObject(serializable);
 									}
+									if(TO_STRING)
+										out.writeObject(sb.toString());
 									out.reset();
 								}
 								System.out.println("Done sending to client");
@@ -131,15 +138,11 @@ public class SerializableSendingTEst {
 
 				//modify all game objects to simulate movement
 				while(running){
+					/*
 					for (Serializable serializable : serializables){
 						modify(serializable);
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 					}
+					*/
 					server_iteration ++;
 					if(DEBUG_SERVER_ITERATIONS)System.out.println("Server_Iteration: "+server_iteration);
 					boolean finished = true;
@@ -159,11 +162,12 @@ public class SerializableSendingTEst {
 				}
 			}
 
-			private Serializable create_platform() {
+			private Rectangle create_platform() {
 				Rectangle rectangle = new Rectangle();
 				return rectangle;
 			}
 
+			@SuppressWarnings("unused")
 			private void modify(Serializable serializable){
 				((Rectangle)serializable).x++;
 			}
@@ -173,6 +177,7 @@ public class SerializableSendingTEst {
 		}).start();
 		
 		//client threads
+		if(!SEPARATE_CLIENTS)
 		for(int c = 0; c <CLIENT_COUNT;c++){
 			new Thread(new Runnable(){
 				@Override
@@ -190,6 +195,7 @@ public class SerializableSendingTEst {
 								if(TO_STRING){
 									String string = (String)in.readObject();
 									if(DEBUG2)System.out.println(string);
+									break;
 								}
 								else
 									in.readObject();
