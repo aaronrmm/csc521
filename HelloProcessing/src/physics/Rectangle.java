@@ -12,4 +12,9 @@ public class Rectangle extends java.awt.Rectangle{
 	private static final long serialVersionUID = -4119950297729882857L;
 	public long id;
 	private static long next_id = 0;
+	
+	@Override
+	public String toString(){
+		return this.x+":"+this.y+":"+this.width+":"+this.height+":"+this.id;
+	}
 }
