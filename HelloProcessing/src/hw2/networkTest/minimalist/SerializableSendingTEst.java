@@ -12,12 +12,15 @@ import physics.Rectangle;
 
 public class SerializableSendingTEst {
 
+	protected static final boolean TO_STRING = true;
+	final static int CLIENT_COUNT = 2;
+	final static int ITERATION_COUNT = 100;
+	final static int MOVING_PLATFORM_COUNT = 10;
+	
 	final static boolean DEBUG1 = false;
 	final static boolean DEBUG2 = false;
-	final static int MOVING_PLATFORM_COUNT = 800;
+	
 	final static int PORT = 9595;
-	final static int CLIENT_COUNT = 3;
-	final static int ITERATION_COUNT = 1000;
 	static boolean running = true;
 	final static String HOST = "127.0.0.1";
 	protected static final boolean DEBUG_SERVER_ITERATIONS = false;
@@ -83,9 +86,14 @@ public class SerializableSendingTEst {
 								new Thread(new Runnable(){
 									@Override
 									public void run(){
-										while(running&&client.isClosed()){
+										int responses = 0;
+										while(responses<ITERATION_COUNT && running&& !client.isClosed()){
+											responses++;
 											try {
-												in.readObject();
+												Object o = in.readObject();
+												if(DEBUG1){
+													System.out.println(o);
+												}
 											} catch (ClassNotFoundException | IOException e) {
 												e.printStackTrace();
 												running = false;
@@ -101,7 +109,11 @@ public class SerializableSendingTEst {
 										Thread.sleep(10);
 									//send all objects
 									for(Serializable serializable: serializables){
-										out.writeObject(serializable);
+										if(TO_STRING){
+											out.writeObject(serializable.toString());
+										}
+										else
+											out.writeObject(serializable);
 									}
 									out.reset();
 								}
@@ -174,8 +186,13 @@ public class SerializableSendingTEst {
 							int messageCount = 0;
 							Serializable lastMessage = null;
 							while(running && messageCount<MOVING_PLATFORM_COUNT){
-								in.readObject();
 								messageCount++;
+								if(TO_STRING){
+									String string = (String)in.readObject();
+									if(DEBUG2)System.out.println(string);
+								}
+								else
+									in.readObject();
 								if(DEBUG2){
 									System.out.println("messageCount:"+messageCount);
 								}
