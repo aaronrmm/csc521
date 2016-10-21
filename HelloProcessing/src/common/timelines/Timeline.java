@@ -5,7 +5,10 @@ public class Timeline {
 	int ticksize = 1;
 	
 	long getTime(){
-		return System.nanoTime();
+		if(anchor == null)
+			return System.nanoTime();
+		else
+			return (anchor.getTime() - origin)/ticksize;
 	}
 	
 	Timeline anchor;
