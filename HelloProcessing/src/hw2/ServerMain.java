@@ -5,6 +5,7 @@ import common.GameDescription;
 import common.factories.PlatformObjectFactory;
 import common.factories.PlayerObjectFactory;
 import common.factories.SpawnPointFactory;
+import common.timelines.Timeline;
 import physics.BasicPhysicsEngine;
 import physics.PhysicsEngine;
 
@@ -21,10 +22,12 @@ public class ServerMain {
 		GameDescription game = new TestGameDescription(eventE);
 		game.generateGame(renderingE, physicsE, playerF, platformF, spawnF);
 		ServersideNetworking networking = new ServersideNetworking(eventE,9596);
-		
+		Timeline timeline = new Timeline(null, 10);
 		networking.start();
+		long lastTick = 0;
 		while(true){
-			physicsE.tick(1);
+			physicsE.tick((int)(timeline.getTime()-lastTick));
+			lastTick = timeline.getTime();
 			eventE.HandleNextEvents(8);
 			networking.updateClients(renderingE.getRectangles());
 			
