@@ -6,7 +6,7 @@ public class Timeline {
 	
 	long getTime(){
 		if(anchor == null)
-			return System.nanoTime();
+			return (System.nanoTime()-origin)/ticksize;
 		else
 			return (anchor.getTime() - origin)/ticksize;
 	}
