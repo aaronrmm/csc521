@@ -7,8 +7,8 @@ import java.util.List;
 import common.EventManagementEngine;
 import common.RenderableComponent;
 import common.RenderingEngine;
-import hw1section5.Input;
-import hw1section5.Input.Movement;
+import common.events.ClientInputEvent;
+import common.events.ClientInputEvent.Movement;
 import physics.Rectangle;
 import processing.core.PApplet;
 
@@ -47,7 +47,7 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 	}
 	
 	public void keyPressed() {
-		Input input = new Input();
+		ClientInputEvent input = new ClientInputEvent();
 		if(key=='a')
 			input.movement = Movement.left;
 		if(key=='d')

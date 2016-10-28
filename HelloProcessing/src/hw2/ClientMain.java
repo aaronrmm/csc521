@@ -8,8 +8,8 @@ import java.net.UnknownHostException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import hw1section5.Input;
-import hw1section5.Input.Movement;
+import common.events.ClientInputEvent;
+import common.events.ClientInputEvent.Movement;
 import physics.Rectangle;
 import processing.core.PApplet;
 
@@ -30,7 +30,7 @@ public class ClientMain extends PApplet{
 	ObjectOutputStream oos;
 	ObjectInputStream ois;
 	private ConcurrentHashMap<Long, Rectangle> worldView = new ConcurrentHashMap<Long, Rectangle>();
-	private ConcurrentLinkedQueue<Input> inputBuffer = new ConcurrentLinkedQueue<Input>();
+	private ConcurrentLinkedQueue<ClientInputEvent> inputBuffer = new ConcurrentLinkedQueue<ClientInputEvent>();
 	
 	
 	public void settings() {// runs first
@@ -43,7 +43,7 @@ public class ClientMain extends PApplet{
 			socket = new Socket(HOST,PORT);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(socket.getInputStream());
-			oos.writeObject(new Input());
+			oos.writeObject(new ClientInputEvent());
 			new Thread(new Runnable(){
 				@Override
 				public void run(){
@@ -92,15 +92,15 @@ public class ClientMain extends PApplet{
 	public void keyPressed() {
 		try {
 			if(key=='a')
-				inputBuffer.add(new Input(Movement.left));
+				inputBuffer.add(new ClientInputEvent(Movement.left));
 	//		if(key=='w')
 	//			player.addImpulseForce(new Vector2d(0,-PLAYER_SPEED));
 	//		if(key=='s')
 	//			player.addImpulseForce(new Vector2d(0,PLAYER_SPEED));
 			if(key=='d')
-				inputBuffer.add(new Input(Movement.right));
+				inputBuffer.add(new ClientInputEvent(Movement.right));
 			if(key==' ')
-				inputBuffer.add(new Input(Movement.jump));
+				inputBuffer.add(new ClientInputEvent(Movement.jump));
 			if(key==ESC)
 				socket.close();
 		} catch (IOException e) {
@@ -116,7 +116,7 @@ public class ClientMain extends PApplet{
 		while(true){
 			try {
 				while(true){
-					Input nextInput = inputBuffer.peek();
+					ClientInputEvent nextInput = inputBuffer.peek();
 					if(nextInput!=null){
 							oos.writeObject(nextInput);
 							inputBuffer.remove();

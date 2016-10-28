@@ -4,14 +4,14 @@ import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import hw1section5.Input;
+import common.events.ClientInputEvent;
 
 public class EventManagementEngine {
 
-	Input queue = null;
+	ClientInputEvent queue = null;
 	@SuppressWarnings("rawtypes")
 	HashMap<Class, LinkedList<? extends Listener>> registeredListeners = new HashMap<Class, LinkedList<? extends Listener>>();
-	public void queue(Input input) {
+	public void queue(ClientInputEvent input) {
 		if (queue == null)
 			queue = input;
 		else
@@ -27,13 +27,13 @@ public class EventManagementEngine {
 	
 	public void HandleNextEvent(){
 		if (queue!=null){
-			Input input = queue;
+			ClientInputEvent input = queue;
 			queue = input.nextInput;
 			this.handle(input);
 		}
 	}
 	@SuppressWarnings("unchecked")
-	private void handle(Input input) {
+	private void handle(ClientInputEvent input) {
 		LinkedList<InputListener>listeners = (LinkedList<InputListener>)registeredListeners.get(InputListener.class);
 		if(listeners!=null){
 			try{
@@ -48,7 +48,7 @@ public class EventManagementEngine {
 	public void HandleNextEvents(int i) {
 		while(queue!=null && i>0){
 			i--;
-			Input input = queue;
+			ClientInputEvent input = queue;
 			queue = input.nextInput;
 			this.handle(input);
 			

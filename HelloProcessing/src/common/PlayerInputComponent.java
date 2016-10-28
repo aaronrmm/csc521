@@ -1,7 +1,7 @@
 package common;
 
-import hw1section5.Input;
-import hw1section5.Input.Movement;
+import common.events.ClientInputEvent;
+import common.events.ClientInputEvent.Movement;
 import physics.PhysicsComponent;
 import physics.Vector2d;
 
@@ -16,16 +16,16 @@ public class PlayerInputComponent extends AbstractComponent implements InputList
 	}
 	
 	public PlayerInputComponent(EventManagementEngine eventE, long clientId){
-		this.listen(eventE, Input.class);
+		this.listen(eventE, ClientInputEvent.class);
 		this.clientId = clientId;
 	}
 
-	private void listen(EventManagementEngine eventE, Class<Input> class1) {
+	private void listen(EventManagementEngine eventE, Class<ClientInputEvent> class1) {
 		eventE.register(this);
 	}
 
 	@Override
-	public void update(Input input) {
+	public void update(ClientInputEvent input) {
 		if(input.client==null)
 			return;
 		if(this.clientId!=input.client.getClientId())

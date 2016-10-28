@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import common.EventManagementEngine;
-import hw1section5.Input;
+import common.events.ClientInputEvent;
 import physics.Rectangle;
 
 public class ServersideNetworking {
@@ -37,11 +37,11 @@ public class ServersideNetworking {
 								@Override
 								public void run() {
 									try {
-										clients.get(s).addNewInput(new Input());
+										clients.get(s).addNewInput(new ClientInputEvent());
 										ObjectInputStream ois = new ObjectInputStream(
 												s.getInputStream());
 										while (true) {
-											Input input = (Input)ois.readObject();
+											ClientInputEvent input = (ClientInputEvent)ois.readObject();
 											input.client = clients.get(s);
 											eventE.queue(input);
 										}

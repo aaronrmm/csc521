@@ -11,10 +11,10 @@ import common.InputListener;
 import common.OscillatingController;
 import common.RenderableComponent;
 import common.RenderingEngine;
+import common.events.ClientInputEvent;
 import common.factories.PlatformObjectFactory;
 import common.factories.PlayerObjectFactory;
 import common.factories.SpawnPointFactory;
-import hw1section5.Input;
 import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 import physics.Rectangle;
@@ -105,7 +105,7 @@ public class TestGameDescription implements GameDescription, InputListener{
 	}
 
 	@Override
-	public void update(Input input) {
+	public void update(ClientInputEvent input) {
 		if(input.client==null)
 			return;
 		if(! playerObjects.containsKey(input.client.getClientId())){

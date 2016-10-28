@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 
-import hw1section5.Input;
+import common.events.ClientInputEvent;
 import physics.Rectangle;
 
 public class ClientHandler {
@@ -14,8 +14,8 @@ public class ClientHandler {
 	@SuppressWarnings("unused")
 	private Socket socket;
 	private ObjectOutputStream oos;
-	private Input first_unread_input;
-	private Input last_unread_input;
+	private ClientInputEvent first_unread_input;
+	private ClientInputEvent last_unread_input;
 	private HashMap<Long, UpdatedRectangle> updates = new HashMap<Long, UpdatedRectangle>();
 	public static long nextId;
 	private long clientId;
@@ -40,7 +40,7 @@ public class ClientHandler {
 		}
 	}
 
-	public void addNewInput(Input input) {
+	public void addNewInput(ClientInputEvent input) {
 		input.client = this;
 		if (this.first_unread_input == null) {
 			this.first_unread_input = input;
@@ -51,8 +51,8 @@ public class ClientHandler {
 		}
 	}
 
-	public Input getNewInputs() {
-		Input newInput = first_unread_input;
+	public ClientInputEvent getNewInputs() {
+		ClientInputEvent newInput = first_unread_input;
 		first_unread_input = null;
 		return newInput;
 	}

@@ -1,9 +1,9 @@
 package common;
 
-import hw1section5.Input;
+import common.events.ClientInputEvent;
 
 public interface InputListener extends Listener{
 
-	void update(Input input);
+	void update(ClientInputEvent input);
 
 }
