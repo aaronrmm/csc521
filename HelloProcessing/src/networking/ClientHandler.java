@@ -1,4 +1,4 @@
-package hw1section5;
+package networking;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 
+import hw1section5.Input;
 import physics.Rectangle;
 
 public class ClientHandler {

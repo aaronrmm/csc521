@@ -1,4 +1,4 @@
-package hw1section5;
+package networking;
 
 import java.io.Serializable;
 

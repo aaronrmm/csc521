@@ -2,6 +2,8 @@ package hw1section5;
 
 import java.io.Serializable;
 
+import networking.ClientHandler;
+
 public class Input implements Serializable{
 
 	transient boolean isNew = true;

@@ -1,4 +1,4 @@
-package hw2;
+package networking;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import common.EventManagementEngine;
-import hw1section5.ClientHandler;
 import hw1section5.Input;
 import physics.Rectangle;
 

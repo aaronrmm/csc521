@@ -1,4 +1,4 @@
-package hw2.networkTest.minimalist;
+package networking.statistics;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
