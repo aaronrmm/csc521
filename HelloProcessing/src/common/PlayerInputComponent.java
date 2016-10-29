@@ -2,10 +2,11 @@ package common;
 
 import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Movement;
+import common.events.GenericListener;
 import physics.PhysicsComponent;
 import physics.Vector2d;
 
-public class PlayerInputComponent extends AbstractComponent implements InputListener{
+public class PlayerInputComponent extends AbstractComponent implements GenericListener<ClientInputEvent>{
 
 	final static int PLAYER_SPEED = 2;
 	final static int JUMP_SPEED = 30;
@@ -16,12 +17,8 @@ public class PlayerInputComponent extends AbstractComponent implements InputList
 	}
 	
 	public PlayerInputComponent(EventManagementEngine eventE, long clientId){
-		this.listen(eventE, ClientInputEvent.class);
+		ClientInputEvent.Register(this);
 		this.clientId = clientId;
-	}
-
-	private void listen(EventManagementEngine eventE, Class<ClientInputEvent> class1) {
-		eventE.register(this);
 	}
 
 	@Override

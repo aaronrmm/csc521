@@ -2,7 +2,9 @@ package physics;
 
 import java.util.ArrayList;
 
+import common.EventManagementEngine;
 import common.TimingComponent;
+import common.events.CharacterCollisionEvent;
 
 public class BasicPhysicsEngine implements PhysicsEngine{
 
@@ -10,7 +12,12 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 	private ArrayList<TimingComponent> timers = new ArrayList<TimingComponent>();
 	final int MAX_SPEED=4;
 	int time = 0;
+	private EventManagementEngine eventE;
 	
+	public BasicPhysicsEngine(EventManagementEngine eventE) {
+		this.eventE = eventE;
+	}
+
 	public void tick(int milliseconds){
 		//apply each force to its object
 		time+=milliseconds;
@@ -36,10 +43,9 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			for(PhysicsComponent obstacle: pObjects)
 				if( obstacle!=pObject)
 					if (obstacle.intersects(path)){
+						eventE.queue(new CharacterCollisionEvent(pObject, obstacle));
 						if(obstacle.blocksObject(pObject))
 							path_blocked = true;
-						obstacle.onCollision(pObject);
-						pObject.onCollision(obstacle);
 					}
 			if(! path_blocked)
 				pObject.translate(pObject.speed, milliseconds);

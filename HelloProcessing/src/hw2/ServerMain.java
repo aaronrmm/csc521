@@ -13,30 +13,30 @@ import physics.PhysicsEngine;
 public class ServerMain {
 
 	public static void main(String[]args){
-		EventManagementEngine eventE = new EventManagementEngine();
+		Timeline timeline = new Timeline(null, 10);
+		EventManagementEngine eventE = new EventManagementEngine(timeline);
 		ProcessingRenderingEngine renderingE = new ProcessingRenderingEngine();
 		renderingE.initialize(eventE);
-		PhysicsEngine physicsE = new BasicPhysicsEngine();
+		PhysicsEngine physicsE = new BasicPhysicsEngine(eventE);
 		PlayerObjectFactory playerF = new PlayerObjectFactory(physicsE, renderingE, eventE);
 		PlatformObjectFactory platformF = new PlatformObjectFactory(physicsE, renderingE);
 		SpawnPointFactory spawnF = new SpawnPointFactory(physicsE);
 		GameDescription game = new TestGameDescription(eventE);
 		game.generateGame(renderingE, physicsE, playerF, platformF, spawnF);
 		ServersideNetworking networking = new ServersideNetworking(eventE,9596);
-		Timeline timeline = new Timeline(null, 10);
 		networking.start();
 		long lastTick = 0;
 		while(true){
 			physicsE.tick((int)(timeline.getTime()-lastTick));
 			lastTick = timeline.getTime();
-			eventE.HandleNextEvents(8);
+			eventE.HandleNextEvents(800);
+			eventE.flushBuffer();
 			networking.updateClients(renderingE.getRectangles());
 			
 			
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

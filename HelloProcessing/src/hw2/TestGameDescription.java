@@ -7,11 +7,11 @@ import common.EntityClass;
 import common.EventManagementEngine;
 import common.GameDescription;
 import common.GameObject;
-import common.InputListener;
 import common.OscillatingController;
 import common.RenderableComponent;
 import common.RenderingEngine;
 import common.events.ClientInputEvent;
+import common.events.GenericListener;
 import common.factories.PlatformObjectFactory;
 import common.factories.PlayerObjectFactory;
 import common.factories.SpawnPointFactory;
@@ -19,7 +19,7 @@ import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 import physics.Rectangle;
 
-public class TestGameDescription implements GameDescription, InputListener{
+public class TestGameDescription implements GameDescription, GenericListener<ClientInputEvent>{
 
 	private static final boolean DEBUG_MODE = true;
 	private static final int NUMBER_OF_SPAWN_POINTS = 3;
@@ -31,7 +31,7 @@ public class TestGameDescription implements GameDescription, InputListener{
 	private LinkedList<GameObject> spawnPoints = new LinkedList<GameObject>();
 	
 	public TestGameDescription(EventManagementEngine eventE) {
-		eventE.register(this);
+		ClientInputEvent.Register(this);
 	}
 
 	@Override
@@ -104,7 +104,6 @@ public class TestGameDescription implements GameDescription, InputListener{
 		return playerF.create(x, y, clientId);
 	}
 
-	@Override
 	public void update(ClientInputEvent input) {
 		if(input.client==null)
 			return;

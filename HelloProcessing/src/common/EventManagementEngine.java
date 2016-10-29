@@ -1,59 +1,41 @@
 package common;
 
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
-import common.events.ClientInputEvent;
+import common.events.AbstractEvent;
+import common.events.EventPriorityComparator;
+import common.timelines.Timeline;
 
 public class EventManagementEngine {
 
-	ClientInputEvent queue = null;
-	@SuppressWarnings("rawtypes")
-	HashMap<Class, LinkedList<? extends Listener>> registeredListeners = new HashMap<Class, LinkedList<? extends Listener>>();
-	public void queue(ClientInputEvent input) {
-		if (queue == null)
-			queue = input;
-		else
-			queue.nextInput = input;
-	}
-	public void register(InputListener playerInputComponent) {
-		if(!registeredListeners.containsKey(InputListener.class))
-				registeredListeners.put(InputListener.class, new LinkedList<InputListener>());
-		@SuppressWarnings("unchecked")
-		LinkedList<InputListener> list = (LinkedList<InputListener>)registeredListeners.get(InputListener.class);
-		list.add(playerInputComponent);
+	Timeline timeline;
+	PriorityQueue<AbstractEvent> queue = new PriorityQueue<AbstractEvent>(new EventPriorityComparator());
+	LinkedList<AbstractEvent> buffer = new LinkedList<AbstractEvent>();
+	
+	public EventManagementEngine(Timeline timeline){
+		this.timeline = timeline;
 	}
 	
-	public void HandleNextEvent(){
-		if (queue!=null){
-			ClientInputEvent input = queue;
-			queue = input.nextInput;
-			this.handle(input);
-		}
+	public void queue(AbstractEvent event) {
+		event.timestamp = this.timeline.getTime();
+		buffer.add(event);
 	}
-	@SuppressWarnings("unchecked")
-	private void handle(ClientInputEvent input) {
-		LinkedList<InputListener>listeners = (LinkedList<InputListener>)registeredListeners.get(InputListener.class);
-		if(listeners!=null){
-			try{
-				for(InputListener listener: listeners){
-					listener.update(input);
-				}
-			}catch(ConcurrentModificationException ex){
-				ex.printStackTrace();
-			}
-		}
-	}
+	
 	public void HandleNextEvents(int i) {
-		while(queue!=null && i>0){
+		while(!queue.isEmpty() && i>0){
 			i--;
-			ClientInputEvent input = queue;
-			queue = input.nextInput;
-			this.handle(input);
-			
+			AbstractEvent e = queue.poll();
+			if (e!=null)
+			e.Handle();
 		}
-		
+			System.out.println(queue.size());
+	}
+	
+	public void flushBuffer(){
+		for(AbstractEvent e : buffer)
+			queue.offer(e);
+		buffer.clear();
 	}
 	
 
