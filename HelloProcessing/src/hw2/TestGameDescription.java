@@ -10,6 +10,7 @@ import common.GameObject;
 import common.OscillatingController;
 import common.RenderableComponent;
 import common.RenderingEngine;
+import common.events.CharacterCollisionEvent;
 import common.events.ClientInputEvent;
 import common.events.GenericListener;
 import common.factories.PlatformObjectFactory;
@@ -78,16 +79,17 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 					}
 					PhysicsComponent killzoneBotP = new PhysicsComponent(killzoneBotRect){
 						@Override
-						public void onCollision(PhysicsComponent pObject){
-							if(pObject.getGameObject().entityClass == EntityClass.PLAYER){
+						public void update(CharacterCollisionEvent collision){
+							if(collision.object2 == this && collision.object1.getGameObject().entityClass == EntityClass.PLAYER){
 								GameObject respawn = spawnPoints.removeLast();
 								spawnPoints.push(respawn);
 								PhysicsComponent pComponent = (PhysicsComponent)respawn.getComponent(PhysicsComponent.class.getName());
-								pObject.getRectangle().x = pComponent.getX();
-								pObject.getRectangle().y = pComponent.getY();
+								collision.object1.getRectangle().x = pComponent.getX();
+								collision.object1.getRectangle().y = pComponent.getY();
 							}
 						}
 					};
+					CharacterCollisionEvent.Register(killzoneBotP);
 					physicsE.addStaticObject(killzoneBotP, killzoneBotRect.x, killzoneBotRect.y);
 					killzoneBot.add(killzoneBotP, PhysicsComponent.class.getName());
 					if(DEBUG_MODE){

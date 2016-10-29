@@ -58,9 +58,8 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 					if( obstacle!=pObject)
 						if (obstacle.intersects(path)){
 							if(obstacle.blocksObject(pObject))
+								eventE.queue(new CharacterCollisionEvent(pObject, obstacle));
 								path_blocked = true;
-							obstacle.onCollision(pObject);
-							pObject.onCollision(obstacle);
 						}
 				if(! path_blocked)
 					pObject.translate(pObject.speed, milliseconds);

@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import org.jbox2d.dynamics.Body;
 
 import common.AbstractComponent;
+import common.events.CharacterCollisionEvent;
+import common.events.GenericListener;
 
-public class PhysicsComponent extends AbstractComponent {
+public class PhysicsComponent extends AbstractComponent implements GenericListener<CharacterCollisionEvent>{
 
 	ArrayList<Vector2d> constantForces = new ArrayList<Vector2d>();
 	ArrayList<Vector2d> impulseForces = new ArrayList<Vector2d>();
@@ -71,6 +73,10 @@ public class PhysicsComponent extends AbstractComponent {
 		return false;
 	}
 
-	public void onCollision(PhysicsComponent pObject) {
+
+	@Override
+	public void update(CharacterCollisionEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 }
