@@ -64,4 +64,10 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 		}
 		return rectangles;
 	}
+
+	@Override
+	public void remove(RenderableComponent renderableComponent) {
+		renderableList.remove(renderableComponent);
+		
+	}
 }

@@ -12,4 +12,6 @@ public interface PhysicsEngine {
 
 	void addDynamicObject(PhysicsComponent physicsComponent, int x, int y);
 
+	void remove(PhysicsComponent physicsComponent);
+
 }

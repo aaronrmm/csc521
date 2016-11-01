@@ -1,10 +1,12 @@
 package common.events;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 import networking.ClientHandler;
 
 public class ClientInputEvent extends AbstractEvent implements Serializable{
+	transient final Logger logger = Logger.getLogger(ClientInputEvent.class.getName());
 
 	transient boolean isNew = true;
 	public Movement movement;
@@ -42,6 +44,9 @@ public class ClientInputEvent extends AbstractEvent implements Serializable{
 	@Override
 	public void Handle() {
 		registrar.UpdateListeners(this);
-		System.out.println(this.timestamp);
+		//logger.debug(this.timestamp);
+	}
+	public static void Unregister(GenericListener<ClientInputEvent> listener) {
+		registrar.Unregister(listener);
 	}
 }

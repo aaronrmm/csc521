@@ -10,15 +10,19 @@ public class PlayerInputComponent extends AbstractComponent implements GenericLi
 
 	final static int PLAYER_SPEED = 2;
 	final static int JUMP_SPEED = 30;
-	private long clientId;
+	public long clientId;
+	public static EventManagementEngine EventE;
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
+		clientId=-1;
+		ClientInputEvent.Unregister(this);
+		
 	}
 	
 	public PlayerInputComponent(EventManagementEngine eventE, long clientId){
 		ClientInputEvent.Register(this);
 		this.clientId = clientId;
+		EventE = eventE;
 	}
 
 	@Override

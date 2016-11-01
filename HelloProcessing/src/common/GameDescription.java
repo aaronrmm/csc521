@@ -9,7 +9,6 @@ public interface GameDescription {
 
 	GameObject spawnPlayer(int x, int y, long clientId);
 
-	void generateGame(RenderingEngine renderingE, PhysicsEngine physicsE, PlayerObjectFactory playerF,
+	void generateGame(EventManagementEngine eventE, RenderingEngine renderingE, PhysicsEngine physicsE, PlayerObjectFactory playerF,
 			PlatformObjectFactory platformF, SpawnPointFactory spawnF);
-
 }

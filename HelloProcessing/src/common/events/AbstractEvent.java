@@ -9,4 +9,8 @@ public abstract class AbstractEvent{
 	public double getPriority(){
 			return 0;
 	}
+	
+	public boolean getDebug(){
+		return false;
+	}
 }

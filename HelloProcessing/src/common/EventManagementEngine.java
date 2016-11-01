@@ -26,10 +26,10 @@ public class EventManagementEngine {
 		while(!queue.isEmpty() && i>0){
 			i--;
 			AbstractEvent e = queue.poll();
-			if (e!=null)
+			if (e!=null){
 			e.Handle();
+			}
 		}
-			System.out.println(queue.size());
 	}
 	
 	public void flushBuffer(){

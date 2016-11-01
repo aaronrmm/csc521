@@ -52,5 +52,9 @@ public class JBox2dWrapper implements PhysicsEngine{
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void remove(PhysicsComponent physicsComponent) {
+		this.world.destroyBody(physicsComponent.body);
+	}
 
 }

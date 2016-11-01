@@ -40,10 +40,11 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			if(pObject.speed.y<-MAX_SPEED)pObject.speed.y=-MAX_SPEED;
 			boolean path_blocked = false;
 			Rectangle path = pObject.getPath(pObject.speed, milliseconds);
+			ArrayList<PhysicsComponent> collidedObstacles = new ArrayList<PhysicsComponent>();
 			for(PhysicsComponent obstacle: pObjects)
 				if( obstacle!=pObject)
 					if (obstacle.intersects(path)){
-						eventE.queue(new CharacterCollisionEvent(pObject, obstacle));
+						collidedObstacles.add(obstacle);
 						if(obstacle.blocksObject(pObject))
 							path_blocked = true;
 					}
@@ -57,14 +58,18 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 				for(PhysicsComponent obstacle: pObjects)
 					if( obstacle!=pObject)
 						if (obstacle.intersects(path)){
+							if(!collidedObstacles.contains(obstacle))
+								collidedObstacles.add(obstacle);
 							if(obstacle.blocksObject(pObject))
-								eventE.queue(new CharacterCollisionEvent(pObject, obstacle));
 								path_blocked = true;
 						}
 				if(! path_blocked)
 					pObject.translate(pObject.speed, milliseconds);
 				else
 					pObject.speed.x=0;
+			}
+			for(PhysicsComponent obstacle:collidedObstacles){
+				eventE.queue(new CharacterCollisionEvent(pObject,obstacle));
 			}
 		}
 	}
@@ -83,6 +88,12 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 	@Override
 	public void addStaticObject(PhysicsComponent pObject, int x, int y) {
 		pObjects.add(pObject);
+		
+	}
+
+	@Override
+	public void remove(PhysicsComponent physicsComponent) {
+		this.pObjects.remove(physicsComponent);
 		
 	}
 }

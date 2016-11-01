@@ -7,6 +7,7 @@ public class GameObject {
 	public EntityClass entityClass;
 	private ConcurrentHashMap<String, Component> components = new ConcurrentHashMap<String,Component>();
 	private long id;
+	public boolean alive = false;
 	private static long nextId;
 	
 	public GameObject(EntityClass entityClass){

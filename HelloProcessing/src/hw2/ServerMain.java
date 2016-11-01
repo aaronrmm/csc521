@@ -1,5 +1,7 @@
 package hw2;
 
+import java.util.logging.Logger;
+
 import common.EventManagementEngine;
 import common.GameDescription;
 import common.factories.PlatformObjectFactory;
@@ -12,6 +14,9 @@ import physics.PhysicsEngine;
 
 public class ServerMain {
 
+	@SuppressWarnings("unused")
+	private final static Logger logger = Logger.getLogger(ServerMain.class.getName());
+	
 	public static void main(String[]args){
 		Timeline timeline = new Timeline(null, 10);
 		EventManagementEngine eventE = new EventManagementEngine(timeline);
@@ -22,7 +27,7 @@ public class ServerMain {
 		PlatformObjectFactory platformF = new PlatformObjectFactory(physicsE, renderingE);
 		SpawnPointFactory spawnF = new SpawnPointFactory(physicsE);
 		GameDescription game = new TestGameDescription(eventE);
-		game.generateGame(renderingE, physicsE, playerF, platformF, spawnF);
+		game.generateGame(eventE, renderingE, physicsE, playerF, platformF, spawnF);
 		ServersideNetworking networking = new ServersideNetworking(eventE,9596);
 		networking.start();
 		long lastTick = 0;

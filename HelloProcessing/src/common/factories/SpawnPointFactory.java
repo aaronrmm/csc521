@@ -17,7 +17,7 @@ public class SpawnPointFactory {
 	public GameObject create(int x, int y, int width, int height) {
 		GameObject spawn = new GameObject(EntityClass.SPAWNPOINT);
 		Rectangle spawnRect = new Rectangle(x,y,width,height);
-		PhysicsComponent spawnPhysics = new PhysicsComponent(spawnRect, false);
+		PhysicsComponent spawnPhysics = new PhysicsComponent(spawnRect, false, physicsE);
 		spawn.add(spawnPhysics, PhysicsComponent.class.getName());
 		physicsE.addStaticObject(spawnPhysics, x, y);
 		return spawn;

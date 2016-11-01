@@ -7,16 +7,19 @@ public class RenderableComponent extends AbstractComponent implements Component 
 
 	public long id;
 	private static long next_id = 0;
+	private RenderingEngine renderE;
 
 	private PhysicsComponent physics;
 	
-	public RenderableComponent(PhysicsComponent physics){
+	public RenderableComponent(PhysicsComponent physics, RenderingEngine renderE){
 		this.physics = physics;
 		this.id = next_id++;
+		this.renderE = renderE;
 	}
 	
 	@Override
 	public void destroy() {
+		renderE.remove(this);
 	}
 	
 	public int getX(){

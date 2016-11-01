@@ -16,14 +16,16 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 	boolean isSolid = false;
 	private Rectangle shape;
 	public Body body;
+	private PhysicsEngine physicsE;
 
-	public PhysicsComponent(Rectangle player){
-		this.shape = player;
+	public PhysicsComponent(Rectangle player, PhysicsEngine physicsE){
+		this(player, false, physicsE);
 	}
 	
-	public PhysicsComponent(Rectangle shape, boolean isSolid){
+	public PhysicsComponent(Rectangle shape, boolean isSolid,  PhysicsEngine physicsE){
 		this.shape = shape;
 		this.isSolid = isSolid;
+		this.physicsE = physicsE;
 	}
 
 	public Rectangle getPath(Vector2d force, int milliseconds) {
@@ -65,7 +67,7 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 
 	@Override
 	public void destroy() {
-		
+		this.physicsE.remove(this);
 	}
 
 	public boolean blocksObject(PhysicsComponent pObject) {
