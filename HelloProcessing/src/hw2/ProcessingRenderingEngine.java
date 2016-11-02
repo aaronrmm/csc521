@@ -3,6 +3,8 @@ package hw2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import common.EventManagementEngine;
 import common.RenderableComponent;
@@ -14,6 +16,7 @@ import processing.core.PApplet;
 
 public class ProcessingRenderingEngine extends PApplet implements RenderingEngine {
 
+	private final static Logger logger = Logger.getLogger(ProcessingRenderingEngine.class.getName());
 	static HashMap<Long, RenderableComponent>renderableList = new HashMap<Long, RenderableComponent>();
 	public static EventManagementEngine eventE = null;
 	public ProcessingRenderingEngine(){
@@ -67,7 +70,9 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 
 	@Override
 	public void remove(RenderableComponent renderableComponent) {
-		renderableList.remove(renderableComponent);
+		if (renderableList.remove(renderableComponent.id)==null)
+			logger.log(Level.SEVERE, "Could not remove renderable id "+renderableComponent.id);
+			
 		
 	}
 }

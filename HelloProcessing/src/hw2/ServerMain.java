@@ -1,5 +1,6 @@
 package hw2;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import common.EventManagementEngine;
@@ -14,7 +15,6 @@ import physics.PhysicsEngine;
 
 public class ServerMain {
 
-	@SuppressWarnings("unused")
 	private final static Logger logger = Logger.getLogger(ServerMain.class.getName());
 	
 	public static void main(String[]args){
@@ -36,6 +36,7 @@ public class ServerMain {
 			lastTick = timeline.getTime();
 			eventE.HandleNextEvents(800);
 			eventE.flushBuffer();
+			logger.log(Level.SEVERE, "Rectangles sent:"+renderingE.getRectangles().size());
 			networking.updateClients(renderingE.getRectangles());
 			
 			
