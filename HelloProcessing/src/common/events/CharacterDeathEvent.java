@@ -26,7 +26,7 @@ public class CharacterDeathEvent extends AbstractEvent{
 	public GameObject character;
 	
 	public CharacterDeathEvent(GameObject character) {
-		logger.log(Level.FINE, this.getClass().getName() +" constructed for character "+character.getId());
+		logger.log(Level.FINEST, this.getClass().getName() +" constructed for character "+character.getId());
 		this.character = character;
 	}
 	public static void Register(GenericListener<CharacterDeathEvent> listener) {
@@ -34,6 +34,7 @@ public class CharacterDeathEvent extends AbstractEvent{
 	}
 	@Override
 	public void Handle() {
+		logger.log(Level.FINEST, this.getClass().getName() +" handled for character "+character.getId());
 		registrar.UpdateListeners(this);
 	}
 }

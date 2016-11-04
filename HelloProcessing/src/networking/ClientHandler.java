@@ -5,12 +5,17 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ConcurrentModificationException;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import common.RenderableComponent;
 import common.events.AbstractEvent;
+import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 
 public class ClientHandler {
 
+	private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
 	@SuppressWarnings("unused")
 	private Socket socket;
 	private ObjectOutputStream oos;
@@ -70,6 +75,13 @@ public class ClientHandler {
 			try {
 				for (AbstractEvent event : updateQueue) {
 					oos.writeObject(event);
+
+					if(event instanceof CharacterSyncEvent){
+						CharacterSyncEvent syncEvent = (CharacterSyncEvent)event;
+						logger.log(Level.SEVERE,"Sending syncEvent for character "+syncEvent.getCharacter().getId()+" with "+syncEvent.getCharacter().getComponentSize()+" components.");
+						RenderableComponent renderable = (RenderableComponent) (syncEvent.getCharacter().getComponent(RenderableComponent.class.getName()));
+						if(renderable==null)logger.severe("No renderable found in SyncEvent");
+					}
 				}
 				updateQueue.clear();
 				oos.reset();

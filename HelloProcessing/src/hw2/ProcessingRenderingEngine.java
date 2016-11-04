@@ -38,6 +38,7 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 	
 	@Override
 	public void addObject(RenderableComponent renderable) {
+		logger.log(Level.FINEST, "putting renderable for gameobjectId "+renderable.getGameObject().getId());
 		renderableList.put(renderable.getGameObject().getId(), renderable);
 		
 	}
@@ -84,8 +85,10 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 
 	@Override
 	public void remove(RenderableComponent renderableComponent) {
-		if (renderableList.remove(renderableComponent.id)==null)
+		if (renderableList.remove(renderableComponent.getGameObject().getId())==null)
 			logger.log(Level.SEVERE, "Could not remove renderable id "+renderableComponent.id);
+		else
+			logger.log(Level.FINEST, "removing renderable for gameobjectId "+renderableComponent.getGameObject().getId());
 			
 		
 	}
