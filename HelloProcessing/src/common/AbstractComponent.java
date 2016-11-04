@@ -13,4 +13,7 @@ public abstract class AbstractComponent implements Component{
 	public void setGameObject(GameObject gameObject){
 		this.gameObject = gameObject;
 	}
+	public AbstractComponent(GameObject gameObject){
+		this.gameObject = gameObject;
+	}
 }

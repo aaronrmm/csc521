@@ -44,6 +44,7 @@ public class ClientMain {
 
 			@Override
 			public void update(CharacterSyncEvent event) {
+				logger.log(Level.SEVERE, "Character SyncEvent has null character");
 				RenderableComponent renderable = (RenderableComponent) event.getCharacter().getComponent(RenderableComponent.class.getName());
 				renderable.setGameObject( event.getCharacter());
 				renderingE.addObject(renderable);
@@ -64,7 +65,7 @@ public class ClientMain {
 				physicsE.tick((int)(timeline.getTime()-lastTick));
 				lastTick = timeline.getTime();
 				eventE.HandleNextEvents(800);
-				logger.log(Level.SEVERE, "client tick");
+				logger.log(Level.FINEST, "client tick");
 				Thread.sleep(10);
 				} catch (Exception e) {
 					e.printStackTrace();

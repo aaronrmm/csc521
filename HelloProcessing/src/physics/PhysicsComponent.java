@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.jbox2d.dynamics.Body;
 
 import common.AbstractComponent;
+import common.GameObject;
 import common.events.CharacterCollisionEvent;
 import common.events.GenericListener;
 
@@ -24,11 +25,12 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 	public transient Body body;
 	private transient PhysicsEngine physicsE;
 
-	public PhysicsComponent(Rectangle player, PhysicsEngine physicsE){
-		this(player, false, physicsE);
+	public PhysicsComponent(GameObject gameObject, Rectangle player, PhysicsEngine physicsE){
+		this(gameObject, player, false, physicsE);
 	}
 	
-	public PhysicsComponent(Rectangle shape, boolean isSolid,  PhysicsEngine physicsE){
+	public PhysicsComponent(GameObject gameObject, Rectangle shape, boolean isSolid,  PhysicsEngine physicsE){
+		super(gameObject);
 		this.shape = shape;
 		this.isSolid = isSolid;
 		this.physicsE = physicsE;

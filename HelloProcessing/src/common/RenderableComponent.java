@@ -15,7 +15,8 @@ public class RenderableComponent extends AbstractComponent implements Component 
 
 	private PhysicsComponent physics;
 	
-	public RenderableComponent(PhysicsComponent physics, RenderingEngine renderE){
+	public RenderableComponent(GameObject gameObject, PhysicsComponent physics, RenderingEngine renderE){
+		super(gameObject);
 		this.physics = physics;
 		this.id = next_id++;
 		RenderE = renderE;

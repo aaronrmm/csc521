@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import common.EventManagementEngine;
 import common.events.AbstractEvent;
+import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.ErrorEvent;
 import common.events.GenericListener;
@@ -42,7 +43,14 @@ public class ClientsideNetworking implements GenericListener<ClientInputEvent>{
 						try {
 							AbstractEvent event = (AbstractEvent)ois.readObject();
 							eventE.queue(event);
-							logger.log(Level.SEVERE, "client received "+event.toString());
+							if(event instanceof CharacterSyncEvent){
+								CharacterSyncEvent syncEvent = (CharacterSyncEvent)event;
+								if(syncEvent.getCharacter() == null)
+									logger.log(Level.SEVERE, "CharacterSyncEvent with null character received by client");
+								else
+									logger.fine("CharacterSyncEvent received for character "+syncEvent.getCharacter().getId());
+							}
+							logger.log(Level.FINER, "client received "+event.toString());
 						} catch (ClassNotFoundException | IOException e) {
 							eventE.queue(new ErrorEvent(e.getMessage()));
 							e.printStackTrace();

@@ -14,7 +14,8 @@ public class OscillatingController extends AbstractComponent implements TimingCo
 	Vector2d left = new Vector2d(-1,0);
 	Vector2d right = new Vector2d(1,0);
 	
-	public OscillatingController(PhysicsComponent physicsComponent, PhysicsEngine physicsE){
+	public OscillatingController(GameObject gameObject, PhysicsComponent physicsComponent, PhysicsEngine physicsE){
+		super(gameObject);
 		this.physicsComponent = physicsComponent;
 		physicsE.registerTimer(this);
 		

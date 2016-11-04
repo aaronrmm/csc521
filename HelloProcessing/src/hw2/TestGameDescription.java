@@ -63,7 +63,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 			int x = position+(int)(Math.random() * WIDTH/2);
 			int y = HEIGHT/2-height;
 			GameObject movingP = platformF.create(x, y, width, height);
-			movingP.add(new OscillatingController((PhysicsComponent)movingP.getComponent(PhysicsComponent.class.getName()), physicsE), OscillatingController.class.getName());
+			movingP.add(new OscillatingController(movingP, (PhysicsComponent)movingP.getComponent(PhysicsComponent.class.getName()), physicsE), OscillatingController.class.getName());
 			position += width;
 			gameObjects.add(movingP);
 		}
@@ -90,7 +90,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 					case 2: killzoneBotRect = new Rectangle(width,-width,WIDTH-2*width,width); break;//top
 					case 3: killzoneBotRect = new Rectangle(width,HEIGHT-width,WIDTH-2*width,width); break;//bottom
 					}
-					PhysicsComponent killzoneBotP = new PhysicsComponent(killzoneBotRect, physicsE){
+					PhysicsComponent killzoneBotP = new PhysicsComponent(killzoneBot, killzoneBotRect, physicsE){
 						/**
 						 * 
 						 */
@@ -112,8 +112,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 					physicsE.addStaticObject(killzoneBotP, killzoneBotRect.x, killzoneBotRect.y);
 					killzoneBot.add(killzoneBotP, PhysicsComponent.class.getName());
 					if(DEBUG_MODE){
-						RenderableComponent renderable = new RenderableComponent(killzoneBotP, renderingE);
-						renderable.setGameObject(killzoneBot);
+						RenderableComponent renderable = new RenderableComponent(killzoneBot, killzoneBotP, renderingE);
 						renderingE.addObject(renderable);
 						killzoneBot.add(renderable, RenderableComponent.class.getName());
 					}

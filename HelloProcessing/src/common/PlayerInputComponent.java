@@ -23,7 +23,8 @@ public class PlayerInputComponent extends AbstractComponent implements GenericLi
 		
 	}
 	
-	public PlayerInputComponent(EventManagementEngine eventE, long clientId){
+	public PlayerInputComponent(GameObject gameObject, EventManagementEngine eventE, long clientId){
+		super(gameObject);
 		ClientInputEvent.Register(this);
 		this.clientId = clientId;
 		EventE = eventE;

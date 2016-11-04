@@ -21,7 +21,15 @@ public class CharacterSyncEvent extends AbstractEvent{
 	}
 	
 	public CharacterSyncEvent(GameObject character, long timestamp, long expiration){
+		if(character==null)logger.log(Level.SEVERE, "CharacterSyncEvent constructed with null character");
 		this.character = character;
+		try{
+			logger.log(Level.FINE, "CharacterSyncEvent for characterId:" + character.getId());
+		}
+		catch(Exception ex){
+			logger.log(Level.SEVERE, ex.getMessage());
+			ex.printStackTrace();
+		}
 		priority = -1;//will have priority -1 on server and 100 on client
 	}
 

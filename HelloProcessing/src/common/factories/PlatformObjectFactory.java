@@ -19,11 +19,10 @@ public class PlatformObjectFactory {
 	
 	public GameObject create(int x, int y, int width, int height){
 		GameObject object = new GameObject(EntityClass.BARRIER);
-		PhysicsComponent physicsComponent = new PhysicsComponent(new Rectangle(x,y, width, height), true, physics);
+		PhysicsComponent physicsComponent = new PhysicsComponent(object, new Rectangle(x,y, width, height), true, physics);
 		object.add(physicsComponent, PhysicsComponent.class.getName());
 		this.physics.addStaticObject(physicsComponent, x, y);
-		RenderableComponent renderable = new RenderableComponent(physicsComponent, renderer);
-		renderable.setGameObject(object);
+		RenderableComponent renderable = new RenderableComponent(object, physicsComponent, renderer);
 		this.renderer.addObject(renderable);
 		object.add(renderable, RenderableComponent.class.getName());
 		return object;
