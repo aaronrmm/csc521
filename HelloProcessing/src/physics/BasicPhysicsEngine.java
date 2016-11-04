@@ -1,6 +1,7 @@
 package physics;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 import common.EventManagementEngine;
 import common.TimingComponent;
@@ -8,7 +9,7 @@ import common.events.CharacterCollisionEvent;
 
 public class BasicPhysicsEngine implements PhysicsEngine{
 
-	private ArrayList<PhysicsComponent> pObjects = new ArrayList<PhysicsComponent>();
+	private ConcurrentHashMap<Long, PhysicsComponent> pObjects = new ConcurrentHashMap<Long, PhysicsComponent> ();
 	private ArrayList<TimingComponent> timers = new ArrayList<TimingComponent>();
 	final int MAX_SPEED=4;
 	int time = 0;
@@ -25,7 +26,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			timer.update(time);
 		}
 		
-		for(PhysicsComponent pObject: pObjects){
+		for(PhysicsComponent pObject: pObjects.values()){
 			for(Vector2d force : pObject.constantForces){
 				pObject.speed.add(force);
 			}
@@ -41,7 +42,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			boolean path_blocked = false;
 			Rectangle path = pObject.getPath(pObject.speed, milliseconds);
 			ArrayList<PhysicsComponent> collidedObstacles = new ArrayList<PhysicsComponent>();
-			for(PhysicsComponent obstacle: pObjects)
+			for(PhysicsComponent obstacle: pObjects.values())
 				if( obstacle!=pObject)
 					if (obstacle.intersects(path)){
 						collidedObstacles.add(obstacle);
@@ -55,7 +56,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 				path_blocked=false;
 				//try again just going horizontally
 				path = pObject.getPath(pObject.speed, milliseconds);
-				for(PhysicsComponent obstacle: pObjects)
+				for(PhysicsComponent obstacle: pObjects.values())
 					if( obstacle!=pObject)
 						if (obstacle.intersects(path)){
 							if(!collidedObstacles.contains(obstacle))
@@ -75,7 +76,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 	}
 	
 	public void addDynamicObject(PhysicsComponent pObject, int x, int y){
-		pObjects.add(pObject);
+		pObjects.put(pObject.getGameObject().getId(), pObject);
 	}
 
 	@Override
@@ -87,7 +88,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 
 	@Override
 	public void addStaticObject(PhysicsComponent pObject, int x, int y) {
-		pObjects.add(pObject);
+		pObjects.put(pObject.getGameObject().getId(), pObject);
 		
 	}
 
