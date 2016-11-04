@@ -2,7 +2,11 @@ package common;
 
 public abstract class AbstractComponent implements Component{
 
-	private GameObject gameObject;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private transient GameObject gameObject;
 	public GameObject getGameObject(){
 		return gameObject;
 	}

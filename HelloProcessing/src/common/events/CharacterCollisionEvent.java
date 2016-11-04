@@ -6,6 +6,10 @@ import java.util.logging.Logger;
 import physics.PhysicsComponent;
 
 public class CharacterCollisionEvent extends AbstractEvent{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(CharacterCollisionEvent.class.getName());
 	public PhysicsComponent object1;
 	public PhysicsComponent object2;

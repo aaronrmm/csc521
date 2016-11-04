@@ -1,8 +1,10 @@
 package physics;
 
+import java.io.Serializable;
+
 import org.jbox2d.common.Vec2;
 
-public class Vector2d extends Vec2{
+public class Vector2d extends Vec2 implements Serializable{
 	
 	/**
 	 * 

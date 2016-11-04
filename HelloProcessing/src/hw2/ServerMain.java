@@ -1,10 +1,16 @@
 package hw2;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import common.EventManagementEngine;
 import common.GameDescription;
+import common.events.CharacterDeathEvent;
+import common.events.CharacterSpawnEvent;
+import common.events.CharacterSyncEvent;
 import common.factories.PlatformObjectFactory;
 import common.factories.PlayerObjectFactory;
 import common.factories.SpawnPointFactory;
@@ -18,9 +24,15 @@ public class ServerMain {
 	private final static Logger logger = Logger.getLogger(ServerMain.class.getName());
 	
 	public static void main(String[]args){
-		Timeline timeline = new Timeline(null, 10);
+		try {
+			LogManager.getLogManager().readConfiguration(new FileInputStream("logger.properties"));
+		} catch (SecurityException | IOException e1) {
+			e1.printStackTrace();
+		}
+		Timeline timeline = new Timeline(null, 100);
 		EventManagementEngine eventE = new EventManagementEngine(timeline);
 		ProcessingRenderingEngine renderingE = new ProcessingRenderingEngine();
+		ProcessingRenderingEngine.Name = "Server";
 		renderingE.initialize(eventE);
 		PhysicsEngine physicsE = new BasicPhysicsEngine(eventE);
 		PlayerObjectFactory playerF = new PlayerObjectFactory(physicsE, renderingE, eventE);
@@ -29,21 +41,25 @@ public class ServerMain {
 		GameDescription game = new TestGameDescription(eventE);
 		game.generateGame(eventE, renderingE, physicsE, playerF, platformF, spawnF);
 		ServersideNetworking networking = new ServersideNetworking(eventE,9596);
+		CharacterSpawnEvent.Register(p->networking.update(p));
+		CharacterSyncEvent.Register(p->networking.update(p));
+		CharacterDeathEvent.Register(p->networking.update(p));
 		networking.start();
 		long lastTick = 0;
 		while(true){
-			physicsE.tick((int)(timeline.getTime()-lastTick));
-			lastTick = timeline.getTime();
-			eventE.HandleNextEvents(800);
-			eventE.flushBuffer();
-			logger.log(Level.SEVERE, "Rectangles sent:"+renderingE.getRectangles().size());
-			networking.updateClients(renderingE.getRectangles());
-			
-			
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if (timeline.getTime() - lastTick >0){
+				physicsE.tick((int)(timeline.getTime()-lastTick));
+				lastTick = timeline.getTime();
+				game.generateGameObjectUpdates(timeline.getTime(), timeline.getTime()+1);
+				eventE.HandleNextEvents(800);
+				logger.log(Level.INFO, "Rectangles sent:"+renderingE.getRectangles().size());
+				
+				
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

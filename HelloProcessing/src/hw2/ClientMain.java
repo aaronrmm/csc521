@@ -1,130 +1,76 @@
 package hw2;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
+import common.EventManagementEngine;
+import common.RenderableComponent;
+import common.events.CharacterDeathEvent;
+import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
-import common.events.ClientInputEvent.Movement;
-import physics.Rectangle;
-import processing.core.PApplet;
+import common.events.GenericListener;
+import common.timelines.Timeline;
+import networking.ClientsideNetworking;
+import physics.BasicPhysicsEngine;
+import physics.PhysicsEngine;
 
-public class ClientMain extends PApplet{
+public class ClientMain {
 
+	private static final Logger logger = Logger.getLogger(ClientMain.class.getName());
+	
 	public static void main(String[]args){
-		if(args.length==2){
-			xPLocation = Integer.parseInt(args[0]);
-			yPLocation = Integer.parseInt(args[1]);
+		try {
+			LogManager.getLogManager().readConfiguration(new FileInputStream("logger.properties"));
+		} catch (SecurityException | IOException e1) {
+			e1.printStackTrace();
 		}
-		PApplet.main(ClientMain.class.getName());
-	}
-	final static int PORT = 9596;
-	final static String HOST = "127.0.0.1";
-	private static int xPLocation;
-	private static int yPLocation;
-	Socket socket;
-	ObjectOutputStream oos;
-	ObjectInputStream ois;
-	private ConcurrentHashMap<Long, Rectangle> worldView = new ConcurrentHashMap<Long, Rectangle>();
-	private ConcurrentLinkedQueue<ClientInputEvent> inputBuffer = new ConcurrentLinkedQueue<ClientInputEvent>();
-	
-	
-	public void settings() {// runs first
-		size(300, 300);
+		Timeline timeline = new Timeline(null, 100);
+		EventManagementEngine eventE = new EventManagementEngine(timeline);
+		ProcessingRenderingEngine renderingE = new ProcessingRenderingEngine();
+		ProcessingRenderingEngine.Name = "Client";
+		renderingE.initialize(eventE);
+		PhysicsEngine physicsE = new BasicPhysicsEngine(eventE);
+		//PlayerObjectFactory playerF = new PlayerObjectFactory(physicsE, renderingE, eventE);
+		//PlatformObjectFactory platformF = new PlatformObjectFactory(physicsE, renderingE);
+		//SpawnPointFactory spawnF = new SpawnPointFactory(physicsE);
+		//GameDescription game = new TestGameDescription(eventE);
+		//game.generateGame(eventE, renderingE, physicsE, playerF, platformF, spawnF);
+		ClientsideNetworking networking = new ClientsideNetworking(eventE);
+		ClientInputEvent.Register(networking);
+		CharacterSyncEvent.Register(new GenericListener<CharacterSyncEvent>(){
 
-	}
-	
-	public void setup(){
-		try {
-			socket = new Socket(HOST,PORT);
-			oos = new ObjectOutputStream(socket.getOutputStream());
-			ois = new ObjectInputStream(socket.getInputStream());
-			oos.writeObject(new ClientInputEvent());
-			new Thread(new Runnable(){
-				@Override
-				public void run(){
-					while(true){
-						try {
-							updateView((Rectangle)ois.readObject());
-						} catch (ClassNotFoundException | IOException e) {
-							drawError();
-							e.printStackTrace();
-						}
-					}
-				}
-			}).start();
-			new Thread(new Runnable(){
-				@Override
-				public void run(){
-					InputSendingLoop();
-				}
-			}).start();
-		} catch (UnknownHostException e) {
-			drawError();
-			e.printStackTrace();
-		} catch (IOException e) {
-			drawError();
-			e.printStackTrace();
-		}
-	}
-	public void draw(){
-		if(this.frameCount==1)
-			frame.setLocation(xPLocation, yPLocation);//is not working
-		fill(200,200,200);
-		this.rect(0, 0, this.width, this.height);
-		//draw others
-		for(Rectangle rect : worldView.values()){
-			fill(0);
-			this.rect(rect.x, rect.y, rect.width, rect.height);
-		}
-		
-	}
-	
-	private void drawError(){
-		fill(255,0,0);
-		this.rect(0, 0, this.width, this.height);
-	}
-	
-	public void keyPressed() {
-		try {
-			if(key=='a')
-				inputBuffer.add(new ClientInputEvent(Movement.left));
-	//		if(key=='w')
-	//			player.addImpulseForce(new Vector2d(0,-PLAYER_SPEED));
-	//		if(key=='s')
-	//			player.addImpulseForce(new Vector2d(0,PLAYER_SPEED));
-			if(key=='d')
-				inputBuffer.add(new ClientInputEvent(Movement.right));
-			if(key==' ')
-				inputBuffer.add(new ClientInputEvent(Movement.jump));
-			if(key==ESC)
-				socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void updateView(Rectangle rectangle){
-		worldView.put(rectangle.id, rectangle);
-	}
-	
-	public void InputSendingLoop(){
+			@Override
+			public void update(CharacterSyncEvent event) {
+				RenderableComponent renderable = (RenderableComponent) event.getCharacter().getComponent(RenderableComponent.class.getName());
+				renderable.setGameObject( event.getCharacter());
+				renderingE.addObject(renderable);
+			}
+		});
+		CharacterDeathEvent.Register(new GenericListener<CharacterDeathEvent>(){
+			@Override
+			public void update(CharacterDeathEvent event){
+				renderingE.remove(renderingE.getObject(event.character.getId()));
+			}
+		});
+		networking.start();
+		long lastTick = 0;
+
 		while(true){
-			try {
-				while(true){
-					ClientInputEvent nextInput = inputBuffer.peek();
-					if(nextInput!=null){
-							oos.writeObject(nextInput);
-							inputBuffer.remove();
-					}else break;
-				}Thread.sleep(100);//Temporarily used to reduce processing load for multiple clients.
-			} catch (IOException | InterruptedException e) {
-				e.printStackTrace();
+			if (timeline.getTime() - lastTick >0){
+				try{
+				physicsE.tick((int)(timeline.getTime()-lastTick));
+				lastTick = timeline.getTime();
+				eventE.HandleNextEvents(800);
+				logger.log(Level.SEVERE, "client tick");
+				Thread.sleep(10);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
+		
 	}
 }

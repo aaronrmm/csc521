@@ -1,6 +1,8 @@
 package physics;
 
-public class Rectangle extends java.awt.Rectangle{
+import java.io.Serializable;
+
+public class Rectangle extends java.awt.Rectangle implements Serializable{
 
 	public Rectangle(int newX, int newY, int width, int height) {
 		super(newX,newY,width,height);

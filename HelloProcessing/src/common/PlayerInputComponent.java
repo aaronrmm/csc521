@@ -8,10 +8,14 @@ import physics.Vector2d;
 
 public class PlayerInputComponent extends AbstractComponent implements GenericListener<ClientInputEvent>{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final static int PLAYER_SPEED = 2;
 	final static int JUMP_SPEED = 30;
 	public long clientId;
-	public static EventManagementEngine EventE;
+	public static transient EventManagementEngine EventE;
 	@Override
 	public void destroy() {
 		clientId=-1;

@@ -11,4 +11,6 @@ public interface GameDescription {
 
 	void generateGame(EventManagementEngine eventE, RenderingEngine renderingE, PhysicsEngine physicsE, PlayerObjectFactory playerF,
 			PlatformObjectFactory platformF, SpawnPointFactory spawnF);
+
+	void generateGameObjectUpdates(long timestamp, long expiration);
 }

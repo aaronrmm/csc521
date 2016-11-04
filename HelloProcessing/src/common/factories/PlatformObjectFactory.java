@@ -23,6 +23,7 @@ public class PlatformObjectFactory {
 		object.add(physicsComponent, PhysicsComponent.class.getName());
 		this.physics.addStaticObject(physicsComponent, x, y);
 		RenderableComponent renderable = new RenderableComponent(physicsComponent, renderer);
+		renderable.setGameObject(object);
 		this.renderer.addObject(renderable);
 		object.add(renderable, RenderableComponent.class.getName());
 		return object;

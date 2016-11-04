@@ -6,7 +6,10 @@ import physics.Vector2d;
 
 public class OscillatingController extends AbstractComponent implements TimingComponent{
 
-	GameObject gameObject;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	PhysicsComponent physicsComponent;
 	Vector2d left = new Vector2d(-1,0);
 	Vector2d right = new Vector2d(1,0);
@@ -25,7 +28,7 @@ public class OscillatingController extends AbstractComponent implements TimingCo
 
 	@Override
 	public void update(int timestamp) {
-		if(timestamp%100>50){
+		if(timestamp%20>10){
 			this.physicsComponent.addImpulseForce(left);
 		}
 		else

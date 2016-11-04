@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
+import common.events.AbstractEvent;
 import common.events.ClientInputEvent;
-import physics.Rectangle;
 
 public class ClientHandler {
 
@@ -16,7 +16,7 @@ public class ClientHandler {
 	private ObjectOutputStream oos;
 	private ClientInputEvent first_unread_input;
 	private ClientInputEvent last_unread_input;
-	private HashMap<Long, UpdatedRectangle> updates = new HashMap<Long, UpdatedRectangle>();
+	private ConcurrentLinkedQueue<AbstractEvent> updateQueue = new ConcurrentLinkedQueue<AbstractEvent>();
 	public static long nextId;
 	private long clientId;
 
@@ -57,9 +57,9 @@ public class ClientHandler {
 		return newInput;
 	}
 
-	public void addUpdate(Rectangle rectangle) {
+	public void addUpdate(AbstractEvent event) {
 		try{
-			updates.put(rectangle.id, new UpdatedRectangle(rectangle));
+			updateQueue.add(event);
 		}catch(ConcurrentModificationException ex){
 			ex.printStackTrace();
 		}
@@ -68,16 +68,15 @@ public class ClientHandler {
 	private void clientUpdateLoop() {
 		while (true) {
 			try {
-				for (UpdatedRectangle rect : updates.values()) {
-					rect.isNew = false;
-					oos.writeObject(rect.rectangle);
+				for (AbstractEvent event : updateQueue) {
+					oos.writeObject(event);
 				}
+				updateQueue.clear();
 				oos.reset();
 				Thread.sleep(10);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ConcurrentModificationException e){
 				e.printStackTrace();

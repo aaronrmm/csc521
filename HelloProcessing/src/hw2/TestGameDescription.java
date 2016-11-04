@@ -2,6 +2,9 @@ package hw2;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import common.EntityClass;
 import common.EventManagementEngine;
@@ -14,6 +17,7 @@ import common.RenderingEngine;
 import common.events.CharacterCollisionEvent;
 import common.events.CharacterDeathEvent;
 import common.events.CharacterSpawnEvent;
+import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.GenericListener;
 import common.factories.PlatformObjectFactory;
@@ -25,14 +29,16 @@ import physics.Rectangle;
 
 public class TestGameDescription implements GameDescription, GenericListener<ClientInputEvent>{
 
+	private static final Logger logger = Logger.getLogger(TestGameDescription.class.getName());
 	private static final boolean DEBUG_MODE = true;
-	private static final int NUMBER_OF_SPAWN_POINTS = 1;
-	private static final int NUMBER_OF_MOVING_OBSTACLES = 0;
+	private static final int NUMBER_OF_SPAWN_POINTS = 2;
+	private static final int NUMBER_OF_MOVING_OBSTACLES = 2;
 	private static final int WIDTH = 300;
 	private static final int HEIGHT = 300;
 	private PlayerObjectFactory playerF;
 	private HashMap<Long, GameObject> playerObjects=new HashMap<Long, GameObject>();
 	private LinkedList<GameObject> spawnPoints = new LinkedList<GameObject>();
+	private ConcurrentLinkedQueue <GameObject> gameObjects = new ConcurrentLinkedQueue<GameObject>();
 	private EventManagementEngine eventE;
 	
 	public TestGameDescription(EventManagementEngine eventE) {
@@ -52,13 +58,14 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 		//moving platforms at mid-height
 		int position = 0;
 		for (int i = 0; i < NUMBER_OF_MOVING_OBSTACLES/2; i++) {
-			int width = (int) (Math.random() * WIDTH *5 / NUMBER_OF_MOVING_OBSTACLES);
-			int height = (int) (Math.random() * HEIGHT / NUMBER_OF_MOVING_OBSTACLES);
-			int x = position;
+			int width = (int) (Math.random() * WIDTH *1 / NUMBER_OF_MOVING_OBSTACLES);
+			int height = (int) (Math.random() * HEIGHT/4 / NUMBER_OF_MOVING_OBSTACLES);
+			int x = position+(int)(Math.random() * WIDTH/2);
 			int y = HEIGHT/2-height;
 			GameObject movingP = platformF.create(x, y, width, height);
 			movingP.add(new OscillatingController((PhysicsComponent)movingP.getComponent(PhysicsComponent.class.getName()), physicsE), OscillatingController.class.getName());
 			position += width;
+			gameObjects.add(movingP);
 		}
 		
 		//stationary platforms at bottom of screen
@@ -68,7 +75,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 			int height = (int) (Math.random() * 3+10);
 			int x = (WIDTH*2*i)/3;
 			int y = HEIGHT-height;
-			platformF.create(x, y, width, height);
+			gameObjects.add(platformF.create(x, y, width, height));
 			position += width;
 		}
 		
@@ -84,6 +91,11 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 					case 3: killzoneBotRect = new Rectangle(width,HEIGHT-width,WIDTH-2*width,width); break;//bottom
 					}
 					PhysicsComponent killzoneBotP = new PhysicsComponent(killzoneBotRect, physicsE){
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+
 						@Override
 						public void update(CharacterCollisionEvent collision){
 							if(collision.object2 == this && collision.object1.getGameObject().entityClass == EntityClass.PLAYER){
@@ -91,6 +103,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 							}
 						}
 					};
+					killzoneBotP.setGameObject(killzoneBot);
 
 					
 					
@@ -100,6 +113,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 					killzoneBot.add(killzoneBotP, PhysicsComponent.class.getName());
 					if(DEBUG_MODE){
 						RenderableComponent renderable = new RenderableComponent(killzoneBotP, renderingE);
+						renderable.setGameObject(killzoneBot);
 						renderingE.addObject(renderable);
 						killzoneBot.add(renderable, RenderableComponent.class.getName());
 					}
@@ -134,22 +148,33 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 					
 				};
 				CharacterSpawnEvent.Register(spawnListener);
-		
 	}
 	
 	@Override
 	public GameObject spawnPlayer(int x, int y, long clientId){
-		return playerF.create(x, y, clientId);
+		GameObject player = playerF.create(x, y, clientId);
+		gameObjects.add(player);
+		return player;
 	}
 
 	public void update(ClientInputEvent input) {
 		if(input.client==null)
 			return;
 		if(! playerObjects.containsKey(input.client.getClientId())){
+			logger.log(Level.SEVERE, "new input for client:"+input.client.getClientId());
+			playerObjects.put(input.client.getClientId(), null);
 			eventE.queue(new CharacterSpawnEvent(input.client.getClientId(), input.timestamp+1));
 		}
 
 		
+	}
+
+	@Override
+	public void generateGameObjectUpdates(long timestamp, long expiration) {
+		for(GameObject gameObject: gameObjects){
+			if(gameObject.alive)
+				eventE.queue(new CharacterSyncEvent(gameObject, timestamp, expiration));
+		}
 	}
 
 }

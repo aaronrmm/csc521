@@ -6,4 +6,5 @@ public interface RenderingEngine {
 	void ellipse(float x, float y, float width, float height);
 	void addObject(RenderableComponent renderable);
 	void remove(RenderableComponent renderableComponent);
+	RenderableComponent getObject(long gameObjectId);
 }

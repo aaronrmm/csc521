@@ -37,6 +37,7 @@ public class PlayerObjectFactory {
 		physicsComponent.addConstantForce(new Vector2d(0,1));
 		this.physics.addDynamicObject(physicsComponent, x, y);
 		RenderableComponent renderable = new RenderableComponent(physicsComponent, renderer);
+		renderable.setGameObject(player);
 		this.renderer.addObject(renderable);
 		player.add(renderable, RenderableComponent.class.getName());
 		player.alive = true;

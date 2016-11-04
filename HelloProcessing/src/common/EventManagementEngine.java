@@ -1,7 +1,7 @@
 package common;
 
-import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.events.AbstractEvent;
 import common.events.EventPriorityComparator;
@@ -11,18 +11,21 @@ public class EventManagementEngine {
 
 	Timeline timeline;
 	PriorityQueue<AbstractEvent> queue = new PriorityQueue<AbstractEvent>(new EventPriorityComparator());
-	LinkedList<AbstractEvent> buffer = new LinkedList<AbstractEvent>();
+	ConcurrentLinkedQueue<AbstractEvent> buffer = new ConcurrentLinkedQueue<AbstractEvent>();
 	
 	public EventManagementEngine(Timeline timeline){
 		this.timeline = timeline;
 	}
 	
 	public void queue(AbstractEvent event) {
-		event.timestamp = this.timeline.getTime();
+		//event.timestamp = this.timeline.getTime();
 		buffer.add(event);
 	}
 	
 	public void HandleNextEvents(int i) {
+		for(AbstractEvent e : buffer)
+			queue.offer(e);
+		buffer.clear();
 		while(!queue.isEmpty() && i>0){
 			i--;
 			AbstractEvent e = queue.poll();
@@ -31,12 +34,4 @@ public class EventManagementEngine {
 			}
 		}
 	}
-	
-	public void flushBuffer(){
-		for(AbstractEvent e : buffer)
-			queue.offer(e);
-		buffer.clear();
-	}
-	
-
 }

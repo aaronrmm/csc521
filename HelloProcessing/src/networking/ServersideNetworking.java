@@ -4,15 +4,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import common.EventManagementEngine;
+import common.events.AbstractEvent;
 import common.events.ClientInputEvent;
-import physics.Rectangle;
+import common.events.GenericListener;
 
-public class ServersideNetworking {
+public class ServersideNetworking implements GenericListener<AbstractEvent>{
 
+	private static final Logger logger = Logger.getLogger(ServersideNetworking.class.getName());
 	private int port = 9596;
 	private ServerSocket ss;
 	private EventManagementEngine eventE;
@@ -32,7 +35,7 @@ public class ServersideNetworking {
 					try {
 						while (true) {
 							Socket s = ss.accept();
-							clients.put(s, new ClientHandler(s));
+							clients.put(s, new ClientHandler(s));	
 							new Thread(new Runnable() {
 								@Override
 								public void run() {
@@ -64,11 +67,11 @@ public class ServersideNetworking {
 		}
 	}
 
-	public void updateClients(List<Rectangle>updates) {
+	@Override
+	public void update(AbstractEvent event) {
+		logger.log(Level.SEVERE	, "Sending event "+event.toString());
 		for(ClientHandler client: clients.values()){
-			for(Rectangle rectangle : updates){
-				client.addUpdate(rectangle);
-			}
+			client.addUpdate(event);
 		}
 		
 	}

@@ -1,5 +1,6 @@
 package physics;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.jbox2d.dynamics.Body;
@@ -8,15 +9,20 @@ import common.AbstractComponent;
 import common.events.CharacterCollisionEvent;
 import common.events.GenericListener;
 
-public class PhysicsComponent extends AbstractComponent implements GenericListener<CharacterCollisionEvent>{
+public class PhysicsComponent extends AbstractComponent implements GenericListener<CharacterCollisionEvent>, Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	ArrayList<Vector2d> constantForces = new ArrayList<Vector2d>();
 	ArrayList<Vector2d> impulseForces = new ArrayList<Vector2d>();
 	Vector2d speed = new Vector2d(0,0);
 	boolean isSolid = false;
 	private Rectangle shape;
-	public Body body;
-	private PhysicsEngine physicsE;
+	public transient Body body;
+	private transient PhysicsEngine physicsE;
 
 	public PhysicsComponent(Rectangle player, PhysicsEngine physicsE){
 		this(player, false, physicsE);

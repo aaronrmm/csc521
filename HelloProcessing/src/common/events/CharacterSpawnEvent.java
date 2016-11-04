@@ -1,10 +1,20 @@
 package common.events;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class CharacterSpawnEvent extends AbstractEvent{
+	private static final Logger logger = Logger.getLogger(CharacterSpawnEvent.class.getName());
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private static ListenerRegistrar<CharacterSpawnEvent> registrar = new ListenerRegistrar<CharacterSpawnEvent>();
 	
 	public CharacterSpawnEvent(long clientId, long timestamp) {
+		logger.log(Level.SEVERE, this.toString()+" constructed");
+		
 		this.player = clientId;
 		this.timestamp = timestamp;
 	}
@@ -16,6 +26,7 @@ public class CharacterSpawnEvent extends AbstractEvent{
 	
 	@Override
 	public void Handle() {
+		logger.log(Level.SEVERE, this.toString()+" handled");
 		registrar.UpdateListeners(this);
 	}
 	
@@ -23,4 +34,5 @@ public class CharacterSpawnEvent extends AbstractEvent{
 	public boolean getDebug(){
 		return true;
 	}
+
 }

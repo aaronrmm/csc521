@@ -1,13 +1,18 @@
 package common;
 
+import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class GameObject {
+public class GameObject implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public EntityClass entityClass;
 	private ConcurrentHashMap<String, Component> components = new ConcurrentHashMap<String,Component>();
 	private long id;
-	public boolean alive = false;
+	public boolean alive = true;
 	private static long nextId;
 	
 	public GameObject(EntityClass entityClass){

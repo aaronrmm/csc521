@@ -5,21 +5,25 @@ import physics.Rectangle;
 
 public class RenderableComponent extends AbstractComponent implements Component {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public long id;
 	private static long next_id = 0;
-	private RenderingEngine renderE;
+	private static transient RenderingEngine RenderE;
 
 	private PhysicsComponent physics;
 	
 	public RenderableComponent(PhysicsComponent physics, RenderingEngine renderE){
 		this.physics = physics;
 		this.id = next_id++;
-		this.renderE = renderE;
+		RenderE = renderE;
 	}
 	
 	@Override
 	public void destroy() {
-		renderE.remove(this);
+		RenderE.remove(this);
 	}
 	
 	public int getX(){
