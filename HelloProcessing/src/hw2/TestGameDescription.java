@@ -160,7 +160,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 		if(input.client==null)
 			return;
 		if(! playerObjects.containsKey(input.client.getClientId())){
-			logger.log(Level.SEVERE, "new input for client:"+input.client.getClientId());
+			logger.log(Level.FINE, "new input for client:"+input.client.getClientId());
 			playerObjects.put(input.client.getClientId(), null);
 			eventE.queue(new CharacterSpawnEvent(input.client.getClientId(), input.timestamp+1));
 		}

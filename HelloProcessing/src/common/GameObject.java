@@ -1,7 +1,7 @@
 package common;
 
 import java.io.Serializable;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 public class GameObject implements Serializable{
 
@@ -10,7 +10,7 @@ public class GameObject implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	public EntityClass entityClass;
-	private ConcurrentHashMap<String, Component> components = new ConcurrentHashMap<String,Component>();
+	private HashMap<String, Component> components = new HashMap<String,Component>();
 	private long id;
 	public boolean alive = true;
 	private static long nextId;
@@ -21,8 +21,8 @@ public class GameObject implements Serializable{
 	}
 	
 	public void destroy(){
-		ConcurrentHashMap<String, Component>oldComponents = components;
-		components = new ConcurrentHashMap<String, Component>();
+		HashMap<String, Component>oldComponents = components;
+		components = new HashMap<String, Component>();
 		for(Component component:oldComponents.values()){
 			component.destroy();
 		}
@@ -40,5 +40,9 @@ public class GameObject implements Serializable{
 
 	public long getId() {
 		return this.id;
+	}
+	
+	public int getComponentSize(){
+		return components.size();
 	}
 }

@@ -13,7 +13,7 @@ public class CharacterSpawnEvent extends AbstractEvent{
 	private static ListenerRegistrar<CharacterSpawnEvent> registrar = new ListenerRegistrar<CharacterSpawnEvent>();
 	
 	public CharacterSpawnEvent(long clientId, long timestamp) {
-		logger.log(Level.SEVERE, this.toString()+" constructed");
+		logger.log(Level.FINE, this.toString()+" constructed");
 		
 		this.player = clientId;
 		this.timestamp = timestamp;
@@ -26,7 +26,7 @@ public class CharacterSpawnEvent extends AbstractEvent{
 	
 	@Override
 	public void Handle() {
-		logger.log(Level.SEVERE, this.toString()+" handled");
+		logger.log(Level.FINE, this.toString()+" handled");
 		registrar.UpdateListeners(this);
 	}
 	

@@ -44,9 +44,11 @@ public class ClientMain {
 
 			@Override
 			public void update(CharacterSyncEvent event) {
-				logger.log(Level.SEVERE, "Character SyncEvent has null character");
 				RenderableComponent renderable = (RenderableComponent) event.getCharacter().getComponent(RenderableComponent.class.getName());
-				renderable.setGameObject( event.getCharacter());
+				if(renderable.getGameObject() == null){
+					logger.log(Level.SEVERE, "Character SyncEvent has null character");
+					renderable.setGameObject( event.getCharacter());
+				}
 				renderingE.addObject(renderable);
 			}
 		});

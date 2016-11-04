@@ -6,7 +6,7 @@ public abstract class AbstractComponent implements Component{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private transient GameObject gameObject;
+	private GameObject gameObject;
 	public GameObject getGameObject(){
 		return gameObject;
 	}

@@ -9,7 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import common.EventManagementEngine;
+import common.RenderableComponent;
 import common.events.AbstractEvent;
+import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.GenericListener;
 
@@ -69,7 +71,12 @@ public class ServersideNetworking implements GenericListener<AbstractEvent>{
 
 	@Override
 	public void update(AbstractEvent event) {
-		logger.log(Level.SEVERE	, "Sending event "+event.toString());
+		logger.log(Level.FINER	, "Sending event "+event.toString());
+		if(event instanceof CharacterSyncEvent){
+			CharacterSyncEvent syncEvent = (CharacterSyncEvent)event;
+			RenderableComponent renderable = (RenderableComponent) (syncEvent.getCharacter().getComponent(RenderableComponent.class.getName()));
+			if(renderable==null)logger.severe("No renderable found in SyncEvent");
+		}
 		for(ClientHandler client: clients.values()){
 			client.addUpdate(event);
 		}

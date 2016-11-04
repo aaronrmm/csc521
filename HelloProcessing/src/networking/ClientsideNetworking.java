@@ -47,8 +47,9 @@ public class ClientsideNetworking implements GenericListener<ClientInputEvent>{
 								CharacterSyncEvent syncEvent = (CharacterSyncEvent)event;
 								if(syncEvent.getCharacter() == null)
 									logger.log(Level.SEVERE, "CharacterSyncEvent with null character received by client");
-								else
+								else{
 									logger.fine("CharacterSyncEvent received for character "+syncEvent.getCharacter().getId());
+								}
 							}
 							logger.log(Level.FINER, "client received "+event.toString());
 						} catch (ClassNotFoundException | IOException e) {
