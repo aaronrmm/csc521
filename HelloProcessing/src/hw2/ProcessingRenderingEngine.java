@@ -11,6 +11,8 @@ import common.RenderableComponent;
 import common.RenderingEngine;
 import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Movement;
+import common.events.ReplayEvent;
+import common.events.ReplayEvent.ReplayCommand;
 import physics.Rectangle;
 import processing.core.PApplet;
 
@@ -67,6 +69,8 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 			input.movement = Movement.right;
 		if(key==' ')
 			input.movement = Movement.jump;
+		if(key=='r')
+			input = new ReplayEvent(ReplayCommand.RECORD);
 		eventE.queue(input);
 	}
 

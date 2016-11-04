@@ -44,6 +44,8 @@ public class ServerMain {
 		CharacterSpawnEvent.Register(p->networking.update(p));
 		CharacterSyncEvent.Register(p->networking.update(p));
 		CharacterDeathEvent.Register(p->networking.update(p));
+		new ReplayEngine();
+		
 		networking.start();
 		long lastTick = 0;
 		while(true){
