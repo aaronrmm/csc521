@@ -12,6 +12,9 @@ private static ListenerRegistrar<SceneChangeEvent> registrar = new ListenerRegis
 	public static void Register(GenericListener<SceneChangeEvent> listener) {
 		registrar.Register(listener);
 	}
+
+	public Object scene_key;
+	
 	@Override
 	public void Handle() {
 		registrar.UpdateListeners(this);
