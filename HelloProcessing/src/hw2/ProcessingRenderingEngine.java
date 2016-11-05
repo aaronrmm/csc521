@@ -1,7 +1,5 @@
 package hw2;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,7 +8,6 @@ import common.RenderableComponent;
 import common.RenderingEngine;
 import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Command;
-import physics.Rectangle;
 import processing.core.PApplet;
 import rendering.Scene;
 
@@ -75,13 +72,6 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 		eventE.queue(input);
 	}
 
-	public List<Rectangle> getRectangles() {
-		ArrayList<Rectangle> rectangles = new ArrayList<Rectangle>();
-		for(RenderableComponent renderable: _Scene.renderableList.values()){
-			rectangles.add(renderable.render());
-		}
-		return rectangles;
-	}
 
 	@Override
 	public void remove(RenderableComponent renderableComponent) {

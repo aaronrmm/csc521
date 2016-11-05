@@ -2,7 +2,6 @@ package hw2;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -22,6 +21,7 @@ import physics.PhysicsEngine;
 
 public class ServerMain {
 
+	@SuppressWarnings("unused")
 	private final static Logger logger = Logger.getLogger(ServerMain.class.getName());
 	
 	public static void main(String[]args){
@@ -57,7 +57,6 @@ public class ServerMain {
 				lastTick = timeline.getTime();
 				game.generateGameObjectUpdates(timeline.getTime(), timeline.getTime()+1);
 				eventE.HandleNextEvents(800);
-				logger.log(Level.INFO, "Rectangles sent:"+renderingE.getRectangles().size());
 				
 				
 				try {
