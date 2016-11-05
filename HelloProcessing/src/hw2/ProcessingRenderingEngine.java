@@ -10,9 +10,7 @@ import common.EventManagementEngine;
 import common.RenderableComponent;
 import common.RenderingEngine;
 import common.events.ClientInputEvent;
-import common.events.ClientInputEvent.Movement;
-import common.events.ReplayEvent;
-import common.events.ReplayEvent.ReplayCommand;
+import common.events.ClientInputEvent.Command;
 import physics.Rectangle;
 import processing.core.PApplet;
 
@@ -65,13 +63,13 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 	public void keyPressed() {
 		ClientInputEvent input = new ClientInputEvent();
 		if(key=='a')
-			input.movement = Movement.left;
+			input.command = Command.left;
 		if(key=='d')
-			input.movement = Movement.right;
+			input.command = Command.right;
 		if(key==' ')
-			input.movement = Movement.jump;
+			input.command = Command.jump;
 		if(key=='r')
-			input = new ReplayEvent(ReplayCommand.RECORD);
+			input.command = Command.record_replay;
 		eventE.queue(input);
 	}
 

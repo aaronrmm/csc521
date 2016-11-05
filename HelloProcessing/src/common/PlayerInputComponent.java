@@ -1,7 +1,7 @@
 package common;
 
 import common.events.ClientInputEvent;
-import common.events.ClientInputEvent.Movement;
+import common.events.ClientInputEvent.Command;
 import common.events.GenericListener;
 import physics.PhysicsComponent;
 import physics.Vector2d;
@@ -37,11 +37,11 @@ public class PlayerInputComponent extends AbstractComponent implements GenericLi
 		if(this.clientId!=input.client.getClientId())
 			return;
 		GameObject player = this.getGameObject();
-		if(input.movement==Movement.right)
+		if(input.command==Command.right)
 			((PhysicsComponent)player.getComponent(PhysicsComponent.class.getName())).addImpulseForce(new Vector2d(PLAYER_SPEED,0));
-		if(input.movement==Movement.left)
+		if(input.command==Command.left)
 			((PhysicsComponent)player.getComponent(PhysicsComponent.class.getName())).addImpulseForce(new Vector2d(-PLAYER_SPEED,0));
-		if(input.movement==Movement.jump)
+		if(input.command==Command.jump)
 			((PhysicsComponent)player.getComponent(PhysicsComponent.class.getName())).addImpulseForce(new Vector2d(0,-JUMP_SPEED));
 		
 		

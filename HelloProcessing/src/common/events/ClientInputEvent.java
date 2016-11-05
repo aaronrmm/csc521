@@ -9,22 +9,26 @@ public class ClientInputEvent extends AbstractEvent implements Serializable{
 	transient final Logger logger = Logger.getLogger(ClientInputEvent.class.getName());
 
 	transient boolean isNew = true;
-	public Movement movement;
+	public Command command = Command.no_op;
 	
 	public ClientInputEvent(){
 		this.isNew = true;
 	}
-	public ClientInputEvent(Movement movement){
+	public ClientInputEvent(Command movement){
 		this();
-		this.movement = movement;
+		this.command = movement;
 	}
 	public transient ClientHandler client = null;
 	public transient ClientInputEvent nextInput = null;
 	
-	public enum Movement{
+	public enum Command{
+		no_op,
 		jump,
 		left,
-		right
+		right, 
+		record_replay, 
+		play_replay, 
+		stop_replay
 	}
 	/**
 	 * 

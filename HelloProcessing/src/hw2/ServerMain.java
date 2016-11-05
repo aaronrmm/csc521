@@ -11,6 +11,7 @@ import common.GameDescription;
 import common.events.CharacterDeathEvent;
 import common.events.CharacterSpawnEvent;
 import common.events.CharacterSyncEvent;
+import common.events.ClientInputEvent;
 import common.factories.PlatformObjectFactory;
 import common.factories.PlayerObjectFactory;
 import common.factories.SpawnPointFactory;
@@ -44,7 +45,9 @@ public class ServerMain {
 		CharacterSpawnEvent.Register(p->networking.update(p));
 		CharacterSyncEvent.Register(p->networking.update(p));
 		CharacterDeathEvent.Register(p->networking.update(p));
-		new ReplayEngine();
+		ReplayEngine replayE = new ReplayEngine();
+		ClientInputEvent.Register(p->replayE.update(p));
+		
 		
 		networking.start();
 		long lastTick = 0;

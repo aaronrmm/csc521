@@ -11,6 +11,7 @@ public abstract class AbstractEvent implements Serializable{
 	
 	public long timestamp;
 	public long id;
+	public long clientId;
 	public static long id_gen = 0;
 	
 	@Override public String toString(){
