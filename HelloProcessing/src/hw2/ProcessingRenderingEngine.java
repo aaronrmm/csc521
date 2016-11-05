@@ -6,10 +6,8 @@ import java.util.logging.Logger;
 import common.EventManagementEngine;
 import common.RenderableComponent;
 import common.RenderingEngine;
-import common.events.ClientInputEvent;
-import common.events.ClientInputEvent.Command;
+import game.Scene;
 import processing.core.PApplet;
-import rendering.Scene;
 
 public class ProcessingRenderingEngine extends PApplet implements RenderingEngine {
 
@@ -24,8 +22,10 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 		
 	}
 	
-	public ProcessingRenderingEngine(String name){
+	public ProcessingRenderingEngine(String name, Scene scene, EventManagementEngine eventE){
 		Name = name;
+		_Scene = scene;
+		PApplet.main(ProcessingRenderingEngine.class.getName());
 	}
 	
 	public void initialize(EventManagementEngine eventManagementE){
@@ -60,16 +60,7 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 	}
 	
 	public void keyPressed() {
-		ClientInputEvent input = new ClientInputEvent();
-		if(key=='a')
-			input.command = Command.left;
-		if(key=='d')
-			input.command = Command.right;
-		if(key==' ')
-			input.command = Command.jump;
-		if(key=='r')
-			input.command = Command.record_replay;
-		eventE.queue(input);
+		_Scene.input_handler.keyPressed(key);
 	}
 
 
