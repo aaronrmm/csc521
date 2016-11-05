@@ -2,7 +2,6 @@ package hw2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,14 +12,17 @@ import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Command;
 import physics.Rectangle;
 import processing.core.PApplet;
+import rendering.Scene;
 
 public class ProcessingRenderingEngine extends PApplet implements RenderingEngine {
 
 	private final static Logger logger = Logger.getLogger(ProcessingRenderingEngine.class.getName());
-	static ConcurrentHashMap<Long, RenderableComponent>renderableList = new ConcurrentHashMap<Long, RenderableComponent>();
 	public static EventManagementEngine eventE = null;
 	public static String Name;
-
+	private static Scene _Scene = new Scene();
+	public Scene getScene(){return _Scene;}
+	public void setScene(Scene scene){_Scene = scene;}
+	
 	public ProcessingRenderingEngine(){
 		
 	}
@@ -37,7 +39,7 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 	@Override
 	public void addObject(RenderableComponent renderable) {
 		logger.log(Level.FINEST, "putting renderable for gameobjectId "+renderable.getGameObject().getId());
-		renderableList.put(renderable.getGameObject().getId(), renderable);
+		_Scene.renderableList.put(renderable.getGameObject().getId(), renderable);
 		
 	}
 	public void settings() {// runs first
@@ -55,7 +57,7 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 		this.fill((int)(Math.random()*255));
 		this.ellipse(0, 0, 50, 50);
 		this.fill(255);
-		for(RenderableComponent renderable : renderableList.values()){
+		for(RenderableComponent renderable : _Scene.renderableList.values()){
 			this.rect(renderable.getX(), renderable.getY(), renderable.getWidth(), renderable.getHeight());
 		}
 	}
@@ -75,7 +77,7 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 
 	public List<Rectangle> getRectangles() {
 		ArrayList<Rectangle> rectangles = new ArrayList<Rectangle>();
-		for(RenderableComponent renderable: renderableList.values()){
+		for(RenderableComponent renderable: _Scene.renderableList.values()){
 			rectangles.add(renderable.render());
 		}
 		return rectangles;
@@ -83,7 +85,7 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 
 	@Override
 	public void remove(RenderableComponent renderableComponent) {
-		if (renderableList.remove(renderableComponent.getGameObject().getId())==null)
+		if (_Scene.renderableList.remove(renderableComponent.getGameObject().getId())==null)
 			logger.log(Level.SEVERE, "Could not remove renderable id "+renderableComponent.id);
 		else
 			logger.log(Level.FINEST, "removing renderable for gameobjectId "+renderableComponent.getGameObject().getId());
@@ -93,6 +95,6 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 
 	@Override
 	public RenderableComponent getObject(long gameObjectId) {
-		return renderableList.get(gameObjectId);
+		return _Scene.renderableList.get(gameObjectId);
 	}
 }
