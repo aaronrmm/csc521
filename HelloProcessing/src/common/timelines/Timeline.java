@@ -22,5 +22,8 @@ public class Timeline {
 		else
 			this.origin = System.nanoTime()/REALTIME_CONVERSION_RATE;
 	}
-	
+
+	public Timeline() {
+		this(null, 1);
+	}
 }
