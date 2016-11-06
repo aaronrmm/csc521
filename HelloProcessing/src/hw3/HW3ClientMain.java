@@ -1,4 +1,4 @@
-package hw2;
+package hw3;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -6,24 +6,20 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import common.EventManagementEngine;
 import common.RenderableComponent;
 import common.events.CharacterDeathEvent;
 import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Command;
 import common.events.GenericListener;
-import common.timelines.Timeline;
 import game.Game;
 import game.InputHandler;
 import game.Scene;
 import networking.ClientsideNetworking;
-import physics.BasicPhysicsEngine;
-import physics.PhysicsEngine;
 
-public class ClientMain {
+public class HW3ClientMain {
 
-	private static final Logger logger = Logger.getLogger(ClientMain.class.getName());
+	private static final Logger logger = Logger.getLogger(HW3ClientMain.class.getName());
 	
 	public static void main(String[]args){
 		try {
@@ -31,20 +27,14 @@ public class ClientMain {
 		} catch (SecurityException | IOException e1) {
 			e1.printStackTrace();
 		}
-		Timeline timeline = new Timeline(null, 100);
-		EventManagementEngine eventE = new EventManagementEngine(timeline);
-		ProcessingRenderingEngine renderingE = new ProcessingRenderingEngine();
-		ProcessingRenderingEngine.Name = "Client";
-		renderingE.initialize(eventE);
-		PhysicsEngine physicsE = new BasicPhysicsEngine(eventE);
-		//PlayerObjectFactory playerF = new PlayerObjectFactory(physicsE, renderingE, eventE);
-		//PlatformObjectFactory platformF = new PlatformObjectFactory(physicsE, renderingE);
-		//SpawnPointFactory spawnF = new SpawnPointFactory(physicsE);
-		//GameDescription game = new TestGameDescription(eventE);
-		//game.generateGame(eventE, renderingE, physicsE, playerF, platformF, spawnF);
-		Scene scene = new Scene();
-		Game.current_scene = scene;
-		scene.input_handler = new InputHandler(){
+
+		Scene main_scene = new Scene();
+		main_scene.id = 0;
+		
+		@SuppressWarnings("unused")
+		Game game = new Game(HW3ClientMain.class.getName(), main_scene, main_scene);
+
+		main_scene.input_handler = new InputHandler(){
 
 
 			@Override
@@ -58,41 +48,44 @@ public class ClientMain {
 					input.command = Command.jump;
 				if(key=='r')
 					input.command = Command.record_replay;
-				eventE.queue(input);
+				Game.eventE.queue(input);
 			}
 			
 		};
-		renderingE.setScene(scene);
-		ClientsideNetworking networking = new ClientsideNetworking(eventE);
+		ClientsideNetworking networking = new ClientsideNetworking(Game.eventE);
 		ClientInputEvent.Register(networking);
 		CharacterSyncEvent.Register(new GenericListener<CharacterSyncEvent>(){
 
 			@Override
 			public void update(CharacterSyncEvent event) {
-				RenderableComponent renderable = event.getCharacter().renderingC;
-				if(renderable.getGameObject() == null){
+				if(event.getCharacter() == null)
 					logger.log(Level.SEVERE, "Character SyncEvent has null character");
+				RenderableComponent renderable = event.getCharacter().renderingC;
+				if(renderable == null)
+					logger.log(Level.SEVERE, "Character SyncEvent has no renderable component "+event.getCharacter().entityClass+event.getCharacter().getId() );
+				if(renderable.getGameObject() == null){
+					logger.log(Level.SEVERE, "Character SyncEvent has renderable with null character");
 					renderable.setGameObject( event.getCharacter());
 				}
-				renderingE.addObject(renderable);
+				Game.getScene(event.sceneId).renderableList.put(event.getCharacter().getId(), renderable);
 			}
 		});
 		CharacterDeathEvent.Register(new GenericListener<CharacterDeathEvent>(){
 			@Override
 			public void update(CharacterDeathEvent event){
-				if  (renderingE.getObject(event.character.getId())!=null)
-				renderingE.remove(renderingE.getObject(event.character.getId()));
+				if(event.character!=null)
+					Game.getScene(event.sceneId).renderableList.remove(event.character.getId());
 			}
 		});
 		networking.start();
 		long lastTick = 0;
 
 		while(true){
-			if (timeline.getTime() - lastTick >0){
+			if (Game.eventtime.getTime() - lastTick >0){
 				try{
-				physicsE.tick((int)(timeline.getTime()-lastTick));
-				lastTick = timeline.getTime();
-				eventE.HandleNextEvents(800);
+				Game.current_scene.physicsE.tick((int)(Game.eventtime.getTime()-lastTick));
+				lastTick = Game.eventtime.getTime();
+				Game.eventE.HandleNextEvents(800);
 				logger.log(Level.FINEST, "client tick");
 				Thread.sleep(10);
 				} catch (Exception e) {

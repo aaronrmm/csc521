@@ -1,4 +1,4 @@
-package hw2;
+package hw3;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import common.EntityClass;
 import common.EventManagementEngine;
-import common.GameDescription;
 import common.GameObject;
 import common.OscillatingController;
 import common.PlayerInputComponent;
@@ -27,10 +26,10 @@ import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 import physics.Rectangle;
 
-public class TestGameDescription implements GameDescription, GenericListener<ClientInputEvent>{
+public class HW3TestGameDescription implements GenericListener<ClientInputEvent>{
 
-	private static final Logger logger = Logger.getLogger(TestGameDescription.class.getName());
-	private static final boolean DEBUG_MODE = false;
+	private static final Logger logger = Logger.getLogger(HW3TestGameDescription.class.getName());
+	private static final boolean DEBUG_MODE = true;
 	private static final int NUMBER_OF_SPAWN_POINTS = 2;
 	private static final int NUMBER_OF_MOVING_OBSTACLES = 2;
 	private static final int WIDTH = 300;
@@ -41,11 +40,10 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 	private ConcurrentLinkedQueue <GameObject> gameObjects = new ConcurrentLinkedQueue<GameObject>();
 	private EventManagementEngine eventE;
 	
-	public TestGameDescription(EventManagementEngine eventE) {
+	public HW3TestGameDescription(EventManagementEngine eventE) {
 		ClientInputEvent.Register(this);
 	}
 
-	@Override
 	public void generateGame(EventManagementEngine eventE, RenderingEngine renderingE, PhysicsEngine physicsE, PlayerObjectFactory playerF, PlatformObjectFactory platformF, SpawnPointFactory spawnF) {
 		this.playerF = playerF;
 		this.eventE = eventE;
@@ -65,6 +63,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 			GameObject movingP = platformF.create(x, y, width, height);
 			movingP.add(new OscillatingController(movingP, (PhysicsComponent)movingP.getComponent(PhysicsComponent.class), physicsE));
 			position += width;
+			movingP.networked = true;
 			gameObjects.add(movingP);
 		}
 		
@@ -75,7 +74,8 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 			int height = (int) (Math.random() * 3+10);
 			int x = (WIDTH*2*i)/3;
 			int y = HEIGHT-height;
-			gameObjects.add(platformF.create(x, y, width, height));
+			GameObject platform = platformF.create(x, y, width, height);
+			platform.networked = true;
 			position += width;
 		}
 		
@@ -83,7 +83,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 				for(int i=0;i<4;i++){
 					GameObject killzoneBot = new GameObject(EntityClass.KILLZONE);
 					Rectangle killzoneBotRect = null;
-					int width = 40;
+					int width = 5;
 					switch(i){
 					case 0: killzoneBotRect = new Rectangle(0,width,width,HEIGHT-2*width); break;//left
 					case 1: killzoneBotRect = new Rectangle(WIDTH-width,width,WIDTH,HEIGHT-2*width); break;//right
@@ -149,10 +149,9 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 				CharacterSpawnEvent.Register(spawnListener);
 	}
 	
-	@Override
 	public GameObject spawnPlayer(int x, int y, long clientId){
-		logger.log(Level.FINEST, "Player"+clientId+" spawned at "+x+", "+y);
 		GameObject player = playerF.create(x, y, clientId);
+		player.networked = true;
 		gameObjects.add(player);
 		return player;
 	}
@@ -169,7 +168,6 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 		
 	}
 
-	@Override
 	public void generateGameObjectUpdates(long timestamp, long expiration) {
 		for(GameObject gameObject: gameObjects){
 			if(gameObject.alive)

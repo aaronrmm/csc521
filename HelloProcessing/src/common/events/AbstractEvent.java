@@ -3,7 +3,6 @@ package common.events;
 import java.io.Serializable;
 
 import game.Game;
-import game.Scene;
 
 public abstract class AbstractEvent implements Serializable{
 
@@ -15,15 +14,15 @@ public abstract class AbstractEvent implements Serializable{
 	public long timestamp;
 	public long id;
 	public long clientId;
+	public long sceneId;
 	public static long id_gen = 0;
-	public transient Scene scene;
 	
 	@Override public String toString(){
 		return super.toString()+"eventID:"+id;
 	}
 	
 	public AbstractEvent(){
-		this.scene = Game.current_scene;
+		this.sceneId = Game.current_scene.id;
 		this.id = id_gen++;
 	}
 	

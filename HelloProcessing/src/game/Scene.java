@@ -33,7 +33,7 @@ public class Scene {
 	public void generateGameObjectUpdates(long timestamp, long expiration) {
 		for(RenderableComponent renderable: renderableList.values()){
 			GameObject gameObject = renderable.getGameObject();
-			if(gameObject.alive)
+			if(gameObject.networked)
 				Game.eventE.queue(new CharacterSyncEvent(gameObject, timestamp, expiration));
 		}
 	}

@@ -17,7 +17,7 @@ public class ListenerRegistrar <T extends AbstractEvent> {
 
 	public void UpdateListeners(T event){
 		if(event.getDebug())
-			logger.log(Level.SEVERE,"handling "+event.toString());
+			logger.log(Level.FINEST,"handling "+event.toString());
 		for(GenericListener<T> listener:removeBuffer){
 			queue.remove(listener);
 		}

@@ -15,6 +15,8 @@ import common.factories.PlatformObjectFactory;
 import common.factories.PlayerObjectFactory;
 import common.factories.SpawnPointFactory;
 import common.timelines.Timeline;
+import game.Game;
+import game.Scene;
 import networking.ServersideNetworking;
 import physics.BasicPhysicsEngine;
 import physics.PhysicsEngine;
@@ -47,6 +49,7 @@ public class ServerMain {
 		CharacterDeathEvent.Register(p->networking.update(p));
 		ReplayEngine replayE = new ReplayEngine();
 		ClientInputEvent.Register(p->replayE.update(p));
+		Game.current_scene = new Scene();
 		
 		
 		networking.start();
