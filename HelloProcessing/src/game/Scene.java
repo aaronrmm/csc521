@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import common.EventManagementEngine;
 import common.GameObject;
 import common.RenderableComponent;
 import common.events.AbstractEvent;
@@ -16,8 +15,8 @@ import physics.BasicPhysicsEngine;
 import physics.PhysicsEngine;
 
 public class Scene {
+	public long id;
 	public Timeline timeline = new Timeline();
-	public EventManagementEngine eventE = new EventManagementEngine(timeline);
 	public ConcurrentHashMap<Long, RenderableComponent>renderableList = new ConcurrentHashMap<Long, RenderableComponent>();
 	HashMap<ListenerRegistrar<AbstractEvent>, GenericListener<AbstractEvent>> listeners = new HashMap<ListenerRegistrar<AbstractEvent>, GenericListener<AbstractEvent>> ();
 	ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
@@ -28,13 +27,14 @@ public class Scene {
 	public PhysicsEngine physicsE;
 	
 	public Scene(){
-		physicsE = new BasicPhysicsEngine(eventE);
+		physicsE = new BasicPhysicsEngine(Game.eventE);
 	}
 	
 	public void generateGameObjectUpdates(long timestamp, long expiration) {
-		for(GameObject gameObject: gameObjects){
+		for(RenderableComponent renderable: renderableList.values()){
+			GameObject gameObject = renderable.getGameObject();
 			if(gameObject.alive)
-				eventE.queue(new CharacterSyncEvent(gameObject, timestamp, expiration));
+				Game.eventE.queue(new CharacterSyncEvent(gameObject, timestamp, expiration));
 		}
 	}
 
