@@ -13,7 +13,11 @@ private static ListenerRegistrar<SceneChangeEvent> registrar = new ListenerRegis
 		registrar.Register(listener);
 	}
 
-	public Object scene_key;
+	public long scene_id;
+	
+	public SceneChangeEvent(long scene_id){
+		this.scene_id = scene_id;
+	}
 	
 	@Override
 	public void Handle() {

@@ -23,12 +23,12 @@ public class Game implements GenericListener<SceneChangeEvent>{
 			Game.scenes.put(scene.id, scene);
 		current_scene = starting_scene;
 		SceneChangeEvent.Register(this);
-		renderingE = new ProcessingRenderingEngine(name, current_scene, eventE);
+		renderingE = new ProcessingRenderingEngine(name, eventE);
 	}
 
 	@Override
 	public void update(SceneChangeEvent event) {
-		current_scene = scenes.get(event.scene_key);
+		current_scene = scenes.get(event.scene_id);
 	}
 
 	public static Scene getScene(long id) {
