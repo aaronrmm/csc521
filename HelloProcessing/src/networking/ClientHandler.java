@@ -3,6 +3,7 @@ package networking;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ConcurrentModificationException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
@@ -86,6 +87,8 @@ public class ClientHandler {
 				updateQueue.clear();
 				oos.reset();
 				Thread.sleep(10);
+			} catch (SocketException e){
+				logger.severe("Lost connection to client "+clientId);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
