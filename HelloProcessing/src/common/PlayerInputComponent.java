@@ -1,10 +1,11 @@
 package common;
 
+import org.jbox2d.common.Vec2;
+
 import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Command;
 import common.events.GenericListener;
 import physics.PhysicsComponent;
-import physics.Vector2d;
 
 public class PlayerInputComponent extends AbstractComponent implements GenericListener<ClientInputEvent>{
 
@@ -38,11 +39,11 @@ public class PlayerInputComponent extends AbstractComponent implements GenericLi
 			return;
 		GameObject player = this.getGameObject();
 		if(input.command==Command.right)
-			((PhysicsComponent)player.getComponent(PhysicsComponent.class)).addImpulseForce(new Vector2d(PLAYER_SPEED,0));
+			((PhysicsComponent)player.getComponent(PhysicsComponent.class)).addImpulseForce(new Vec2(PLAYER_SPEED,0));
 		if(input.command==Command.left)
-			((PhysicsComponent)player.getComponent(PhysicsComponent.class)).addImpulseForce(new Vector2d(-PLAYER_SPEED,0));
+			((PhysicsComponent)player.getComponent(PhysicsComponent.class)).addImpulseForce(new Vec2(-PLAYER_SPEED,0));
 		if(input.command==Command.jump)
-			((PhysicsComponent)player.getComponent(PhysicsComponent.class)).addImpulseForce(new Vector2d(0,-JUMP_SPEED));
+			((PhysicsComponent)player.getComponent(PhysicsComponent.class)).addImpulseForce(new Vec2(0,-JUMP_SPEED));
 		
 		
 	}

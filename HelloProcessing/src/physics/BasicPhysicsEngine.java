@@ -3,6 +3,8 @@ package physics;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jbox2d.common.Vec2;
+
 import common.EventManagementEngine;
 import common.TimingComponent;
 import common.events.CharacterCollisionEvent;
@@ -27,11 +29,11 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 		}
 		
 		for(PhysicsComponent pObject: pObjects.values()){
-			for(Vector2d force : pObject.constantForces){
-				pObject.speed.add(force);
+			for(Vec2 force : pObject.constantForces){
+				pObject.speed = pObject.speed.add(force);
 			}
-			for(Vector2d force : pObject.impulseForces){
-				pObject.speed.add(force);
+			for(Vec2 force : pObject.impulseForces){
+				pObject.speed = pObject.speed.add(force);
 			}
 			pObject.impulseForces.clear();
 			//limit speed to MAX_SPEED

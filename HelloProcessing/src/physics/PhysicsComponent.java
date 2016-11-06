@@ -3,6 +3,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
 import common.AbstractComponent;
@@ -17,9 +18,9 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	ArrayList<Vector2d> constantForces = new ArrayList<Vector2d>();
-	ArrayList<Vector2d> impulseForces = new ArrayList<Vector2d>();
-	Vector2d speed = new Vector2d(0,0);
+	ArrayList<Vec2> constantForces = new ArrayList<Vec2>();
+	ArrayList<Vec2> impulseForces = new ArrayList<Vec2>();
+	Vec2 speed = new Vec2(0,0);
 	boolean isSolid = false;
 	private Rectangle shape;
 	public transient Body body;
@@ -36,14 +37,14 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 		this.physicsE = physicsE;
 	}
 
-	public Rectangle getPath(Vector2d force, int milliseconds) {
+	public Rectangle getPath(Vec2 force, int milliseconds) {
 		int newX = (int)(this.shape.getX()+force.x*milliseconds);
 		int newY = (int)(this.shape.getY()+force.y*milliseconds);
 		Rectangle path = new Rectangle(newX, newY, this.shape.width, this.shape.height);
 		return path;
 		
 	}
-	public void translate(Vector2d force, int milliseconds) {
+	public void translate(Vec2 force, int milliseconds) {
 		int newX = (int)(this.shape.getX()+force.x*milliseconds);
 		int newY = (int)(this.shape.getY()+force.y*milliseconds);
 		this.shape.setLocation(newX, newY);
@@ -58,11 +59,11 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 	}
 	
 
-	public void addConstantForce(Vector2d vector){
+	public void addConstantForce(Vec2 vector){
 		this.constantForces.add(vector);
 		if(body!=null)body.applyForce(vector, body.getPosition());
 	}
-	public void addImpulseForce(Vector2d vector){
+	public void addImpulseForce(Vec2 vector){
 		this.impulseForces.add(vector);
 		if(body!=null)body.applyLinearImpulse(vector, body.getPosition());
 	}
@@ -87,6 +88,12 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 	@Override
 	public void update(CharacterCollisionEvent event) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	public void clearForces() {
+		this.impulseForces.clear();
+		this.constantForces.clear();
 		
 	}
 }

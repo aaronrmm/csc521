@@ -16,6 +16,7 @@ public class Timeline {
 	long origin = 0;
 	
 	public Timeline(Timeline anchor, int ticksize){
+		this.anchor = anchor;
 		this.ticksize = ticksize;
 		if(anchor!=null)
 			this.origin = anchor.getTime();

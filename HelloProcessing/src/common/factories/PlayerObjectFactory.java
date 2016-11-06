@@ -3,6 +3,8 @@ package common.factories;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jbox2d.common.Vec2;
+
 import common.EntityClass;
 import common.EventManagementEngine;
 import common.GameObject;
@@ -12,7 +14,6 @@ import common.RenderingEngine;
 import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 import physics.Rectangle;
-import physics.Vector2d;
 
 public class PlayerObjectFactory {
 	private static final Logger logger = Logger.getLogger(PlayerObjectFactory.class.getName());
@@ -34,7 +35,7 @@ public class PlayerObjectFactory {
 		player.add(controller);
 		PhysicsComponent physicsComponent = new PhysicsComponent(player, new Rectangle(x,y,10,10), true, physics);
 		player.add(physicsComponent);
-		physicsComponent.addConstantForce(new Vector2d(0,1));
+		physicsComponent.addConstantForce(new Vec2(0,1));
 		this.physics.addDynamicObject(physicsComponent, x, y);
 		RenderableComponent renderable = new RenderableComponent(player, physicsComponent, renderer);
 		this.renderer.addObject(renderable);

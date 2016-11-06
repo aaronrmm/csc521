@@ -1,8 +1,9 @@
 package common;
 
+import org.jbox2d.common.Vec2;
+
 import physics.PhysicsComponent;
 import physics.PhysicsEngine;
-import physics.Vector2d;
 
 public class OscillatingController extends AbstractComponent implements TimingComponent{
 
@@ -10,9 +11,12 @@ public class OscillatingController extends AbstractComponent implements TimingCo
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	PhysicsComponent physicsComponent;
-	Vector2d left = new Vector2d(-1,0);
-	Vector2d right = new Vector2d(1,0);
+	transient PhysicsComponent physicsComponent;
+	transient Vec2 left = new Vec2(-.1f,0);
+	transient Vec2 right = new Vec2(.1f,0);
+	
+	final int frequency = 30;
+	final int pause = 10;
 	
 	public OscillatingController(GameObject gameObject, PhysicsComponent physicsComponent, PhysicsEngine physicsE){
 		super(gameObject);
@@ -29,11 +33,18 @@ public class OscillatingController extends AbstractComponent implements TimingCo
 
 	@Override
 	public void update(int timestamp) {
-		if(timestamp%20>10){
-			this.physicsComponent.addImpulseForce(left);
+		if(timestamp%frequency< frequency/2-pause){
+			//this.physicsComponent.clearForces();
+			this.physicsComponent.addConstantForce(left);
+			return;
 		}
-		else
-			this.physicsComponent.addImpulseForce(right);
+		if(timestamp%frequency>frequency/2+pause){
+			//this.physicsComponent.clearForces();
+			this.physicsComponent.addConstantForce(right);
+			return;
+		}
+		this.physicsComponent.clearForces();
+			
 		
 	}
 }
