@@ -72,7 +72,8 @@ public class ClientHandler {
 	}
 
 	private void clientUpdateLoop() {
-		while (true) {
+		boolean connected = true;
+		while (connected) {
 			try {
 				for (AbstractEvent event : updateQueue) {
 					oos.writeObject(event);
@@ -89,6 +90,7 @@ public class ClientHandler {
 				Thread.sleep(10);
 			} catch (SocketException e){
 				logger.severe("Lost connection to client "+clientId);
+				connected = false;
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
