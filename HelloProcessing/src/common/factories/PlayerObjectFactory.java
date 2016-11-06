@@ -31,14 +31,14 @@ public class PlayerObjectFactory {
 		logger.log(Level.SEVERE,"creating new player"+clientId);
 		GameObject player = new GameObject(EntityClass.PLAYER);
 		PlayerInputComponent controller = new PlayerInputComponent(player, this.eventE, clientId);
-		player.add(controller, PlayerInputComponent.class.getName());
+		player.add(controller);
 		PhysicsComponent physicsComponent = new PhysicsComponent(player, new Rectangle(x,y,10,10), true, physics);
-		player.add(physicsComponent, PhysicsComponent.class.getName());
+		player.add(physicsComponent);
 		physicsComponent.addConstantForce(new Vector2d(0,1));
 		this.physics.addDynamicObject(physicsComponent, x, y);
 		RenderableComponent renderable = new RenderableComponent(player, physicsComponent, renderer);
 		this.renderer.addObject(renderable);
-		player.add(renderable, RenderableComponent.class.getName());
+		player.add(renderable);
 		player.alive = true;
 		return player;
 	}

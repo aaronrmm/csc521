@@ -75,7 +75,7 @@ public class ServersideNetworking implements GenericListener<AbstractEvent>{
 		if(event instanceof CharacterSyncEvent){
 			CharacterSyncEvent syncEvent = (CharacterSyncEvent)event;
 			logger.log(Level.FINEST,"Sending syncEvent for character "+syncEvent.getCharacter().getId()+" with "+syncEvent.getCharacter().getComponentSize()+" components.");
-			RenderableComponent renderable = (RenderableComponent) (syncEvent.getCharacter().getComponent(RenderableComponent.class.getName()));
+			RenderableComponent renderable = (RenderableComponent) (syncEvent.getCharacter().getComponent(RenderableComponent.class));
 			if(renderable==null)logger.severe("No renderable found in SyncEvent");
 		}
 		for(ClientHandler client: clients.values()){

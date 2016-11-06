@@ -44,7 +44,7 @@ public class CharacterSyncEvent extends AbstractEvent{
 	}
 	@Override
 	public void Handle() {
-		RenderableComponent renderable = (RenderableComponent) (character.getComponent(RenderableComponent.class.getName()));
+		RenderableComponent renderable = (RenderableComponent) (character.getComponent(RenderableComponent.class));
 		if (renderable==null){
 			logger.log(Level.SEVERE,"RENDERABLE NULL");
 		}

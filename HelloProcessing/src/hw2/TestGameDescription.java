@@ -63,7 +63,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 			int x = position+(int)(Math.random() * WIDTH/2);
 			int y = HEIGHT/2-height;
 			GameObject movingP = platformF.create(x, y, width, height);
-			movingP.add(new OscillatingController(movingP, (PhysicsComponent)movingP.getComponent(PhysicsComponent.class.getName()), physicsE), OscillatingController.class.getName());
+			movingP.add(new OscillatingController(movingP, (PhysicsComponent)movingP.getComponent(PhysicsComponent.class), physicsE));
 			position += width;
 			gameObjects.add(movingP);
 		}
@@ -83,7 +83,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 				for(int i=0;i<4;i++){
 					GameObject killzoneBot = new GameObject(EntityClass.KILLZONE);
 					Rectangle killzoneBotRect = null;
-					int width = 5;
+					int width = 40;
 					switch(i){
 					case 0: killzoneBotRect = new Rectangle(0,width,width,HEIGHT-2*width); break;//left
 					case 1: killzoneBotRect = new Rectangle(WIDTH-width,width,WIDTH,HEIGHT-2*width); break;//right
@@ -110,11 +110,11 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 					
 					CharacterCollisionEvent.Register(killzoneBotP);
 					physicsE.addStaticObject(killzoneBotP, killzoneBotRect.x, killzoneBotRect.y);
-					killzoneBot.add(killzoneBotP, PhysicsComponent.class.getName());
+					killzoneBot.add(killzoneBotP);
 					if(DEBUG_MODE){
 						RenderableComponent renderable = new RenderableComponent(killzoneBot, killzoneBotP, renderingE);
 						renderingE.addObject(renderable);
-						killzoneBot.add(renderable, RenderableComponent.class.getName());
+						killzoneBot.add(renderable);
 					}
 				}
 				
@@ -124,7 +124,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 						GameObject character = event.character;
 						if(character.alive==false)
 							return;
-						long clientId = ((PlayerInputComponent)character.getComponent(PlayerInputComponent.class.getName())).clientId;
+						long clientId = ((PlayerInputComponent)character.getComponent(PlayerInputComponent.class)).clientId;
 						eventE.queue(new CharacterSpawnEvent(clientId, event.timestamp+2));
 						event.character.destroy();
 						character.alive = false;
@@ -138,7 +138,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 					public void update(CharacterSpawnEvent event) {
 						GameObject respawn = spawnPoints.removeLast();
 						spawnPoints.push(respawn);
-						PhysicsComponent pComponent = (PhysicsComponent)respawn.getComponent(PhysicsComponent.class.getName());
+						PhysicsComponent pComponent = (PhysicsComponent)respawn.getComponent(PhysicsComponent.class);
 						int x = pComponent.getX();
 						int y = pComponent.getY();
 						GameObject playerObject = spawnPlayer(x,y,event.player);
@@ -151,6 +151,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 	
 	@Override
 	public GameObject spawnPlayer(int x, int y, long clientId){
+		logger.log(Level.FINEST, "Player"+clientId+" spawned at "+x+", "+y);
 		GameObject player = playerF.create(x, y, clientId);
 		gameObjects.add(player);
 		return player;

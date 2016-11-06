@@ -10,7 +10,7 @@ public class GameObject implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	public EntityClass entityClass;
-	private HashMap<String, Component> components = new HashMap<String,Component>();
+	private HashMap<Class<? extends Component>, Component> components = new HashMap<Class<? extends Component>, Component>();
 	private long id;
 	public boolean alive = true;
 	private static long nextId;
@@ -21,16 +21,16 @@ public class GameObject implements Serializable{
 	}
 	
 	public void destroy(){
-		HashMap<String, Component>oldComponents = components;
-		components = new HashMap<String, Component>();
+		HashMap<Class<? extends Component>, Component> oldComponents = components;
+		components = new HashMap<Class<? extends Component>, Component>();
 		for(Component component:oldComponents.values()){
 			component.destroy();
 		}
 		components.clear();
 	}
 	
-	public void add(Component component, String className){
-		this.components.put(className,component);
+	public void add(Component component){
+		this.components.put(component.getClass(),component);
 		component.setGameObject(this);
 	}
 
@@ -44,5 +44,9 @@ public class GameObject implements Serializable{
 	
 	public int getComponentSize(){
 		return components.size();
+	}
+
+	public Component getComponent(Class<? extends Component> class1) {
+		return components.get(class1);
 	}
 }

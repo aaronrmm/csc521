@@ -79,7 +79,7 @@ public class ClientHandler {
 					if(event instanceof CharacterSyncEvent){
 						CharacterSyncEvent syncEvent = (CharacterSyncEvent)event;
 						logger.log(Level.SEVERE,"Sending syncEvent for character "+syncEvent.getCharacter().getId()+" with "+syncEvent.getCharacter().getComponentSize()+" components.");
-						RenderableComponent renderable = (RenderableComponent) (syncEvent.getCharacter().getComponent(RenderableComponent.class.getName()));
+						RenderableComponent renderable = (RenderableComponent) (syncEvent.getCharacter().getComponent(RenderableComponent.class));
 						if(renderable==null)logger.severe("No renderable found in SyncEvent");
 					}
 				}

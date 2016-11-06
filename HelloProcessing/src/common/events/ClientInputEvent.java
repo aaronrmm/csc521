@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import networking.ClientHandler;
 
 public class ClientInputEvent extends AbstractEvent implements Serializable{
-	transient final Logger logger = Logger.getLogger(ClientInputEvent.class.getName());
+	static final Logger logger = Logger.getLogger(ClientInputEvent.class.getName());
 
 	transient boolean isNew = true;
 	public Command command = Command.no_op;
@@ -48,7 +48,7 @@ public class ClientInputEvent extends AbstractEvent implements Serializable{
 	@Override
 	public void Handle() {
 		registrar.UpdateListeners(this);
-		//logger.debug(this.timestamp);
+		logger.finest("Handling "+this.toString());
 	}
 	public static void Unregister(GenericListener<ClientInputEvent> listener) {
 		registrar.Unregister(listener);
