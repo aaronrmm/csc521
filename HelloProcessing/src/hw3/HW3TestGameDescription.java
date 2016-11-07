@@ -129,7 +129,7 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 						character.alive = false;
 					}
 				};
-				CharacterDeathEvent.registrar.Register(deathListener);
+				CharacterDeathEvent.registrar.Register(0L,deathListener);
 				
 				GenericListener<CharacterSpawnEvent> spawnListener = new GenericListener<CharacterSpawnEvent>(){
 
@@ -145,7 +145,7 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 					}
 					
 				};
-				CharacterSpawnEvent.registrar.Register(spawnListener);
+				CharacterSpawnEvent.registrar.Register(0L,spawnListener);
 	}
 	
 	public GameObject spawnPlayer(int x, int y, long clientId){

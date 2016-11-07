@@ -107,7 +107,6 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 					renderable.setGameObject( event.getCharacter());
 				}
 				Game.getScene(event.sceneId).renderableList.put(event.getCharacter().getId(), renderable);
-				System.out.println("new X = "+renderable.getX());
 			}
 		});
 		long play_start_time = Game.eventtime.getTime();
@@ -121,7 +120,6 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 				event.sceneId = REPLAY_SCENE_ID;
 				event.timestamp = play_start_time+event.timestamp-record_start_time;
 				Game.eventE.queue(event);
-				System.out.println("queuing event at timestamp "+event.timestamp);
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -132,6 +130,7 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 
 	private void stop(){
 		Game.eventE.queue(new SceneChangeEvent(this.return_scene_id));
+		replayScene.renderableList.clear();
 	}
 
 	
