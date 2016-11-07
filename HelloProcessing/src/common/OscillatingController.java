@@ -33,6 +33,8 @@ public class OscillatingController extends AbstractComponent implements TimingCo
 
 	@Override
 	public void update(int timestamp) {
+		this.physicsComponent.getRectangle().x = Math.abs((timestamp*2)%300-150);
+		/*
 		if(timestamp%frequency< frequency/2-pause){
 			//this.physicsComponent.clearForces();
 			this.physicsComponent.addConstantForce(left);
@@ -44,7 +46,7 @@ public class OscillatingController extends AbstractComponent implements TimingCo
 			return;
 		}
 		this.physicsComponent.clearForces();
-			
+			*/
 		
 	}
 }

@@ -17,7 +17,6 @@ import common.events.CharacterSpawnEvent;
 import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.GenericListener;
-import common.events.ReplayedEvent;
 import common.events.SceneChangeEvent;
 import game.Game;
 import game.Scene;
@@ -46,7 +45,10 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		replayScene = new Scene();
+		replayScene = new Scene(){
+			@Override
+			public void generateGameObjectUpdates(long timestamp, long expiration) {}
+		};
 		replayScene.id = REPLAY_SCENE_ID;
 	}
 	
@@ -105,20 +107,21 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 					renderable.setGameObject( event.getCharacter());
 				}
 				Game.getScene(event.sceneId).renderableList.put(event.getCharacter().getId(), renderable);
+				System.out.println("new X = "+renderable.getX());
 			}
 		});
 		long play_start_time = Game.eventtime.getTime();
+		System.out.println("starting playing replay at "+play_start_time);
 		Game.eventE.queue(new SceneChangeEvent(REPLAY_SCENE_ID));
 		for(byte[] r : recording){
 			bis = new ByteArrayInputStream(r);
 			try {
 				ois = new ObjectInputStream(bis);
 				AbstractEvent event = (AbstractEvent)ois.readObject();
-				ReplayedEvent reEvent = new ReplayedEvent(event);
-				reEvent.sceneId = REPLAY_SCENE_ID;
 				event.sceneId = REPLAY_SCENE_ID;
 				event.timestamp = play_start_time+event.timestamp-record_start_time;
 				Game.eventE.queue(event);
+				System.out.println("queuing event at timestamp "+event.timestamp);
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}

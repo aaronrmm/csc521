@@ -83,7 +83,7 @@ public class HW3ServerMain {
 				Game.current_scene.physicsE.tick((int)(Game.eventtime.getTime()-lastTick));
 				lastTick = Game.eventtime.getTime();
 				Game.current_scene.generateGameObjectUpdates(Game.eventtime.getTime(), Game.eventtime.getTime()+1);
-				Game.eventE.HandleNextEvents(5);
+				Game.eventE.HandleNextEvents(500);
 				
 				
 				try {
