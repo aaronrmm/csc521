@@ -11,7 +11,7 @@ public class CharacterDeathEvent extends AbstractEvent{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static ListenerRegistrar<CharacterDeathEvent> registrar = new ListenerRegistrar<CharacterDeathEvent>();
+	public static ListenerRegistrar<CharacterDeathEvent> registrar = new ListenerRegistrar<CharacterDeathEvent>();
 
 	@Override
 	public double getPriority(){
@@ -29,9 +29,7 @@ public class CharacterDeathEvent extends AbstractEvent{
 		logger.log(Level.FINEST, this.getClass().getName() +" constructed for character "+character.getId());
 		this.character = character;
 	}
-	public static void Register(GenericListener<CharacterDeathEvent> listener) {
-		registrar.Register(listener);
-	}
+
 	@Override
 	public void Handle() {
 		logger.log(Level.FINEST, this.getClass().getName() +" handled for character "+character.getId());

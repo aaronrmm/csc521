@@ -108,7 +108,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 					
 					
 					
-					CharacterCollisionEvent.Register(killzoneBotP);
+					CharacterCollisionEvent.registrar.Register(killzoneBotP);
 					physicsE.addStaticObject(killzoneBotP, killzoneBotRect.x, killzoneBotRect.y);
 					killzoneBot.add(killzoneBotP);
 					if(DEBUG_MODE){
@@ -130,7 +130,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 						character.alive = false;
 					}
 				};
-				CharacterDeathEvent.Register(deathListener);
+				CharacterDeathEvent.registrar.Register(deathListener);
 				
 				GenericListener<CharacterSpawnEvent> spawnListener = new GenericListener<CharacterSpawnEvent>(){
 
@@ -146,7 +146,7 @@ public class TestGameDescription implements GameDescription, GenericListener<Cli
 					}
 					
 				};
-				CharacterSpawnEvent.Register(spawnListener);
+				CharacterSpawnEvent.registrar.Register(spawnListener);
 	}
 	
 	@Override

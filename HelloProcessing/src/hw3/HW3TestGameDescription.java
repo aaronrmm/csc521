@@ -108,7 +108,7 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 					
 					
 					
-					CharacterCollisionEvent.Register(killzoneBotP);
+					CharacterCollisionEvent.registrar.Register(killzoneBotP);
 					physicsE.addStaticObject(killzoneBotP, killzoneBotRect.x, killzoneBotRect.y);
 					killzoneBot.add(killzoneBotP);
 					if(DEBUG_MODE){
@@ -130,7 +130,7 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 						character.alive = false;
 					}
 				};
-				CharacterDeathEvent.Register(deathListener);
+				CharacterDeathEvent.registrar.Register(deathListener);
 				
 				GenericListener<CharacterSpawnEvent> spawnListener = new GenericListener<CharacterSpawnEvent>(){
 
@@ -146,7 +146,7 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 					}
 					
 				};
-				CharacterSpawnEvent.Register(spawnListener);
+				CharacterSpawnEvent.registrar.Register(spawnListener);
 	}
 	
 	public GameObject spawnPlayer(int x, int y, long clientId){

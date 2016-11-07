@@ -37,11 +37,8 @@ public class CharacterSyncEvent extends AbstractEvent{
 		return priority;
 	}
 	
-	private static ListenerRegistrar<CharacterSyncEvent> registrar = new ListenerRegistrar<CharacterSyncEvent>();
+	public static ListenerRegistrar<CharacterSyncEvent> registrar = new ListenerRegistrar<CharacterSyncEvent>();
 
-	public static void Register(GenericListener<CharacterSyncEvent> listener) {
-		registrar.Register(listener);
-	}
 	@Override
 	public void Handle() {
 		RenderableComponent renderable = character.renderingC;

@@ -10,7 +10,7 @@ public class CharacterSpawnEvent extends AbstractEvent{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static ListenerRegistrar<CharacterSpawnEvent> registrar = new ListenerRegistrar<CharacterSpawnEvent>();
+	public static ListenerRegistrar<CharacterSpawnEvent> registrar = new ListenerRegistrar<CharacterSpawnEvent>();
 	
 	public CharacterSpawnEvent(long clientId, long timestamp) {
 		logger.log(Level.FINEST, this.toString()+" constructed");
@@ -19,9 +19,6 @@ public class CharacterSpawnEvent extends AbstractEvent{
 		this.timestamp = timestamp;
 	}
 
-	public static void Register(GenericListener<CharacterSpawnEvent> listener) {
-		registrar.Register(listener);
-	}
 	public long player;
 	
 	@Override

@@ -62,7 +62,7 @@ public class HW3ClientMain {
 		
 		ClientsideNetworking networking = new ClientsideNetworking(Game.eventE);
 		ClientInputEvent.Register(networking);
-		CharacterSyncEvent.Register(new GenericListener<CharacterSyncEvent>(){
+		CharacterSyncEvent.registrar.Register(new GenericListener<CharacterSyncEvent>(){
 
 			@Override
 			public void update(CharacterSyncEvent event) {
@@ -78,7 +78,7 @@ public class HW3ClientMain {
 				Game.getScene(event.sceneId).renderableList.put(event.getCharacter().getId(), renderable);
 			}
 		});
-		CharacterDeathEvent.Register(new GenericListener<CharacterDeathEvent>(){
+		CharacterDeathEvent.registrar.Register(new GenericListener<CharacterDeathEvent>(){
 			@Override
 			public void update(CharacterDeathEvent event){
 				if(event.character!=null)

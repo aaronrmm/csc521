@@ -19,11 +19,8 @@ public class CharacterCollisionEvent extends AbstractEvent{
 		logger.log(Level.FINEST, object1.getGameObject().entityClass +"/"+ object2.getGameObject().entityClass);
 	}
 
-	private static ListenerRegistrar<CharacterCollisionEvent> registrar = new ListenerRegistrar<CharacterCollisionEvent>();
-	
-	public static void Register(GenericListener<CharacterCollisionEvent> listener) {
-		registrar.Register(listener);
-	}
+	public static ListenerRegistrar<CharacterCollisionEvent> registrar = new ListenerRegistrar<CharacterCollisionEvent>();
+
 	@Override
 	public void Handle() {
 		registrar.UpdateListeners(this);

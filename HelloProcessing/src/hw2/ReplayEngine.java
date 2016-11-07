@@ -39,9 +39,9 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 			baos = new ByteArrayOutputStream();
 			oos = new ObjectOutputStream(baos);
 			this.return_scene_id = return_scene.id;
-			CharacterSyncEvent.Register(r->this.record(r));
-			CharacterDeathEvent.Register(r->this.record(r));
-			CharacterSpawnEvent.Register(r->this.record(r));
+			CharacterSyncEvent.registrar.Register(r->this.record(r));
+			CharacterDeathEvent.registrar.Register(r->this.record(r));
+			CharacterSpawnEvent.registrar.Register(r->this.record(r));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -93,7 +93,7 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 	}
 	
 	private void play(){
-		CharacterSyncEvent.Register(new GenericListener<CharacterSyncEvent>(){
+		CharacterSyncEvent.registrar.Register(new GenericListener<CharacterSyncEvent>(){
 
 			@Override
 			public void update(CharacterSyncEvent event) {

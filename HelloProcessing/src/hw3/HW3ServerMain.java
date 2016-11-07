@@ -67,9 +67,10 @@ public class HW3ServerMain {
 		SpawnPointFactory spawnF = new SpawnPointFactory(main_scene.physicsE);
 		ServersideNetworking networking = new ServersideNetworking(Game.eventE,9596);
 		SceneChangeEvent.Register(p->networking.update(p));
-		CharacterSpawnEvent.Register(p->networking.update(p));
-		CharacterSyncEvent.Register(p->networking.update(p));
-		CharacterDeathEvent.Register(p->networking.update(p));
+		CharacterSpawnEvent.registrar.Register(p->networking.update(p));
+		CharacterSyncEvent.registrar.Register(p->networking.update(p));
+		CharacterDeathEvent.registrar.Register(p->networking.update(p));
+		//ClientInputEvent.Register(p->networking.update(p));
 		ClientInputEvent.Register(p->replayE.update(p));
 		HW3TestGameDescription gameD = new HW3TestGameDescription(Game.eventE);
 		gameD.generateGame(Game.eventE, Game.renderingE, main_scene.physicsE, playerF, platformF, spawnF);
