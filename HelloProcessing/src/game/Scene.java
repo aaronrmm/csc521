@@ -1,15 +1,10 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import common.GameObject;
 import common.RenderableComponent;
-import common.events.AbstractEvent;
 import common.events.CharacterSyncEvent;
-import common.events.GenericListener;
-import common.events.ListenerRegistrar;
 import common.timelines.Timeline;
 import physics.BasicPhysicsEngine;
 import physics.PhysicsEngine;
@@ -18,8 +13,6 @@ public class Scene {
 	public long id;
 	public Timeline timeline = new Timeline();
 	public ConcurrentHashMap<Long, RenderableComponent>renderableList = new ConcurrentHashMap<Long, RenderableComponent>();
-	HashMap<ListenerRegistrar<AbstractEvent>, GenericListener<AbstractEvent>> listeners = new HashMap<ListenerRegistrar<AbstractEvent>, GenericListener<AbstractEvent>> ();
-	ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 	public InputHandler input_handler = new InputHandler(){
 		@Override
 		public void keyPressed(char key) {
@@ -38,7 +31,4 @@ public class Scene {
 		}
 	}
 
-	public void addGameObject(GameObject gameObject){
-		this.gameObjects.add(gameObject);
-	}
 }
