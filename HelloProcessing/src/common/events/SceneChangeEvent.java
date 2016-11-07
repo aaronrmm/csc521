@@ -7,11 +7,8 @@ public class SceneChangeEvent extends AbstractEvent {
 	 */
 	private static final long serialVersionUID = 1L;
 
-private static ListenerRegistrar<SceneChangeEvent> registrar = new ListenerRegistrar<SceneChangeEvent>();
+	public static ListenerRegistrar<SceneChangeEvent> registrar = new ListenerRegistrar<SceneChangeEvent>();
 	
-	public static void Register(GenericListener<SceneChangeEvent> listener) {
-		registrar.Register(listener);
-	}
 
 	public long scene_id;
 	

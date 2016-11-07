@@ -22,7 +22,7 @@ public class Game implements GenericListener<SceneChangeEvent>{
 		for (Scene scene : scenes)
 			Game.scenes.put(scene.id, scene);
 		current_scene = starting_scene;
-		SceneChangeEvent.Register(this);
+		SceneChangeEvent.registrar.Register(this);
 		renderingE = new ProcessingRenderingEngine(name, eventE);
 	}
 

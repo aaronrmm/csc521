@@ -66,7 +66,7 @@ public class HW3ServerMain {
 		PlatformObjectFactory platformF = new PlatformObjectFactory(main_scene.physicsE,Game.renderingE);
 		SpawnPointFactory spawnF = new SpawnPointFactory(main_scene.physicsE);
 		ServersideNetworking networking = new ServersideNetworking(Game.eventE,9596);
-		SceneChangeEvent.Register(p->networking.update(p));
+		SceneChangeEvent.registrar.Register(p->networking.update(p));
 		CharacterSpawnEvent.registrar.Register(p->networking.update(p));
 		CharacterSyncEvent.registrar.Register(p->networking.update(p));
 		CharacterDeathEvent.registrar.Register(p->networking.update(p));
