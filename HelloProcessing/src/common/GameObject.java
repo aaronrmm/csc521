@@ -10,7 +10,7 @@ public class GameObject implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	public EntityClass entityClass;
-	private transient HashMap<String, Component> components = new HashMap<String, Component>();
+	private HashMap<String, Component> components = new HashMap<String, Component>();
 	public RenderableComponent renderingC;
 	private long id;
 	public boolean alive = true;

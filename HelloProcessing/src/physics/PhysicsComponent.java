@@ -76,7 +76,8 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 
 	@Override
 	public void destroy() {
-		this.physicsE.remove(this);
+		if(physicsE!=null)
+			this.physicsE.remove(this);
 	}
 
 	public boolean blocksObject(PhysicsComponent pObject) {

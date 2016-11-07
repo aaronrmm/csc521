@@ -24,7 +24,8 @@ public class RenderableComponent extends AbstractComponent implements Component 
 	
 	@Override
 	public void destroy() {
-		RenderE.remove(this);
+		if(RenderE!=null)
+			RenderE.remove(this);
 	}
 	
 	public int getX(){
