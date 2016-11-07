@@ -40,17 +40,11 @@ public class ClientInputEvent extends AbstractEvent implements Serializable{
 		return 2;
 	}
 	
-	private static ListenerRegistrar<ClientInputEvent> registrar = new ListenerRegistrar<ClientInputEvent>();
+	public static ListenerRegistrar<ClientInputEvent> registrar = new ListenerRegistrar<ClientInputEvent>();
 	
-	public static void Register(GenericListener<ClientInputEvent> listener) {
-		registrar.Register(listener);
-	}
 	@Override
 	public void Handle() {
 		registrar.UpdateListeners(this);
 		logger.finest("Handling "+this.toString());
-	}
-	public static void Unregister(GenericListener<ClientInputEvent> listener) {
-		registrar.Unregister(listener);
 	}
 }

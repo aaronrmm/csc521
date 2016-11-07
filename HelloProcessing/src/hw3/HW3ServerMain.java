@@ -71,10 +71,10 @@ public class HW3ServerMain {
 		CharacterSyncEvent.registrar.Register(p->networking.update(p));
 		CharacterDeathEvent.registrar.Register(p->networking.update(p));
 		//ClientInputEvent.Register(p->networking.update(p));
-		ClientInputEvent.Register(p->replayE.update(p));
+		ClientInputEvent.registrar.Register(p->replayE.update(p));
 		HW3TestGameDescription gameD = new HW3TestGameDescription(Game.eventE);
 		gameD.generateGame(Game.eventE, Game.renderingE, main_scene.physicsE, playerF, platformF, spawnF);
-		ClientInputEvent.Register(p->gameD.update(p));
+		ClientInputEvent.registrar.Register(p->gameD.update(p));
 		
 		
 		networking.start();

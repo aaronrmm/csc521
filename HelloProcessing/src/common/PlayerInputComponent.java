@@ -20,13 +20,13 @@ public class PlayerInputComponent extends AbstractComponent implements GenericLi
 	@Override
 	public void destroy() {
 		clientId=-1;
-		ClientInputEvent.Unregister(this);
+		ClientInputEvent.registrar.Unregister(this);
 		
 	}
 	
 	public PlayerInputComponent(GameObject gameObject, EventManagementEngine eventE, long clientId){
 		super(gameObject);
-		ClientInputEvent.Register(this);
+		ClientInputEvent.registrar.Register(this);
 		this.clientId = clientId;
 		EventE = eventE;
 	}

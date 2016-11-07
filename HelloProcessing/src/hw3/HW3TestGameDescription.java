@@ -41,7 +41,7 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 	private EventManagementEngine eventE;
 	
 	public HW3TestGameDescription(EventManagementEngine eventE) {
-		ClientInputEvent.Register(this);
+		ClientInputEvent.registrar.Register(this);
 	}
 
 	public void generateGame(EventManagementEngine eventE, RenderingEngine renderingE, PhysicsEngine physicsE, PlayerObjectFactory playerF, PlatformObjectFactory platformF, SpawnPointFactory spawnF) {

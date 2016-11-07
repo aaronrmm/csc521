@@ -61,7 +61,7 @@ public class HW3ClientMain {
 		replayE.getReplayScene().input_handler = main_scene.input_handler;
 		
 		ClientsideNetworking networking = new ClientsideNetworking(Game.eventE);
-		ClientInputEvent.Register(networking);
+		ClientInputEvent.registrar.Register(networking);
 		CharacterSyncEvent.registrar.Register(new GenericListener<CharacterSyncEvent>(){
 
 			@Override

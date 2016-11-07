@@ -23,8 +23,4 @@ private static ListenerRegistrar<SceneChangeEvent> registrar = new ListenerRegis
 	public void Handle() {
 		registrar.UpdateListeners(this);
 	}
-	
-	public static void Unregister(GenericListener<SceneChangeEvent> listener) {
-		registrar.Unregister(listener);
-	}
 }
