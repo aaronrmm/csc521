@@ -16,7 +16,6 @@ import common.RenderingEngine;
 import common.events.CharacterCollisionEvent;
 import common.events.CharacterDeathEvent;
 import common.events.CharacterSpawnEvent;
-import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.GenericListener;
 import common.factories.PlatformObjectFactory;
@@ -167,12 +166,4 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 
 		
 	}
-
-	public void generateGameObjectUpdates(long timestamp, long expiration) {
-		for(GameObject gameObject: gameObjects){
-			if(gameObject.alive)
-				eventE.queue(new CharacterSyncEvent(gameObject, timestamp, expiration));
-		}
-	}
-
 }
