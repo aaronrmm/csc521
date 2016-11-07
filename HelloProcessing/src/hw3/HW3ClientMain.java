@@ -15,6 +15,7 @@ import common.events.GenericListener;
 import game.Game;
 import game.InputHandler;
 import game.Scene;
+import hw2.ReplayEngine;
 import networking.ClientsideNetworking;
 
 public class HW3ClientMain {
@@ -30,9 +31,10 @@ public class HW3ClientMain {
 
 		Scene main_scene = new Scene();
 		main_scene.id = 0;
+		ReplayEngine replayE = new ReplayEngine(main_scene);
 		
 		@SuppressWarnings("unused")
-		Game game = new Game(HW3ClientMain.class.getName(), main_scene, main_scene);
+		Game game = new Game(HW3ClientMain.class.getName(), main_scene, main_scene, replayE.getReplayScene());
 
 		main_scene.input_handler = new InputHandler(){
 
@@ -48,10 +50,16 @@ public class HW3ClientMain {
 					input.command = Command.jump;
 				if(key=='r')
 					input.command = Command.record_replay;
+				if(key=='t')
+					input.command = Command.play_replay;
+				if(key=='y')
+					input.command = Command.stop_replay;
 				Game.eventE.queue(input);
 			}
 			
 		};
+		replayE.getReplayScene().input_handler = main_scene.input_handler;
+		
 		ClientsideNetworking networking = new ClientsideNetworking(Game.eventE);
 		ClientInputEvent.Register(networking);
 		CharacterSyncEvent.Register(new GenericListener<CharacterSyncEvent>(){

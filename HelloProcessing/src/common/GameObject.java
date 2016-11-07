@@ -46,9 +46,6 @@ public class GameObject implements Serializable{
 		return this.id;
 	}
 	
-	public int getComponentSize(){
-		return components.size();
-	}
 
 	public Component getComponent(Class<? extends Component> class1) {
 		return components.get(class1.getName());
