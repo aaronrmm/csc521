@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import common.events.AbstractEvent;
 import common.events.EventPriorityComparator;
 import common.timelines.Timeline;
+import game.Game;
 
 public class EventManagementEngine {
 
@@ -28,7 +29,10 @@ public class EventManagementEngine {
 		buffer.clear();
 		while(!queue.isEmpty() && i>0){
 			i--;
-			AbstractEvent e = queue.poll();
+			AbstractEvent e = queue.peek();
+			if(e.timestamp>Game.eventtime.getTime())
+				break;
+			e = queue.poll();
 			if (e!=null){
 			e.Handle();
 			}
