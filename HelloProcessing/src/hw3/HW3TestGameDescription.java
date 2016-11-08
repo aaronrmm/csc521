@@ -55,8 +55,8 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 		//moving platforms at mid-height
 		int position = 0;
 		for (int i = 0; i < NUMBER_OF_MOVING_OBSTACLES/2; i++) {
-			int width = (int) (Math.random() * WIDTH *1 / NUMBER_OF_MOVING_OBSTACLES);
-			int height = (int) (Math.random() * HEIGHT/4 / NUMBER_OF_MOVING_OBSTACLES);
+			int width = (int) (Math.random() * WIDTH *1 / NUMBER_OF_MOVING_OBSTACLES)+3;
+			int height = (int) (Math.random() * HEIGHT/4 / NUMBER_OF_MOVING_OBSTACLES) +3;
 			int x = position+(int)(Math.random() * WIDTH/2);
 			int y = HEIGHT/2-height;
 			GameObject movingP = platformF.create(x, y, width, height);
