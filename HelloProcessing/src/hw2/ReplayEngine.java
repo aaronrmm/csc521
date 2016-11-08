@@ -156,6 +156,7 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 					else
 						System.out.println("waiting for replay starting in "+(queue.peek().timestamp-replayTimeline.getTime()));
 				}
+				Game.eventE.queue(new SceneChangeEvent(0));
 			}
 			
 		}).start();
