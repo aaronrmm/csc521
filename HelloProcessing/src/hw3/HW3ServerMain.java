@@ -44,6 +44,7 @@ public class HW3ServerMain {
 		main_scene.input_handler = new InputHandler(){
 			@Override
 			public void keyPressed(char key) {
+				System.out.println(key);
 				ClientInputEvent input = new ClientInputEvent();
 				if(key=='a')
 					input.command = Command.left;
@@ -57,6 +58,10 @@ public class HW3ServerMain {
 					input.command = Command.play_replay;
 				if(key=='y')
 					input.command = Command.stop_replay;
+				if(key=='f')
+					input.command = Command.speed_up_replay;
+				if(key=='g')
+					input.command = Command.slow_replay;
 				Game.eventE.queue(input);
 			}
 		};

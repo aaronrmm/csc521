@@ -54,6 +54,10 @@ public class HW3ClientMain {
 					input.command = Command.play_replay;
 				if(key=='y')
 					input.command = Command.stop_replay;
+				if(key=='+')
+					input.command = Command.speed_up_replay;
+				if(key=='-')
+					input.command = Command.slow_replay;
 				Game.eventE.queue(input);
 			}
 			

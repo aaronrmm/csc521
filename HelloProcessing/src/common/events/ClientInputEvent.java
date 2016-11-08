@@ -28,7 +28,9 @@ public class ClientInputEvent extends AbstractEvent implements Serializable{
 		right, 
 		record_replay, 
 		play_replay, 
-		stop_replay
+		stop_replay,
+		slow_replay,
+		speed_up_replay
 	}
 	/**
 	 * 

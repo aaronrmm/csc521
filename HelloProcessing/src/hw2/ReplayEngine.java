@@ -24,6 +24,7 @@ import game.Scene;
 public class ReplayEngine implements GenericListener<ClientInputEvent>{
 	private static final Logger logger = Logger.getLogger(ReplayEngine.class.getName());
 	private boolean is_recording = false;
+	private boolean is_playing = false;
 	private static Scene replayScene;
 	private static final long REPLAY_SCENE_ID = 574958;
 	private long return_scene_id;
@@ -65,11 +66,21 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 			break;
 		case play_replay:
 			is_recording = false;
+			is_playing = true;
 			play();
 			break;
 		case stop_replay:
 			is_recording = false;
+			is_playing = false;
 			stop();
+			break;
+		case slow_replay:
+			if(is_playing)
+				Game.eventtime.setTicksize(Game.eventtime.getTicksize()-1);
+			break;
+		case speed_up_replay:
+			if(is_playing)
+				Game.eventtime.setTicksize(Game.eventtime.getTicksize()+1);
 			break;
 		default:
 			break;
