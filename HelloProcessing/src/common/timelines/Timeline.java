@@ -27,4 +27,8 @@ public class Timeline {
 	public Timeline() {
 		this(null, 1);
 	}
+	
+	public void setTicksize(int ticksize){
+		this.ticksize = ticksize;
+	}
 }
