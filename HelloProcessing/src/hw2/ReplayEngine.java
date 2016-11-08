@@ -16,8 +16,10 @@ import common.events.CharacterDeathEvent;
 import common.events.CharacterSpawnEvent;
 import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
+import common.events.ClientInputEvent.Command;
 import common.events.GenericListener;
 import common.events.SceneChangeEvent;
+import common.timelines.Timeline;
 import game.Game;
 import game.Scene;
 
@@ -51,6 +53,23 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 			public void generateGameObjectUpdates(long timestamp, long expiration) {}
 		};
 		replayScene.id = REPLAY_SCENE_ID;
+		
+		CharacterSyncEvent.registrar.Register(REPLAY_SCENE_ID, new GenericListener<CharacterSyncEvent>(){
+
+			@Override
+			public void update(CharacterSyncEvent event) {
+				if(event.getCharacter() == null)
+					logger.log(Level.SEVERE, "Character SyncEvent has null character");
+				RenderableComponent renderable = event.getCharacter().renderingC;
+				if(renderable == null)
+					logger.log(Level.SEVERE, "Character SyncEvent has no renderable component "+event.getCharacter().entityClass+event.getCharacter().getId() );
+				if(renderable.getGameObject() == null){
+					logger.log(Level.SEVERE, "Character SyncEvent has renderable with null character");
+					renderable.setGameObject( event.getCharacter());
+				}
+				Game.getScene(event.sceneId).renderableList.put(event.getCharacter().getId(), renderable);
+			}
+		});
 	}
 	
 	public Scene getReplayScene(){
@@ -67,7 +86,7 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 		case play_replay:
 			is_recording = false;
 			is_playing = true;
-			play();
+			play(Command.play_replay);
 			break;
 		case stop_replay:
 			is_recording = false;
@@ -75,12 +94,14 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 			stop();
 			break;
 		case slow_replay:
-			if(is_playing)
-				Game.eventtime.setTicksize(Game.eventtime.getTicksize()-1);
+			is_recording = false;
+			is_playing = true;
+			play(Command.slow_replay);
 			break;
 		case speed_up_replay:
-			if(is_playing)
-				Game.eventtime.setTicksize(Game.eventtime.getTicksize()+1);
+			is_recording = false;
+			is_playing = true;
+			play(Command.speed_up_replay);
 			break;
 		default:
 			break;
@@ -103,39 +124,41 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 		
 	}
 	
-	private void play(){
-		CharacterSyncEvent.registrar.Register(new GenericListener<CharacterSyncEvent>(){
-
-			@Override
-			public void update(CharacterSyncEvent event) {
-				if(event.getCharacter() == null)
-					logger.log(Level.SEVERE, "Character SyncEvent has null character");
-				RenderableComponent renderable = event.getCharacter().renderingC;
-				if(renderable == null)
-					logger.log(Level.SEVERE, "Character SyncEvent has no renderable component "+event.getCharacter().entityClass+event.getCharacter().getId() );
-				if(renderable.getGameObject() == null){
-					logger.log(Level.SEVERE, "Character SyncEvent has renderable with null character");
-					renderable.setGameObject( event.getCharacter());
-				}
-				Game.getScene(event.sceneId).renderableList.put(event.getCharacter().getId(), renderable);
-			}
-		});
+	private void play(Command command){
+		
 		long play_start_time = Game.eventtime.getTime();
 		System.out.println("starting playing replay at "+play_start_time);
 		Game.eventE.queue(new SceneChangeEvent(REPLAY_SCENE_ID));
+		LinkedList<AbstractEvent> queue = new LinkedList<AbstractEvent>();
 		for(byte[] r : recording){
 			bis = new ByteArrayInputStream(r);
 			try {
 				ois = new ObjectInputStream(bis);
 				AbstractEvent event = (AbstractEvent)ois.readObject();
 				event.sceneId = REPLAY_SCENE_ID;
-				event.timestamp = play_start_time+event.timestamp-record_start_time;
-				Game.eventE.queue(event);
+				event.timestamp = event.timestamp-record_start_time;
+				queue.add(event);
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
 		recording.clear();
+		Timeline replayTimeline = new Timeline(Game.eventtime,1);
+		if (command.equals(Command.slow_replay)) replayTimeline.setTicksize(2);
+		if (command.equals(Command.speed_up_replay)) replayTimeline.setTicksize(0.5);
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				while(is_playing&& !queue.isEmpty()){
+					if(replayTimeline.getTime()>queue.peek().timestamp)
+						queue.poll().Handle();
+					else
+						System.out.println("waiting for replay starting in "+(queue.peek().timestamp-replayTimeline.getTime()));
+				}
+			}
+			
+		}).start();
 		
 	}
 
