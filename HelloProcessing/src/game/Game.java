@@ -13,7 +13,7 @@ import hw2.ProcessingRenderingEngine;
 public class Game implements GenericListener<SceneChangeEvent>{
 	
 	public static final Timeline realtime = new Timeline(null, 1);
-	public static Timeline eventtime = new Timeline(realtime, 30);
+	public static Timeline eventtime = new Timeline(realtime, .1);
 	public static EventManagementEngine eventE = new EventManagementEngineGVT(eventtime);
 	public static Scene current_scene;
 	public static RenderingEngine renderingE;

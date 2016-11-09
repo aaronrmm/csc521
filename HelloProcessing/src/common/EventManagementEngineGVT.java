@@ -24,7 +24,7 @@ public class EventManagementEngineGVT extends EventManagementEngine{
 						
 					}
 					if(queue.peek().timestamp<minimum)
-						minimum = queue.peek().timestamp;
+						minimum = timestamp>queue.peek().timestamp?timestamp:queue.peek().timestamp;
 				}
 				timestamp = minimum;
 				return minimum;
@@ -57,8 +57,11 @@ public class EventManagementEngineGVT extends EventManagementEngine{
 				System.out.print(buffer.peek());
 			else
 				System.out.print(buffer.peek().timestamp);
-			while(buffer.peek()!=null && buffer.peek().timestamp<=Game.eventtime.getTime())
-				queue.offer(buffer.poll());
+			while(buffer.peek()!=null && buffer.peek().timestamp<=Game.eventtime.getTime()){
+				AbstractEvent next = buffer.poll();
+				queue.offer(next);
+				
+			}
 			System.out.println();
 		}
 		System.out.println();

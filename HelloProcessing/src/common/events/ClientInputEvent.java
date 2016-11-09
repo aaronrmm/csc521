@@ -18,6 +18,10 @@ public class ClientInputEvent extends AbstractEvent implements Serializable{
 		this();
 		this.command = movement;
 	}
+		public ClientInputEvent(Long sceneId, Command command) {
+			this(command);
+			this.sceneId = sceneId;
+	}
 	public transient ClientHandler client = null;
 	public transient ClientInputEvent nextInput = null;
 	

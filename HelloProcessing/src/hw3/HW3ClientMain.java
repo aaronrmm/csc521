@@ -104,7 +104,8 @@ public class HW3ClientMain {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				networking.update(new ClientInputEvent(Command.no_op));
+				Game.eventE.queue(new ClientInputEvent(-1L, Command.no_op));
+				networking.update(new ClientInputEvent(-1L, Command.no_op));
 			}
 		}
 		

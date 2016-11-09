@@ -99,7 +99,8 @@ public class HW3ServerMain {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				networking.update(new ClientInputEvent(Command.no_op));
+				Game.eventE.queue(new ClientInputEvent(-1L,Command.no_op));
+				networking.update(new ClientInputEvent(-1L,Command.no_op));
 			}
 		}
 	}

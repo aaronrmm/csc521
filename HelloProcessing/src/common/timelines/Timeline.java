@@ -15,7 +15,7 @@ public class Timeline {
 	Timeline anchor;
 	protected long origin = 0;
 	
-	public Timeline(Timeline anchor, int ticksize){
+	public Timeline(Timeline anchor, double ticksize){
 		this.anchor = anchor;
 		this.ticksize = ticksize;
 		if(anchor!=null)
