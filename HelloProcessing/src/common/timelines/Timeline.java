@@ -3,7 +3,7 @@ package common.timelines;
 public class Timeline {
 	
 	static final long REALTIME_CONVERSION_RATE = 1000000;//converts to milliseconds
-	double ticksize = 1;
+	protected double ticksize = 1;
 	
 	public long getTime(){
 		if(anchor == null)
@@ -13,7 +13,7 @@ public class Timeline {
 	}
 	
 	Timeline anchor;
-	long origin = 0;
+	protected long origin = 0;
 	
 	public Timeline(Timeline anchor, int ticksize){
 		this.anchor = anchor;
