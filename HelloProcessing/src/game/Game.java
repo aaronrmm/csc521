@@ -3,6 +3,7 @@ package game;
 import java.util.HashMap;
 
 import common.EventManagementEngine;
+import common.EventManagementEngineGVT;
 import common.RenderingEngine;
 import common.events.GenericListener;
 import common.events.SceneChangeEvent;
@@ -13,7 +14,7 @@ public class Game implements GenericListener<SceneChangeEvent>{
 	
 	public static final Timeline realtime = new Timeline(null, 1);
 	public static Timeline eventtime = new Timeline(realtime, 30);
-	public static EventManagementEngine eventE = new EventManagementEngine(eventtime);
+	public static EventManagementEngine eventE = new EventManagementEngineGVT(eventtime);
 	public static Scene current_scene;
 	public static RenderingEngine renderingE;
 	private static HashMap<Object, Scene> scenes = new HashMap<Object, Scene>();

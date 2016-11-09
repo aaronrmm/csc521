@@ -23,7 +23,7 @@ public class ClientHandler {
 	private ClientInputEvent first_unread_input;
 	private ClientInputEvent last_unread_input;
 	private ConcurrentLinkedQueue<AbstractEvent> updateQueue = new ConcurrentLinkedQueue<AbstractEvent>();
-	public static long nextId;
+	public static long nextId=1;
 	private long clientId;
 
 	public ClientHandler(Socket s) {

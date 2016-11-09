@@ -24,7 +24,7 @@ public abstract class AbstractEvent implements Serializable{
 	public AbstractEvent(){
 		this.sceneId = Game.current_scene.id;
 		this.id = id_gen++;
-		this.timestamp = Game.eventtime.getTime();
+		this.timestamp = Game.eventtime.getTime()+1;
 	}
 	
 	public abstract void Handle();

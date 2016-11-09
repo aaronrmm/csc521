@@ -36,6 +36,8 @@ public class HW3ClientMain {
 		@SuppressWarnings("unused")
 		Game game = new Game(HW3ClientMain.class.getName(), main_scene, main_scene, replayE.getReplayScene());
 
+		ClientsideNetworking networking = new ClientsideNetworking(Game.eventE);
+		
 		main_scene.input_handler = new InputHandler(){
 
 
@@ -58,14 +60,13 @@ public class HW3ClientMain {
 					input.command = Command.speed_up_replay;
 				if(key=='-')
 					input.command = Command.slow_replay;
-				Game.eventE.queue(input);
+				networking.update(input);
 			}
 			
 		};
 		replayE.getReplayScene().input_handler = main_scene.input_handler;
 		
-		ClientsideNetworking networking = new ClientsideNetworking(Game.eventE);
-		ClientInputEvent.registrar.Register(networking);
+		//ClientInputEvent.registrar.Register(networking);
 		CharacterSyncEvent.registrar.Register(new GenericListener<CharacterSyncEvent>(){
 
 			@Override
@@ -93,7 +94,7 @@ public class HW3ClientMain {
 		long lastTick = 0;
 
 		while(true){
-			if (Game.eventtime.getTime() - lastTick >0){
+			if (Game.eventtime.getTime() >-1){
 				try{
 				Game.current_scene.physicsE.tick((int)(Game.eventtime.getTime()-lastTick));
 				lastTick = Game.eventtime.getTime();
@@ -103,6 +104,7 @@ public class HW3ClientMain {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				networking.update(new ClientInputEvent(Command.no_op));
 			}
 		}
 		

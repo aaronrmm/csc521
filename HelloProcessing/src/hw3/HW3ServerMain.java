@@ -9,8 +9,8 @@ import common.events.CharacterDeathEvent;
 import common.events.CharacterSpawnEvent;
 import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
-import common.events.SceneChangeEvent;
 import common.events.ClientInputEvent.Command;
+import common.events.SceneChangeEvent;
 import common.factories.PlatformObjectFactory;
 import common.factories.PlayerObjectFactory;
 import common.factories.SpawnPointFactory;
@@ -80,12 +80,14 @@ public class HW3ServerMain {
 		HW3TestGameDescription gameD = new HW3TestGameDescription(Game.eventE);
 		gameD.generateGame(Game.eventE, Game.renderingE, main_scene.physicsE, playerF, platformF, spawnF);
 		ClientInputEvent.registrar.Register(p->gameD.update(p));
+		ClientInputEvent.registrar.Register(p->networking.update(p));
+
 		
 		
 		networking.start();
 		long lastTick = 0;
 		while(true){
-			if (Game.eventtime.getTime() - lastTick >0){
+			if (Game.eventtime.getTime()>-1){
 				Game.current_scene.physicsE.tick((int)(Game.eventtime.getTime()-lastTick));
 				lastTick = Game.eventtime.getTime();
 				Game.current_scene.generateGameObjectUpdates(Game.eventtime.getTime(), Game.eventtime.getTime()+1);
@@ -97,6 +99,7 @@ public class HW3ServerMain {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				networking.update(new ClientInputEvent(Command.no_op));
 			}
 		}
 	}

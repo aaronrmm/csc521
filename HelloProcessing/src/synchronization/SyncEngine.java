@@ -7,11 +7,30 @@ import common.events.AbstractEvent;
 import common.events.ClientInputEvent;
 import common.events.EventPriorityComparator;
 import common.events.GenericListener;
+import common.timelines.Timeline;
 
-public class SyncEngine implements GenericListener<ClientInputEvent>{
+public class SyncEngine extends Timeline implements GenericListener<ClientInputEvent>{
 
-	public SyncEngine(){
+	public SyncEngine(Timeline anchor){
+		
 		ClientInputEvent.registrar.Register(this);
+		this.anchor = anchor;
+
+	}
+	
+	long timestamp=0;
+	Timeline anchor;
+	
+	@Override
+	public long getTime(){
+		long minimum = this.anchor.getTime();
+		for(PriorityQueue<AbstractEvent> queue: queues.values()){
+			if(queue.peek().timestamp<minimum)
+				minimum = queue.peek().timestamp;
+		}
+		timestamp = minimum;
+		System.out.println(timestamp);
+		return minimum;
 	}
 	
 	private EventPriorityComparator comparator = new EventPriorityComparator();
@@ -23,4 +42,6 @@ public class SyncEngine implements GenericListener<ClientInputEvent>{
 			queues.put(event.clientId, new PriorityQueue<AbstractEvent>(comparator));
 		queues.get(event.clientId).add(event);
 	}
+	
+	public Timeline gvt;
 }

@@ -48,6 +48,7 @@ public class ServersideNetworking implements GenericListener<AbstractEvent>{
 										while (true) {
 											ClientInputEvent input = (ClientInputEvent)ois.readObject();
 											input.client = clients.get(s);
+											input.clientId = clients.get(s).getClientId();
 											eventE.queue(input);
 										}
 
