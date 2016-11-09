@@ -80,27 +80,20 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 	public void update(ClientInputEvent event) {
 		switch (event.command) {
 		case record_replay:
+			stop();
 			is_recording = true;
 			record_start_time = Game.eventtime.getTime();
 			break;
 		case play_replay:
-			is_recording = false;
-			is_playing = true;
 			play(Command.play_replay);
 			break;
 		case stop_replay:
-			is_recording = false;
-			is_playing = false;
 			stop();
 			break;
 		case slow_replay:
-			is_recording = false;
-			is_playing = true;
 			play(Command.slow_replay);
 			break;
 		case speed_up_replay:
-			is_recording = false;
-			is_playing = true;
 			play(Command.speed_up_replay);
 			break;
 		default:
@@ -125,6 +118,8 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 	}
 	
 	private void play(Command command){
+		is_recording = false;
+		is_playing = true;
 		
 		long play_start_time = Game.eventtime.getTime();
 		System.out.println("starting playing replay at "+play_start_time);
@@ -156,7 +151,7 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 					else
 						System.out.println("waiting for replay at"+(queue.peek().timestamp+"->"+replayTimeline.getTime()));
 				}
-				Game.eventE.queue(new SceneChangeEvent(0));
+				stop();
 			}
 			
 		}).start();
@@ -164,6 +159,8 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 	}
 
 	private void stop(){
+		is_recording = false;
+		is_playing = false;
 		Game.eventE.queue(new SceneChangeEvent(this.return_scene_id));
 		replayScene.renderableList.clear();
 	}
