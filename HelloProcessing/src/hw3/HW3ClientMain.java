@@ -12,6 +12,7 @@ import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Command;
 import common.events.GenericListener;
+import common.events.TimeUpdateEvent;
 import game.Game;
 import game.InputHandler;
 import game.Scene;
@@ -65,7 +66,14 @@ public class HW3ClientMain {
 			
 		};
 		replayE.getReplayScene().input_handler = main_scene.input_handler;
-		
+		TimeUpdateEvent.registrar.Register(new GenericListener<TimeUpdateEvent>(){
+
+			@Override
+			public void update(TimeUpdateEvent event) {
+				Game.eventtime.SetTime(event.time);
+			}
+			
+		});
 		//ClientInputEvent.registrar.Register(networking);
 		CharacterSyncEvent.registrar.Register(new GenericListener<CharacterSyncEvent>(){
 

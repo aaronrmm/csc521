@@ -5,6 +5,7 @@ import java.util.PriorityQueue;
 
 import common.events.AbstractEvent;
 import common.events.EventPriorityComparator;
+import common.events.TimeUpdateEvent;
 import common.timelines.Timeline;
 import game.Game;
 
@@ -29,6 +30,11 @@ public class EventManagementEngineGVT extends EventManagementEngine{
 				timestamp = minimum;
 				return minimum;
 			}
+			
+			@Override
+			public void SetTime(long time){
+				timestamp = time;
+			}
 		};
 		this.anchor = anchor;
 	}
@@ -43,8 +49,10 @@ public class EventManagementEngineGVT extends EventManagementEngine{
 	private HashMap<Long, PriorityQueue<AbstractEvent>> buffers = new HashMap<Long, PriorityQueue<AbstractEvent>>();
 	
 	public void queue(AbstractEvent event) {
-		if(!buffers.containsKey(event.clientId))
+		if(!buffers.containsKey(event.clientId)){
 			buffers.put(event.clientId, new PriorityQueue<AbstractEvent>(comparator));
+			queue(new TimeUpdateEvent(Game.eventtime.getTime(), event.clientId));
+		}
 		buffers.get(event.clientId).add(event);
 	}
 	

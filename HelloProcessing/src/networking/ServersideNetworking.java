@@ -14,6 +14,7 @@ import common.events.AbstractEvent;
 import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.GenericListener;
+import common.events.TimeUpdateEvent;
 
 public class ServersideNetworking implements GenericListener<AbstractEvent>{
 
@@ -22,6 +23,7 @@ public class ServersideNetworking implements GenericListener<AbstractEvent>{
 	private ServerSocket ss;
 	private EventManagementEngine eventE;
 	private static ConcurrentHashMap<Socket, ClientHandler> clients = new ConcurrentHashMap<Socket, ClientHandler>();
+	private static ConcurrentHashMap<Long, ClientHandler> clientsById = new ConcurrentHashMap<Long, ClientHandler>();
 	
 	public ServersideNetworking(EventManagementEngine eventE, int port){
 		this.port = port;
@@ -38,6 +40,7 @@ public class ServersideNetworking implements GenericListener<AbstractEvent>{
 						while (true) {
 							Socket s = ss.accept();
 							clients.put(s, new ClientHandler(s));	
+							clientsById.put(clients.get(s).getClientId(), clients.get(s));
 							new Thread(new Runnable() {
 								@Override
 								public void run() {
@@ -49,6 +52,7 @@ public class ServersideNetworking implements GenericListener<AbstractEvent>{
 											ClientInputEvent input = (ClientInputEvent)ois.readObject();
 											input.client = clients.get(s);
 											input.clientId = clients.get(s).getClientId();
+											update(input);
 											eventE.queue(input);
 										}
 
@@ -83,6 +87,10 @@ public class ServersideNetworking implements GenericListener<AbstractEvent>{
 			client.addUpdate(event);
 		}
 		
+	}
+	
+	public void updateTime(TimeUpdateEvent event){
+		clientsById.get(event.clientToUpdate).addUpdate(event);
 	}
 
 }

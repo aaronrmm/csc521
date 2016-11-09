@@ -11,6 +11,7 @@ import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Command;
 import common.events.SceneChangeEvent;
+import common.events.TimeUpdateEvent;
 import common.factories.PlatformObjectFactory;
 import common.factories.PlayerObjectFactory;
 import common.factories.SpawnPointFactory;
@@ -81,6 +82,7 @@ public class HW3ServerMain {
 		gameD.generateGame(Game.eventE, Game.renderingE, main_scene.physicsE, playerF, platformF, spawnF);
 		ClientInputEvent.registrar.Register(p->gameD.update(p));
 		ClientInputEvent.registrar.Register(p->networking.update(p));
+		TimeUpdateEvent.registrar.Register(p->networking.update(p));
 
 		
 		

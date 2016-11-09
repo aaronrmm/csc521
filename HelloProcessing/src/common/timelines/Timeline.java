@@ -36,4 +36,8 @@ public class Timeline {
 	public double getTicksize() {
 		return this.ticksize;
 	}
+
+	public void SetTime(long time) {
+		this.origin = this.getTime()-time;
+	}
 }
