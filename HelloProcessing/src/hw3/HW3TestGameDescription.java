@@ -30,7 +30,7 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 	private static final Logger logger = Logger.getLogger(HW3TestGameDescription.class.getName());
 	private static final boolean DEBUG_MODE = true;
 	private static final int NUMBER_OF_SPAWN_POINTS = 2;
-	private static final int NUMBER_OF_MOVING_OBSTACLES = 2;
+	private static final int NUMBER_OF_MOVING_OBSTACLES = 10;
 	private static final int WIDTH = 300;
 	private static final int HEIGHT = 300;
 	private PlayerObjectFactory playerF;
@@ -56,11 +56,12 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 		int position = 0;
 		for (int i = 0; i < NUMBER_OF_MOVING_OBSTACLES/2; i++) {
 			int width = (int) (Math.random() * WIDTH *1 / NUMBER_OF_MOVING_OBSTACLES)+3;
-			int height = (int) (Math.random() * HEIGHT/4 / NUMBER_OF_MOVING_OBSTACLES) +3;
+			int height = 3;
 			int x = position+(int)(Math.random() * WIDTH/2);
-			int y = HEIGHT/2-height;
+			int seed = (int)(Math.random()*300);
+			int y = HEIGHT/2-height+(int)(Math.random()*HEIGHT);
 			GameObject movingP = platformF.create(x, y, width, height);
-			movingP.add(new OscillatingController(movingP, (PhysicsComponent)movingP.getComponent(PhysicsComponent.class), physicsE));
+			movingP.add(new OscillatingController(movingP, (PhysicsComponent)movingP.getComponent(PhysicsComponent.class), physicsE, x, seed));
 			position += width;
 			movingP.networked = true;
 			gameObjects.add(movingP);
@@ -68,7 +69,7 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 		
 		//stationary platforms at bottom of screen
 		position = 0;
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < 2; i++) {
 			int width = (int) (WIDTH/3);
 			int height = (int) (Math.random() * 3+10);
 			int x = (WIDTH*2*i)/3;

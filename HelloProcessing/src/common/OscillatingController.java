@@ -17,11 +17,15 @@ public class OscillatingController extends AbstractComponent implements TimingCo
 	
 	final int frequency = 30;
 	final int pause = 10;
+	int startingX;
+	int seed;
 	
-	public OscillatingController(GameObject gameObject, PhysicsComponent physicsComponent, PhysicsEngine physicsE){
+	public OscillatingController(GameObject gameObject, PhysicsComponent physicsComponent, PhysicsEngine physicsE, int startingX, int seed){
 		super(gameObject);
 		this.physicsComponent = physicsComponent;
 		physicsE.registerTimer(this);
+		this.startingX = startingX;
+		this.seed = seed;
 		
 	}
 	
@@ -33,7 +37,7 @@ public class OscillatingController extends AbstractComponent implements TimingCo
 
 	@Override
 	public void update(int timestamp) {
-		this.physicsComponent.getRectangle().x = Math.abs((timestamp*2)%300-150);
+		this.physicsComponent.getRectangle().x = startingX+Math.abs((timestamp*2+seed)%300-150);
 		/*
 		if(timestamp%frequency< frequency/2-pause){
 			//this.physicsComponent.clearForces();
