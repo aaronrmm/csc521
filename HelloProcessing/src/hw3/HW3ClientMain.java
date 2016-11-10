@@ -12,6 +12,7 @@ import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Command;
 import common.events.GenericListener;
+import common.events.SceneChangeEvent;
 import common.events.TimeUpdateEvent;
 import game.Game;
 import game.InputHandler;
@@ -74,7 +75,14 @@ public class HW3ClientMain {
 			}
 			
 		});
-		//ClientInputEvent.registrar.Register(networking);
+		SceneChangeEvent.registrar.Register(new GenericListener<SceneChangeEvent>(){
+
+			@Override
+			public void update(SceneChangeEvent event) {
+				Game.current_scene.renderableList.clear();
+			}
+			
+		});
 		CharacterSyncEvent.registrar.Register(new GenericListener<CharacterSyncEvent>(){
 
 			@Override
@@ -87,6 +95,9 @@ public class HW3ClientMain {
 				if(renderable.getGameObject() == null){
 					logger.log(Level.SEVERE, "Character SyncEvent has renderable with null character");
 					renderable.setGameObject( event.getCharacter());
+				}
+				if(!Game.getScene(event.sceneId).renderableList.containsValue(renderable)){
+					logger.info("New renderable+"+renderable.id+" for gameObject"+event.getCharacter().getId()+" added to scene"+Game.current_scene.id);
 				}
 				Game.getScene(event.sceneId).renderableList.put(event.getCharacter().getId(), renderable);
 			}

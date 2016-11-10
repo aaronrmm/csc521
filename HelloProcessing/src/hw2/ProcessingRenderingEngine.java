@@ -54,6 +54,7 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 		this.fill(255);
 		for(RenderableComponent renderable : Game.current_scene.renderableList.values()){
 			this.rect(renderable.getX(), renderable.getY(), renderable.getWidth(), renderable.getHeight());
+			logger.finest(renderable.getGameObject().getId()+",");
 		}
 	}
 	

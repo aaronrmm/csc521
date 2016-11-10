@@ -67,7 +67,7 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 					logger.log(Level.SEVERE, "Character SyncEvent has renderable with null character");
 					renderable.setGameObject( event.getCharacter());
 				}
-				Game.getScene(event.sceneId).renderableList.put(event.getCharacter().getId(), renderable);
+				Game.getScene(REPLAY_SCENE_ID).renderableList.put(event.getCharacter().getId(), renderable);
 			}
 		});
 	}
@@ -108,7 +108,6 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 				oos = new ObjectOutputStream(baos);
 				oos.writeObject(r);
 				recording.add(baos.toByteArray());
-				System.out.println(this.getClass().getName()+" recorded event "+r);
 				logger.log(Level.FINEST, this.getClass().getName()+" recorded event "+r);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -122,7 +121,7 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 		is_playing = true;
 		
 		long play_start_time = Game.eventtime.getTime();
-		System.out.println("starting playing replay at "+play_start_time);
+		logger.finest("starting playing replay at "+play_start_time);
 		Game.eventE.queue(new SceneChangeEvent(REPLAY_SCENE_ID));
 		LinkedList<AbstractEvent> queue = new LinkedList<AbstractEvent>();
 		for(byte[] r : recording){
@@ -149,9 +148,9 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 					if(replayTimeline.getTime()>queue.peek().timestamp)
 						queue.poll().Handle();
 					else
-						System.out.println("waiting for replay at"+(queue.peek().timestamp+"->"+replayTimeline.getTime()));
+						logger.finest("waiting for replay at"+(queue.peek().timestamp+"->"+replayTimeline.getTime()));
 				}
-				stop();
+				//stop();
 			}
 			
 		}).start();
@@ -162,6 +161,7 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 		is_recording = false;
 		is_playing = false;
 		Game.eventE.queue(new SceneChangeEvent(this.return_scene_id));
+		recording.clear();
 		replayScene.renderableList.clear();
 	}
 

@@ -2,6 +2,7 @@ package common;
 
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import java.util.logging.Logger;
 
 import common.events.AbstractEvent;
 import common.events.EventPriorityComparator;
@@ -10,6 +11,7 @@ import common.timelines.Timeline;
 import game.Game;
 
 public class EventManagementEngineGVT extends EventManagementEngine{
+	private static final Logger logger = Logger.getLogger(EventManagementEngineGVT.class.getName());
 
 	PriorityQueue<AbstractEvent> queue = new PriorityQueue<AbstractEvent>(new EventPriorityComparator());
 	
@@ -57,22 +59,20 @@ public class EventManagementEngineGVT extends EventManagementEngine{
 	}
 	
 	public void HandleNextEvents(int i) {
-		System.out.println("TIME: "+timestamp);
+		logger.finest("TIME: "+timestamp);
 		for(Long bufferId: buffers.keySet()){
 			PriorityQueue<AbstractEvent>buffer = buffers.get(bufferId);
-			System.out.print(bufferId+":");
+			logger.finest(bufferId+":");
 			if(buffer.peek()==null)
-				System.out.print(buffer.peek());
+				logger.finest(buffer.peek()+"");
 			else
-				System.out.print(buffer.peek().timestamp);
+				logger.finest(buffer.peek().timestamp+"");
 			while(buffer.peek()!=null && buffer.peek().timestamp<=Game.eventtime.getTime()){
 				AbstractEvent next = buffer.poll();
 				queue.offer(next);
 				
 			}
-			System.out.println();
 		}
-		System.out.println();
 		while(!queue.isEmpty() && i>0){
 			i--;
 			AbstractEvent e = queue.peek();
