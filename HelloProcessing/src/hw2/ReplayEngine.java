@@ -136,10 +136,10 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 				e.printStackTrace();
 			}
 		}
-		recording.clear();
-		Timeline replayTimeline = new Timeline(Game.eventtime,1);
-		if (command.equals(Command.slow_replay)) replayTimeline.setTicksize(2);
-		if (command.equals(Command.speed_up_replay)) replayTimeline.setTicksize(0.5);
+		recording.clear();double ticksize = 1;
+		if (command.equals(Command.slow_replay)) ticksize=2;
+		if (command.equals(Command.speed_up_replay)) ticksize= .5;
+		Timeline replayTimeline = new Timeline(Game.eventtime, ticksize);
 		new Thread(new Runnable(){
 
 			@Override
@@ -150,7 +150,7 @@ public class ReplayEngine implements GenericListener<ClientInputEvent>{
 					else
 						logger.finest("waiting for replay at"+(queue.peek().timestamp+"->"+replayTimeline.getTime()));
 				}
-				//stop();
+				stop();
 			}
 			
 		}).start();

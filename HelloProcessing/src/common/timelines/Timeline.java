@@ -25,12 +25,7 @@ public class Timeline {
 	}
 
 	public Timeline() {
-		this(null, 1);
-	}
-	
-	public void setTicksize(double ticksize){
-		this.ticksize = ticksize>0?ticksize:1;
-		System.out.println("Current Ticksize is "+this.ticksize);
+		this(null, 1);	
 	}
 
 	public double getTicksize() {
