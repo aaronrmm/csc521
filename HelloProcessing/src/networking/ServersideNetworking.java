@@ -14,7 +14,6 @@ import common.events.AbstractEvent;
 import common.events.CharacterSyncEvent;
 import common.events.ClientInputEvent;
 import common.events.GenericListener;
-import common.events.TimeUpdateEvent;
 
 public class ServersideNetworking implements GenericListener<AbstractEvent>{
 
@@ -89,8 +88,5 @@ public class ServersideNetworking implements GenericListener<AbstractEvent>{
 		
 	}
 	
-	public void updateTime(TimeUpdateEvent event){
-		clientsById.get(event.clientToUpdate).addUpdate(event);
-	}
 
 }
