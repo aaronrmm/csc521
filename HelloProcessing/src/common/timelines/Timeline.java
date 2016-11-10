@@ -27,11 +27,7 @@ public class Timeline {
 	public Timeline() {
 		this(null, 1);	
 	}
-
-	public double getTicksize() {
-		return this.ticksize;
-	}
-
+	
 	public void SetTime(long time) {
 		this.origin = this.getTime()-time;
 	}
