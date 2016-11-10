@@ -47,21 +47,15 @@ public class HW3ServerMain {
 			public void keyPressed(char key) {
 				System.out.println(key);
 				ClientInputEvent input = new ClientInputEvent();
-				if(key=='a')
-					input.command = Command.left;
-				if(key=='d')
-					input.command = Command.right;
-				if(key==' ')
-					input.command = Command.jump;
 				if(key=='r')
 					input.command = Command.record_replay;
-				if(key=='t')
+				if(key=='g')
 					input.command = Command.play_replay;
-				if(key=='y')
+				if(key=='c')
 					input.command = Command.stop_replay;
 				if(key=='f')
 					input.command = Command.speed_up_replay;
-				if(key=='g')
+				if(key=='h')
 					input.command = Command.slow_replay;
 				Game.eventE.queue(input);
 			}

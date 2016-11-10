@@ -54,13 +54,13 @@ public class HW3ClientMain {
 					input.command = Command.jump;
 				if(key=='r')
 					input.command = Command.record_replay;
-				if(key=='t')
+				if(key=='g')
 					input.command = Command.play_replay;
-				if(key=='y')
+				if(key=='c')
 					input.command = Command.stop_replay;
-				if(key=='+')
+				if(key=='f')
 					input.command = Command.speed_up_replay;
-				if(key=='-')
+				if(key=='h')
 					input.command = Command.slow_replay;
 				networking.update(input);
 			}
