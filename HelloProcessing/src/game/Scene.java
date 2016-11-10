@@ -5,13 +5,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import common.GameObject;
 import common.RenderableComponent;
 import common.events.CharacterSyncEvent;
-import common.timelines.Timeline;
 import physics.BasicPhysicsEngine;
 import physics.PhysicsEngine;
 
 public class Scene {
 	public long id;
-	public Timeline timeline = new Timeline();
 	public ConcurrentHashMap<Long, RenderableComponent>renderableList = new ConcurrentHashMap<Long, RenderableComponent>();
 	public InputHandler input_handler = new InputHandler(){
 		@Override
