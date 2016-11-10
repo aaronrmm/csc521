@@ -17,7 +17,6 @@ import common.events.TimeUpdateEvent;
 import game.Game;
 import game.InputHandler;
 import game.Scene;
-import hw2.ReplayEngine;
 import networking.ClientsideNetworking;
 
 public class HW3ClientMain {

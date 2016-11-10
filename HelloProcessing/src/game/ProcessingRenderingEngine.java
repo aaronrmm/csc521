@@ -1,4 +1,4 @@
-package hw2;
+package game;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -6,8 +6,6 @@ import java.util.logging.Logger;
 import common.EventManagementEngine;
 import common.RenderableComponent;
 import common.RenderingEngine;
-import game.Game;
-import game.Scene;
 import processing.core.PApplet;
 
 public class ProcessingRenderingEngine extends PApplet implements RenderingEngine {

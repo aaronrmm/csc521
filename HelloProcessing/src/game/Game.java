@@ -8,7 +8,6 @@ import common.RenderingEngine;
 import common.events.GenericListener;
 import common.events.SceneChangeEvent;
 import common.timelines.Timeline;
-import hw2.ProcessingRenderingEngine;
 
 public class Game implements GenericListener<SceneChangeEvent>{
 	
