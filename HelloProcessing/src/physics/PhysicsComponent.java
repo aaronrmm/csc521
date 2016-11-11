@@ -65,7 +65,7 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 	}
 	public void addImpulseForce(Vec2 vector){
 		this.impulseForces.add(vector);
-		if(body!=null)body.applyLinearImpulse(vector, body.getPosition());
+		if(body!=null)body.applyLinearImpulse(vector, body.getPosition(), true);
 	}
 
 	public int getX(){ return body==null?shape.x:(int)body.getPosition().x; }

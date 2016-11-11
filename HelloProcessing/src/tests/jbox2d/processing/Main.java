@@ -13,7 +13,7 @@ public class Main extends PApplet{
 	public static Body BALL = null;
 
 	//Create a JBox2D world. 
-    public static final World world = new World(new Vec2(0.0f, -0.01f), true);
+    public static final World world = new World(new Vec2(0.0f, -0.01f));
      
     //Screen width and height
     public static final int WIDTH = 600;
@@ -90,13 +90,13 @@ public class Main extends PApplet{
 		if(key=='a')//applyForce
 			BALL.applyTorque(200);
 		if(key=='w')
-			BALL.applyLinearImpulse(new Vec2(0, 1), BALL.getPosition());
+			BALL.applyLinearImpulse(new Vec2(0, 1), BALL.getPosition(), false);
 		if(key=='s')
-			BALL.applyLinearImpulse(new Vec2(0, -1), BALL.getPosition());
+			BALL.applyLinearImpulse(new Vec2(0, -1), BALL.getPosition(), false);
 		if(key=='d')
 			BALL.applyTorque(-200);
 		if(key==' ')
-			BALL.applyLinearImpulse(new Vec2(0, 1), BALL.getPosition());
+			BALL.applyLinearImpulse(new Vec2(0, 1), BALL.getPosition(), false);
 		
 	}
 

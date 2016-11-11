@@ -15,7 +15,7 @@ public class JBox2dWrapper implements PhysicsEngine{
 	private HashMap<PhysicsComponent, Body> objectMap = new HashMap<PhysicsComponent,Body>();
 	
 	public JBox2dWrapper(){
-	    world = new World(new Vec2(0.0f, -0.01f), true);
+	    world = new World(new Vec2(0.0f, -0.01f));
 	}
 	@Override
 	public void addStaticObject(PhysicsComponent physicsComponent, int x, int y) {
