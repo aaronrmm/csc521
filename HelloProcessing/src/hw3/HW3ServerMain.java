@@ -19,6 +19,7 @@ import common.factories.SpawnPointFactory;
 import game.Game;
 import game.InputHandler;
 import game.Scene;
+import games.platforms.PlatformsGameDescription;
 import networking.ServersideNetworking;
 
 public class HW3ServerMain {
@@ -26,7 +27,7 @@ public class HW3ServerMain {
 	@SuppressWarnings("unused")
 	private final static Logger logger = Logger.getLogger(HW3ServerMain.class.getName());
 	
-	public static GameDescription gameD = new HW3TestGameDescription();
+	public static GameDescription gameD = new PlatformsGameDescription();
 	
 	public static void setGameDescription(GameDescription gameDescription){
 		gameD = gameDescription;

@@ -1,4 +1,4 @@
-package hw3;
+package games.platforms;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -26,9 +26,9 @@ import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 import physics.Rectangle;
 
-public class HW3TestGameDescription implements GameDescription, GenericListener<ClientInputEvent>{
+public class PlatformsGameDescription implements GameDescription, GenericListener<ClientInputEvent>{
 
-	private static final Logger logger = Logger.getLogger(HW3TestGameDescription.class.getName());
+	private static final Logger logger = Logger.getLogger(PlatformsGameDescription.class.getName());
 	private static final boolean DEBUG_MODE = true;
 	private static final int NUMBER_OF_SPAWN_POINTS = 2;
 	private static final int NUMBER_OF_MOVING_OBSTACLES = 10;
@@ -40,13 +40,13 @@ public class HW3TestGameDescription implements GameDescription, GenericListener<
 	private ConcurrentLinkedQueue <GameObject> gameObjects = new ConcurrentLinkedQueue<GameObject>();
 	private EventManagementEngine eventE;
 	
-	public HW3TestGameDescription() {
-		ClientInputEvent.registrar.Register(this);
+	public PlatformsGameDescription() {
 	}
 
 	public void generateGame(EventManagementEngine eventE, RenderingEngine renderingE, PhysicsEngine physicsE, PlayerObjectFactory playerF, PlatformObjectFactory platformF, SpawnPointFactory spawnF) {
 		this.playerF = playerF;
 		this.eventE = eventE;
+		ClientInputEvent.registrar.Register(this);
 		
 		//player spawn points dividing top of screen
 		for(int i=0;i<NUMBER_OF_SPAWN_POINTS;i++){
