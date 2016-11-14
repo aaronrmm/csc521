@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import common.EntityClass;
 import common.EventManagementEngine;
+import common.GameDescription;
 import common.GameObject;
 import common.OscillatingController;
 import common.PlayerInputComponent;
@@ -25,7 +26,7 @@ import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 import physics.Rectangle;
 
-public class HW3TestGameDescription implements GenericListener<ClientInputEvent>{
+public class HW3TestGameDescription implements GameDescription, GenericListener<ClientInputEvent>{
 
 	private static final Logger logger = Logger.getLogger(HW3TestGameDescription.class.getName());
 	private static final boolean DEBUG_MODE = true;
@@ -39,7 +40,7 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 	private ConcurrentLinkedQueue <GameObject> gameObjects = new ConcurrentLinkedQueue<GameObject>();
 	private EventManagementEngine eventE;
 	
-	public HW3TestGameDescription(EventManagementEngine eventE) {
+	public HW3TestGameDescription() {
 		ClientInputEvent.registrar.Register(this);
 	}
 
@@ -156,6 +157,7 @@ public class HW3TestGameDescription implements GenericListener<ClientInputEvent>
 		return player;
 	}
 
+	@Override
 	public void update(ClientInputEvent input) {
 		if(input.client==null)
 			return;

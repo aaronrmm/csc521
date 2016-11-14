@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import common.GameDescription;
 import common.events.CharacterDeathEvent;
 import common.events.CharacterSpawnEvent;
 import common.events.CharacterSyncEvent;
@@ -24,6 +25,12 @@ public class HW3ServerMain {
 
 	@SuppressWarnings("unused")
 	private final static Logger logger = Logger.getLogger(HW3ServerMain.class.getName());
+	
+	public static GameDescription gameD = new HW3TestGameDescription();
+	
+	public static void setGameDescription(GameDescription gameDescription){
+		gameD = gameDescription;
+	}
 	
 	public static void main(String[]args){
 		
@@ -71,7 +78,6 @@ public class HW3ServerMain {
 		CharacterDeathEvent.registrar.Register(p->networking.update(p));
 		//ClientInputEvent.Register(p->networking.update(p));
 		ClientInputEvent.registrar.Register(p->replayE.update(p));
-		HW3TestGameDescription gameD = new HW3TestGameDescription(Game.eventE);
 		gameD.generateGame(Game.eventE, Game.renderingE, main_scene.physicsE, playerF, platformF, spawnF);
 		ClientInputEvent.registrar.Register(p->gameD.update(p));
 		ClientInputEvent.registrar.Register(p->networking.update(p));

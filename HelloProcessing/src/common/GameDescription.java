@@ -1,5 +1,6 @@
 package common;
 
+import common.events.ClientInputEvent;
 import common.factories.PlatformObjectFactory;
 import common.factories.PlayerObjectFactory;
 import common.factories.SpawnPointFactory;
@@ -12,5 +13,5 @@ public interface GameDescription {
 	void generateGame(EventManagementEngine eventE, RenderingEngine renderingE, PhysicsEngine physicsE, PlayerObjectFactory playerF,
 			PlatformObjectFactory platformF, SpawnPointFactory spawnF);
 
-	void generateGameObjectUpdates(long timestamp, long expiration);
+	void update(ClientInputEvent p);
 }
