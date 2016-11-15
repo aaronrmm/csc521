@@ -19,6 +19,7 @@ public class GameObject implements Serializable{
 	public boolean alive = true;
 	public boolean networked = false;;
 	private static long nextId;
+	private HashMap<String, Object> properties = new HashMap<String, Object>();
 	
 	public GameObject(EntityClass entityClass){
 		this.entityClass = entityClass;
@@ -54,5 +55,13 @@ public class GameObject implements Serializable{
 
 	public Component getComponent(Class<? extends Component> class1) {
 		return components.get(class1.getName());
+	}
+	
+	public Object getProperty(String propertyName){
+		return properties.get(propertyName);
+	}
+	
+	public void setProperty(String propertyName, Object property){
+		properties.put(propertyName, property);
 	}
 }
