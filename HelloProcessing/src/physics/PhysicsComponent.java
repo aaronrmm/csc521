@@ -49,6 +49,10 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 		int newY = (int)(this.shape.getY()+force.y*milliseconds);
 		this.shape.setLocation(newX, newY);
 	}
+	
+	public void translate(int x, int y){
+		this.shape.setLocation(x,y);
+	}
 
 	public boolean intersects(Rectangle2D other){
 		return shape.intersects(other);

@@ -3,6 +3,8 @@ package common;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import physics.PhysicsComponent;
+
 public class GameObject implements Serializable{
 
 	/**
@@ -12,6 +14,7 @@ public class GameObject implements Serializable{
 	public EntityClass entityClass;
 	private HashMap<String, Component> components = new HashMap<String, Component>();
 	public RenderableComponent renderingC;
+	public PhysicsComponent physicsC;
 	private long id;
 	public boolean alive = true;
 	public boolean networked = false;;
@@ -35,6 +38,8 @@ public class GameObject implements Serializable{
 		this.components.put(component.getClass().getName(),component);
 		if (component instanceof RenderableComponent)
 			this.renderingC = (RenderableComponent) component;
+		if( component instanceof PhysicsComponent)
+			this.physicsC = (PhysicsComponent) component;
 		component.setGameObject(this);
 	}
 

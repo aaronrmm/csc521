@@ -21,6 +21,7 @@ import game.InputHandler;
 import game.Scene;
 import games.platforms.PlatformsGameDescription;
 import networking.ServersideNetworking;
+import scripting.ScriptManager;
 
 public class HW3ServerMain {
 
@@ -90,6 +91,7 @@ public class HW3ServerMain {
 		long lastTick = 0;
 		while(true){
 			if (Game.eventtime.getTime()>-1){
+				ScriptManager.run_scripts();
 				Game.current_scene.physicsE.tick((int)(Game.eventtime.getTime()-lastTick));
 				lastTick = Game.eventtime.getTime();
 				Game.current_scene.generateGameObjectUpdates(Game.eventtime.getTime(), Game.eventtime.getTime()+1);

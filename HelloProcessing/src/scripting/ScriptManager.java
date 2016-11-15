@@ -1,6 +1,10 @@
 package scripting;
 
+import java.util.ArrayList;
+
 import javax.script.*;
+
+import common.ScriptComponent;
 
 /**
  * Class to create and manage a JavaScript engine.
@@ -39,9 +43,9 @@ public class ScriptManager {
 	 * Will invoke the "update" function of the script loaded by this engine
 	 * without any parameters.
 	 */
-	public static void executeScript() {
+	public static void executeScript(String script_method_name) {
 		try {
-			js_invocable.invokeFunction("update");
+			js_invocable.invokeFunction(script_method_name);
 		}
 		catch(ScriptException se) {
 			se.printStackTrace();
@@ -55,9 +59,9 @@ public class ScriptManager {
 	 * Will invoke the "update" function of the script loaded by this engine
 	 * with the provided list of parameters.
 	 */
-	public static void executeScript(Object... args) {
+	public static void executeScript(String script_method_name, Object... args) {
 		try {
-			js_invocable.invokeFunction("update",args);
+			js_invocable.invokeFunction(script_method_name,args);
 		}
 		catch(ScriptException se) {
 			se.printStackTrace();
@@ -67,7 +71,16 @@ public class ScriptManager {
 		}
 	}
 	
+	private static ArrayList<ScriptComponent> scripts = new ArrayList<ScriptComponent>();
 	
-
+	public static void run_scripts(){
+		for(ScriptComponent script : scripts){
+			script.update();
+		}
+	}
+	
+	public static void addScriptComponent(ScriptComponent script){
+		scripts.add(script);
+	}
 }
 
