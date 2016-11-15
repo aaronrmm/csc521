@@ -2,6 +2,7 @@ package games.spaceinvaders;
 
 import org.jbox2d.common.Vec2;
 
+import common.EntityClass;
 import common.GameObject;
 import common.RenderingEngine;
 import common.factories.PlatformObjectFactory;
@@ -16,6 +17,7 @@ public class BulletFactory extends PlatformObjectFactory{
 
 	public void SpawnBullet(int x, int y, float velocityX, float velocityY, String tag){
 		GameObject go = super.create(x, y, 5, 5);
+		go.entityClass = EntityClass.BULLET;
 		go.physicsC.addConstantForce(new Vec2(velocityX, velocityY));
 		ScriptManager.bindArgument(tag, go);
 	}

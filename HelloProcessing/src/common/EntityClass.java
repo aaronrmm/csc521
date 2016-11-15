@@ -4,5 +4,5 @@ public enum EntityClass {
 	PLAYER,
 	BARRIER,
 	KILLZONE,
-	SPAWNPOINT
+	SPAWNPOINT, BULLET
 }
