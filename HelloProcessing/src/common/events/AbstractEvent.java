@@ -27,6 +27,11 @@ public abstract class AbstractEvent implements Serializable{
 		this.timestamp = Game.eventtime.getTime()+1;
 	}
 	
+	public AbstractEvent(int delay) {
+		this();
+		this.timestamp+=delay;
+	}
+
 	public abstract void Handle();
 	
 	public double getPriority(){

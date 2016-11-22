@@ -30,9 +30,15 @@ public class CharacterDeathEvent extends AbstractEvent{
 		this.character = character;
 	}
 
+	public CharacterDeathEvent(GameObject go, int delay) {
+		this(go);
+		super.timestamp+=delay;
+	}
+
 	@Override
 	public void Handle() {
 		logger.log(Level.FINEST, this.getClass().getName() +" handled for character "+character.getId());
 		registrar.UpdateListeners(this);
+		character.destroy();
 	}
 }
