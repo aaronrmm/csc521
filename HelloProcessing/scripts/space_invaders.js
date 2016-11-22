@@ -44,6 +44,10 @@ function on_input(event){
 			print("right");
 			return;
 		}
+		if(event.command=="jump"){
+			print("fire!");
+			bullet_factory.SpawnBullet(player.physicsC.getX(), player.physicsC.getY()-5, 0, -1, "player_bullet");
+		}
 		print("Command not found");
 	}
 }
