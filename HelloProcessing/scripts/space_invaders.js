@@ -1,6 +1,7 @@
 var turn_frequency = 200;
 var fire_frequency = 70;
 var player_is_dead = true;
+var player;
 
 function alienupdate() {
 	game_time = time.getTime();
@@ -22,10 +23,27 @@ function on_collision(event){
 
 function on_spawn(event){
 	print("spawning");
-	player_object_factory.create(100,100,1);
+	player = player_object_factory.create(100,200,1);
 	player_is_dead = false;
+	print(player);
 }
 
 function initiate(){
 	on_spawn(null);
+}
+
+function on_input(event){
+	if(event.command != "no_op"){
+		if(event.command=="left"){
+			player.physicsC.addForceLeftRight(-1);
+			print("left");
+			return;
+		}
+		if(event.command=="right"){
+			player.physicsC.addForceLeftRight(1);
+			print("right");
+			return;
+		}
+		print("Command not found");
+	}
 }

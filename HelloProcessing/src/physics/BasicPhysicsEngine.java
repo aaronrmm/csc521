@@ -14,7 +14,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 
 	private ConcurrentHashMap<Long, PhysicsComponent> pObjects = new ConcurrentHashMap<Long, PhysicsComponent> ();
 	private ArrayList<TimingComponent> timers = new ArrayList<TimingComponent>();
-	final int MAX_SPEED=4;
+	final int MAX_SPEED=1;
 	int time = 0;
 	private EventManagementEngine eventE;
 	

@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import common.EntityClass;
 import common.EventManagementEngine;
 import common.GameObject;
-import common.PlayerInputComponent;
 import common.RenderableComponent;
 import common.RenderingEngine;
 import physics.PhysicsComponent;
@@ -17,21 +16,17 @@ public class PlayerObjectFactory {
 	
 	private PhysicsEngine physics;
 	private RenderingEngine renderer;
-	private EventManagementEngine eventE;
 	
 	public PlayerObjectFactory(PhysicsEngine physics, RenderingEngine rendering, EventManagementEngine eventE){
 		this.physics = physics;
 		this.renderer = rendering;
-		this.eventE = eventE;
 	}
 	
 	public GameObject create(int x, int y, long clientId){
 		logger.log(Level.INFO,"creating new player"+clientId);
 		GameObject player = new GameObject(EntityClass.PLAYER);
 		player.networked = true;
-		PlayerInputComponent controller = new PlayerInputComponent(player, this.eventE, clientId);
-		player.add(controller);
-		PhysicsComponent physicsComponent = physics.createPhysicsComponent(player, x, y, 100, 10, true);
+		PhysicsComponent physicsComponent = physics.createPhysicsComponent(player, x, y, 20, 20, true);
 		player.add(physicsComponent);
 		this.physics.addDynamicObject(physicsComponent, x, y);
 		RenderableComponent renderable = new RenderableComponent(player, physicsComponent, renderer);

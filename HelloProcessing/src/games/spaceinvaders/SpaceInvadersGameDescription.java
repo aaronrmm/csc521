@@ -50,6 +50,13 @@ public class SpaceInvadersGameDescription implements GameDescription{
 			}
 		});
 		
+		ClientInputEvent.registrar.Register(new GenericListener<ClientInputEvent>(){
+			@Override
+			public void update(ClientInputEvent event) {
+				ScriptManager.executeScript("on_input", event);
+			}
+		});
+		
 		CharacterSpawnEvent.registrar.Register(new GenericListener<CharacterSpawnEvent>(){
 
 			@Override
