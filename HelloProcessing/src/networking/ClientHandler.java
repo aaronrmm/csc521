@@ -76,6 +76,8 @@ public class ClientHandler {
 		while (connected) {
 			try {
 				for (AbstractEvent event : updateQueue) {
+					byte[] array = toBytes(event);
+					event =  (AbstractEvent)toObject(array);
 					oos.writeObject(event);
 
 					if(event instanceof CharacterSyncEvent){
@@ -86,6 +88,7 @@ public class ClientHandler {
 					}
 				}
 				updateQueue.clear();
+				oos.flush();
 				oos.reset();
 				Thread.sleep(10);
 			} catch (SocketException e){
@@ -105,4 +108,30 @@ public class ClientHandler {
 		return clientId;
 	}
 
+	  public static byte[] toBytes(Object object){
+		    java.io.ByteArrayOutputStream baos = new
+		    java.io.ByteArrayOutputStream();
+		    try{
+		        java.io.ObjectOutputStream oos = new
+		        java.io.ObjectOutputStream(baos);
+		        oos.writeObject(object);
+		    }catch(java.io.IOException ioe){
+		        ioe.printStackTrace();
+		    }
+		     
+		    return baos.toByteArray();
+		} 
+		 
+		public static Object toObject(byte[] bytes){
+		    Object object = null;
+		    try{
+		        object = new java.io.ObjectInputStream(new
+		        java.io.ByteArrayInputStream(bytes)).readObject();
+		    }catch(java.io.IOException ioe){
+		        ioe.printStackTrace();
+		    }catch(java.lang.ClassNotFoundException cnfe){
+		        cnfe.printStackTrace();
+		    }
+		    return object;
+		}
 }
