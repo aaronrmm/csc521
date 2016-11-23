@@ -11,13 +11,13 @@ import common.RenderingEngine;
 import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 
-public class PlayerObjectFactory {
-	private static final Logger logger = Logger.getLogger(PlayerObjectFactory.class.getName());
+public class PlayerShipFactory {
+	private static final Logger logger = Logger.getLogger(PlayerShipFactory.class.getName());
 	
 	private PhysicsEngine physics;
 	private RenderingEngine renderer;
 	
-	public PlayerObjectFactory(PhysicsEngine physics, RenderingEngine rendering, EventManagementEngine eventE){
+	public PlayerShipFactory(PhysicsEngine physics, RenderingEngine rendering, EventManagementEngine eventE){
 		this.physics = physics;
 		this.renderer = rendering;
 	}

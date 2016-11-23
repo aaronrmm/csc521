@@ -21,7 +21,7 @@ public class SpaceInvadersGameDescription implements GameDescription{
 
 	private static final int INVADERS = 15;
 	
-	games.spaceinvaders.PlayerObjectFactory playerF2;
+	games.spaceinvaders.PlayerShipFactory playerF2;
 	PlatformObjectFactory platformF;
 	public int aliens_alive;
 
@@ -36,7 +36,7 @@ public class SpaceInvadersGameDescription implements GameDescription{
 	public void generateGame(EventManagementEngine eventE, RenderingEngine renderingE, PhysicsEngine physicsE,
 			PlayerObjectFactory playerF, PlatformObjectFactory platformF, SpawnPointFactory spawnF) {
 		
-		games.spaceinvaders.PlayerObjectFactory playerF2 = new games.spaceinvaders.PlayerObjectFactory(physicsE, renderingE, eventE);
+		games.spaceinvaders.PlayerShipFactory playerF2 = new games.spaceinvaders.PlayerShipFactory(physicsE, renderingE, eventE);
 		this.platformF = platformF;
 		
 		BulletFactory bulletF = new BulletFactory(physicsE, renderingE);
