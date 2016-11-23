@@ -38,15 +38,12 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			pObject.impulseForces.clear();
 			//limit speed to MAX_SPEED
 			if(pObject.speed.length() > pObject.max_speed) pObject.speed = pObject.speed.mul(pObject.max_speed/pObject.speed.length());
-			System.out.println(pObject.speed.length());
 			//divide up path
 			float segment_length = 2f;
 			Vec2 trajectory = pObject.speed.mul(milliseconds);
 			while(trajectory.length()>.1){
-				//System.out.println(trajectory.length());
 				Vec2 path_segment = (trajectory.length()>segment_length)? trajectory.mul(segment_length/trajectory.length()): trajectory.clone();
 				trajectory = trajectory.sub(path_segment);
-				//System.out.println(trajectory.length());
 				boolean path_blocked = false;
 				Rectangle path = pObject.getPath(path_segment, 1);
 				ArrayList<PhysicsComponent> collidedObstacles = new ArrayList<PhysicsComponent>();
@@ -54,7 +51,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 					if( obstacle!=pObject)
 						if (obstacle.intersects(path)){
 							collidedObstacles.add(obstacle);
-							if(obstacle.blocksObject(pObject))
+							if(obstacle.blocksObject(pObject) && pObject.isSolid)
 								path_blocked = true;
 						}
 				if(! path_blocked)
@@ -69,7 +66,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 							if (obstacle.intersects(path)){
 								if(!collidedObstacles.contains(obstacle))
 									collidedObstacles.add(obstacle);
-								if(obstacle.blocksObject(pObject))
+								if(obstacle.blocksObject(pObject) && pObject.isSolid)
 									path_blocked = true;
 							}
 					if(! path_blocked)
