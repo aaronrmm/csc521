@@ -25,8 +25,10 @@ public class PlayerObjectFactory {
 	public GameObject create(int x, int y, long clientId){
 		logger.log(Level.INFO,"creating new player"+clientId);
 		GameObject player = new GameObject(EntityClass.PLAYER);
+		player.setProperty("tag", "player");
 		player.networked = true;
 		PhysicsComponent physicsComponent = physics.createPhysicsComponent(player, x, y, 20, 20, true);
+		physicsComponent.setMaxSpeed(8);
 		player.add(physicsComponent);
 		this.physics.addDynamicObject(physicsComponent, x, y);
 		RenderableComponent renderable = new RenderableComponent(player, physicsComponent, renderer);

@@ -1,23 +1,28 @@
 var turn_frequency = 200;
-var fire_frequency = 70;
+var fire_frequency = 200;
 var player_is_dead = true;
 var player;
 
-function alienupdate() {
+function alienupdate(alien) {
 	game_time = time.getTime();
-	origin = game_object.getProperty("origin");
-	game_object.physicsC.translate(origin + Math.abs(game_time%turn_frequency - turn_frequency/2),game_object.physicsC.getY());
-	if((game_time +origin) %fire_frequency  ==0){
-		bullet_factory.SpawnBullet(game_object.physicsC.getX(),game_object.physicsC.getY(), .5-Math.random(), 1, "bullet");
+	origin = alien.getProperty("origin");
+	alien.physicsC.translate(origin + Math.abs(game_time%turn_frequency - turn_frequency/2),alien.physicsC.getY());
+	if((game_time +origin*50) %fire_frequency  ==0){
+		bullet_factory.SpawnBullet(alien.physicsC.getX(),alien.physicsC.getY()+20, .5-Math.random(), 1, "alien_bullet", [255,0,0,255]);
 	}
 }
 
 function on_collision(event){
-	if(event.object1.getGameObject().entityClass == "BULLET" && event.object2.getGameObject().entityClass == "PLAYER"){
+	if(event.object1.getGameObject().getProperty("tag")=="alien_bullet" && event.object2.getGameObject().getProperty("tag")=="player"){
 		event.object1.getGameObject().destroy();
 		event.object2.getGameObject().destroy();
 		player_is_dead = true;
 		print("player hit");
+	}
+	if(event.object1.getGameObject().getProperty("tag")=="player_bullet" && event.object2.getGameObject().getProperty("tag")=="alien"){
+		event.object1.getGameObject().destroy();
+		event.object2.getGameObject().destroy();
+		print("alien hit");
 	}
 }
 
@@ -33,6 +38,13 @@ function initiate(){
 }
 
 function on_input(event){
+	if(event.command == "no_op")
+		return;
+	if(player_is_dead){
+		player_is_dead==true;
+		on_spawn(null);
+		return;
+	}
 	if(event.command != "no_op"){
 		if(event.command=="left"){
 			player.physicsC.addForceLeftRight(-1);
@@ -44,9 +56,10 @@ function on_input(event){
 			print("right");
 			return;
 		}
-		if(event.command=="jump"){
+		if(event.command=="jump"||event.command=="up"){
 			print("fire!");
-			bullet_factory.SpawnBullet(player.physicsC.getX(), player.physicsC.getY()-5, 0, -1, "player_bullet");
+			bullet_factory.SpawnBullet(player.physicsC.getX(), player.physicsC.getY()-5, 0, -1, "player_bullet", [0,0,255,255]);
+			return;
 		}
 		print("Command not found");
 	}

@@ -19,7 +19,7 @@ import scripting.ScriptManager;
 
 public class SpaceInvadersGameDescription implements GameDescription{
 
-	private static final int INVADERS = 1;
+	private static final int INVADERS = 15;
 
 	@Override
 	public GameObject spawnPlayer(int x, int y, long clientId) {
@@ -32,10 +32,11 @@ public class SpaceInvadersGameDescription implements GameDescription{
 			PlayerObjectFactory playerF, PlatformObjectFactory platformF, SpawnPointFactory spawnF) {
 		games.spaceinvaders.PlayerObjectFactory playerF2 = new games.spaceinvaders.PlayerObjectFactory(physicsE, renderingE, eventE);
 		for (int i=0; i< INVADERS; i++){
-			GameObject platform = platformF.create(i*35, 0, 3, 20);
+			GameObject platform = platformF.create(i*35, 0, 7, 20);
 			platform.networked = true;
-			platform.add(new ScriptComponent("alienupdate", platform));
+			platform.add(new ScriptComponent("alienupdate", platform, platform));
 			platform.setProperty("origin", i*35);
+			platform.setProperty("tag", "alien");
 		}
 		BulletFactory bulletF = new BulletFactory(physicsE, renderingE);
 		ScriptManager.bindArgument("bullet_factory", bulletF);
