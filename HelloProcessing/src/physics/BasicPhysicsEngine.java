@@ -35,6 +35,9 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			for(Vec2 force : pObject.impulseForces){
 				pObject.speed = pObject.speed.add(force);
 			}
+			if(pObject.friction>0&&pObject.speed.length()>=pObject.friction){
+				pObject.speed = pObject.speed.sub(pObject.speed.mul(pObject.friction/pObject.speed.length()));
+			}
 			pObject.impulseForces.clear();
 			//limit speed to MAX_SPEED
 			if(pObject.speed.length() > pObject.max_speed) pObject.speed = pObject.speed.mul(pObject.max_speed/pObject.speed.length());

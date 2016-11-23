@@ -22,6 +22,7 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 	ArrayList<Vec2> impulseForces = new ArrayList<Vec2>();
 	Vec2 speed = new Vec2(0,0);
 	int max_speed;
+	float friction;
 	boolean isSolid = false;
 	private Rectangle shape;
 	public transient Body body;
@@ -37,6 +38,7 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 		this.isSolid = isSolid;
 		this.physicsE = physicsE;
 		this.max_speed = 4;
+		this.friction = 0;
 	}
 
 	public void setMaxSpeed(int max_speed){
@@ -114,5 +116,9 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 		this.impulseForces.clear();
 		this.constantForces.clear();
 		
+	}
+	
+	public void setFriction(float friction){
+		this.friction = friction;
 	}
 }
