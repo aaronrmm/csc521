@@ -20,7 +20,12 @@ import scripting.ScriptManager;
 public class SpaceInvadersGameDescription implements GameDescription{
 
 	private static final int INVADERS = 15;
+	
+	games.spaceinvaders.PlayerObjectFactory playerF2;
+	PlatformObjectFactory platformF;
+	public int aliens_alive;
 
+	@Deprecated
 	@Override
 	public GameObject spawnPlayer(int x, int y, long clientId) {
 		// TODO Auto-generated method stub
@@ -30,14 +35,10 @@ public class SpaceInvadersGameDescription implements GameDescription{
 	@Override
 	public void generateGame(EventManagementEngine eventE, RenderingEngine renderingE, PhysicsEngine physicsE,
 			PlayerObjectFactory playerF, PlatformObjectFactory platformF, SpawnPointFactory spawnF) {
+		
 		games.spaceinvaders.PlayerObjectFactory playerF2 = new games.spaceinvaders.PlayerObjectFactory(physicsE, renderingE, eventE);
-		for (int i=0; i< INVADERS; i++){
-			GameObject platform = platformF.create(i*35, 0, 7, 20);
-			platform.networked = true;
-			platform.add(new ScriptComponent("alienupdate", platform, platform));
-			platform.setProperty("origin", i*35);
-			platform.setProperty("tag", "alien");
-		}
+		this.platformF = platformF;
+		
 		BulletFactory bulletF = new BulletFactory(physicsE, renderingE);
 		ScriptManager.bindArgument("bullet_factory", bulletF);
 		Timeline invader_time = new Timeline(Game.eventtime, 1);
@@ -66,10 +67,32 @@ public class SpaceInvadersGameDescription implements GameDescription{
 			}
 			
 		});
-		
+
+		ScriptManager.bindArgument("Game", this);
 		ScriptManager.executeScript("initiate");
+		
 	}
 
+	public void initiate(){
+		aliens_alive = 0;
+		for (int i=0; i< INVADERS/2; i++){
+			GameObject platform = platformF.create(i*35, 0, 15, 15);
+			platform.networked = true;
+			platform.add(new ScriptComponent("alienupdate", platform, platform));
+			platform.setProperty("origin", i*35);
+			platform.setProperty("tag", "alien");
+			platform.alive = true;
+			aliens_alive ++;
+		}
+		for (int i=0; i< INVADERS/2-1; i++){
+			GameObject platform = platformF.create((int)((i+.5)*35), 23, 15, 15);
+			platform.networked = true;
+			platform.add(new ScriptComponent("alienupdate", platform, platform));
+			platform.setProperty("origin", (i+.5)*35);
+			platform.setProperty("tag", "alien");
+			aliens_alive ++;
+		}
+	}
 	@Override
 	public void update(ClientInputEvent p) {
 		// TODO Auto-generated method stub

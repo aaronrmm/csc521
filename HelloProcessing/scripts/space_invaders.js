@@ -13,16 +13,25 @@ function alienupdate(alien) {
 }
 
 function on_collision(event){
-	if(event.object1.getGameObject().getProperty("tag")=="alien_bullet" && event.object2.getGameObject().getProperty("tag")=="player"){
-		event.object1.getGameObject().destroy();
-		event.object2.getGameObject().destroy();
-		player_is_dead = true;
-		print("player hit");
-	}
-	if(event.object1.getGameObject().getProperty("tag")=="player_bullet" && event.object2.getGameObject().getProperty("tag")=="alien"){
-		event.object1.getGameObject().destroy();
-		event.object2.getGameObject().destroy();
-		print("alien hit");
+	if(event.object1.getGameObject().alive&&event.object2.getGameObject().alive){
+		if(event.object1.getGameObject().getProperty("tag")=="alien_bullet" && event.object2.getGameObject().getProperty("tag")=="player"){
+			event.object1.getGameObject().kill();
+			event.object2.getGameObject().kill();
+			player_is_dead = true;
+			print("player hit");
+		}
+		else if(event.object1.getGameObject().getProperty("tag")=="player_bullet" && event.object2.getGameObject().getProperty("tag")=="alien"){
+				event.object1.getGameObject().kill();
+				event.object2.getGameObject().kill();
+			print("alien hit");
+			Game.aliens_alive--;
+			print("aliens left: "+Game.aliens_alive);
+			if(Game.aliens_alive==0){
+				player.destroy();
+				Game.initiate();
+				on_spawn(null);
+			}
+		}
 	}
 }
 
@@ -34,6 +43,7 @@ function on_spawn(event){
 }
 
 function initiate(){
+	Game.initiate();
 	on_spawn(null);
 }
 

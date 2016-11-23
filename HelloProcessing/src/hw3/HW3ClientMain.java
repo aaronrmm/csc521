@@ -98,7 +98,7 @@ public class HW3ClientMain {
 				if(!Game.getScene(event.sceneId).renderableList.containsValue(renderable)){
 					logger.info("New renderable+"+renderable.id+" for gameObject"+event.getCharacter().getId()+" added to scene"+Game.current_scene.id);
 				}
-				Game.getScene(event.sceneId).renderableList.put(event.getCharacter().getId(), renderable);
+				if(event.getCharacter().alive) Game.getScene(event.sceneId).renderableList.put(event.getCharacter().getId(), renderable);
 			}
 		});
 		CharacterDeathEvent.registrar.Register(new GenericListener<CharacterDeathEvent>(){

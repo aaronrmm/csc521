@@ -3,6 +3,8 @@ package common;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import common.events.CharacterDeathEvent;
+import game.Game;
 import physics.PhysicsComponent;
 
 public class GameObject implements Serializable{
@@ -33,6 +35,11 @@ public class GameObject implements Serializable{
 			component.destroy();
 		}
 		components.clear();
+	}
+	
+	public void kill(){
+		this.alive = false;
+		Game.eventE.queue(new CharacterDeathEvent(this, 1));
 	}
 	
 	public void add(Component component){

@@ -26,7 +26,6 @@ public class BulletFactory extends GameObjectFactory{
 	}
 
 	public void SpawnBullet(int x, int y, float velocityX, float velocityY, String tag, int[]color){
-		System.out.println(velocityX+","+velocityY);
 		GameObject go = new GameObject(EntityClass.BULLET);
 		go.setProperty("tag", tag);
 		PhysicsComponent physicsComponent = new PhysicsComponent(go, new Rectangle(x,y, 5, 5), false, physics);
@@ -35,6 +34,7 @@ public class BulletFactory extends GameObjectFactory{
 		RenderableComponent renderable = new RenderableComponent(go, physicsComponent, renderer, color);
 		this.renderer.addObject(renderable);
 		go.add(renderable);
+		go.alive = true;
 		go.networked = true;
 		go.physicsC.addImpulseForce(new Vec2(velocityX, velocityY));
 		ScriptManager.bindArgument(tag, go);
