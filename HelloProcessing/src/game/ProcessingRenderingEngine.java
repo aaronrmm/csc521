@@ -47,15 +47,16 @@ public class ProcessingRenderingEngine extends PApplet implements RenderingEngin
 	public void draw(){
 		this.fill(0);
 		this.rect(0, 0, this.width, this.height);
-		this.fill((int)(Math.random()*255));
+		this.fill((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255));
 		this.ellipse(0, 0, 50, 50);
 		this.fill(255);
 		for(RenderableComponent renderable : Game.current_scene.renderableList.values()){
+			this.fill(renderable.getColor()[0],renderable.getColor()[1],renderable.getColor()[2],renderable.getColor()[3]);
 			this.rect(renderable.getX(), renderable.getY(), renderable.getWidth(), renderable.getHeight());
 			logger.finest(renderable.getGameObject().getId()+",");
 		}
 	}
-	
+
 	public void keyPressed() {
 		Game.current_scene.input_handler.keyPressed(key);
 	}

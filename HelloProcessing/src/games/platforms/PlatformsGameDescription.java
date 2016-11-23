@@ -62,6 +62,7 @@ public class PlatformsGameDescription implements GameDescription, GenericListene
 			int seed = (int)(Math.random()*300);
 			int y = HEIGHT/2-height+(int)(Math.random()*HEIGHT);
 			GameObject movingP = platformF.create(x, y, width, height);
+			movingP.renderingC.setColor(new int[]{110,0,120,255});
 			movingP.add(new OscillatingController(movingP, (PhysicsComponent)movingP.getComponent(PhysicsComponent.class), physicsE, x, seed));
 			position += width;
 			movingP.networked = true;
