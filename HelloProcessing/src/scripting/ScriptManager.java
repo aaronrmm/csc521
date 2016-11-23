@@ -82,5 +82,9 @@ public class ScriptManager {
 	public static void addScriptComponent(ScriptComponent script){
 		scripts.add(script);
 	}
+
+	public static void removeScriptComponent(ScriptComponent scriptComponent) {
+		scripts.remove(scriptComponent);
+	}
 }
 
