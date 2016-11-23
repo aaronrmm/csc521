@@ -10,6 +10,7 @@ import common.factories.PlatformObjectFactory;
 import common.factories.PlayerObjectFactory;
 import common.factories.SpawnPointFactory;
 import physics.PhysicsEngine;
+import scripting.ScriptManager;
 
 public class RandomGameDescription implements GameDescription{
 
@@ -23,7 +24,8 @@ public class RandomGameDescription implements GameDescription{
 	public void generateGame(EventManagementEngine eventE, RenderingEngine renderingE, PhysicsEngine physicsE,
 			PlayerObjectFactory playerF, PlatformObjectFactory platformF, SpawnPointFactory spawnF) {
 		GameObject platform = platformF.create(0, 0, 30, 5);
-		platform.add(new ScriptComponent("update", platform));
+		platform.add(new ScriptComponent("update", platform, platform));
+		ScriptManager.bindArgument("game_object", platform);
 		
 	}
 
