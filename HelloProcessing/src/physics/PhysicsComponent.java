@@ -21,6 +21,7 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 	ArrayList<Vec2> constantForces = new ArrayList<Vec2>();
 	ArrayList<Vec2> impulseForces = new ArrayList<Vec2>();
 	Vec2 speed = new Vec2(0,0);
+	int max_speed;
 	boolean isSolid = false;
 	private Rectangle shape;
 	public transient Body body;
@@ -35,8 +36,13 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 		this.shape = shape;
 		this.isSolid = isSolid;
 		this.physicsE = physicsE;
+		this.max_speed = 4;
 	}
 
+	public void setMaxSpeed(int max_speed){
+		this.max_speed = max_speed;
+	}
+	
 	public Rectangle getPath(Vec2 force, int milliseconds) {
 		int newX = (int)(this.shape.getX()+force.x*milliseconds);
 		int newY = (int)(this.shape.getY()+force.y*milliseconds);

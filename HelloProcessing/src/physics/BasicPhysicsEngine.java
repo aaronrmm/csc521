@@ -14,7 +14,6 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 
 	private ConcurrentHashMap<Long, PhysicsComponent> pObjects = new ConcurrentHashMap<Long, PhysicsComponent> ();
 	private ArrayList<TimingComponent> timers = new ArrayList<TimingComponent>();
-	final int MAX_SPEED=1;
 	int time = 0;
 	private EventManagementEngine eventE;
 	
@@ -38,42 +37,49 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			}
 			pObject.impulseForces.clear();
 			//limit speed to MAX_SPEED
-			if(pObject.speed.x>MAX_SPEED)pObject.speed.x=MAX_SPEED;
-			if(pObject.speed.x<-MAX_SPEED)pObject.speed.x=-MAX_SPEED;
-			if(pObject.speed.y>MAX_SPEED)pObject.speed.y=MAX_SPEED;
-			if(pObject.speed.y<-MAX_SPEED)pObject.speed.y=-MAX_SPEED;
-			boolean path_blocked = false;
-			Rectangle path = pObject.getPath(pObject.speed, milliseconds);
-			ArrayList<PhysicsComponent> collidedObstacles = new ArrayList<PhysicsComponent>();
-			for(PhysicsComponent obstacle: pObjects.values())
-				if( obstacle!=pObject)
-					if (obstacle.intersects(path)){
-						collidedObstacles.add(obstacle);
-						if(obstacle.blocksObject(pObject))
-							path_blocked = true;
-					}
-			if(! path_blocked)
-				pObject.translate(pObject.speed, milliseconds);
-			else{
-				pObject.speed.y=0;
-				path_blocked=false;
-				//try again just going horizontally
-				path = pObject.getPath(pObject.speed, milliseconds);
+			if(pObject.speed.length() > pObject.max_speed) pObject.speed = pObject.speed.mul(pObject.max_speed/pObject.speed.length());
+			System.out.println(pObject.speed.length());
+			//divide up path
+			float segment_length = 2f;
+			Vec2 trajectory = pObject.speed.mul(milliseconds);
+			while(trajectory.length()>.1){
+				//System.out.println(trajectory.length());
+				Vec2 path_segment = (trajectory.length()>segment_length)? trajectory.mul(segment_length/trajectory.length()): trajectory.clone();
+				trajectory = trajectory.sub(path_segment);
+				//System.out.println(trajectory.length());
+				boolean path_blocked = false;
+				Rectangle path = pObject.getPath(path_segment, 1);
+				ArrayList<PhysicsComponent> collidedObstacles = new ArrayList<PhysicsComponent>();
 				for(PhysicsComponent obstacle: pObjects.values())
 					if( obstacle!=pObject)
 						if (obstacle.intersects(path)){
-							if(!collidedObstacles.contains(obstacle))
-								collidedObstacles.add(obstacle);
+							collidedObstacles.add(obstacle);
 							if(obstacle.blocksObject(pObject))
 								path_blocked = true;
 						}
 				if(! path_blocked)
-					pObject.translate(pObject.speed, milliseconds);
-				else
-					pObject.speed.x=0;
-			}
-			for(PhysicsComponent obstacle:collidedObstacles){
-				eventE.queue(new CharacterCollisionEvent(pObject,obstacle));
+					pObject.translate(path_segment, 1);
+				else{
+					pObject.speed.y=0;
+					path_blocked=false;
+					//try again just going horizontally
+					path = pObject.getPath(path_segment, 1);
+					for(PhysicsComponent obstacle: pObjects.values())
+						if( obstacle!=pObject)
+							if (obstacle.intersects(path)){
+								if(!collidedObstacles.contains(obstacle))
+									collidedObstacles.add(obstacle);
+								if(obstacle.blocksObject(pObject))
+									path_blocked = true;
+							}
+					if(! path_blocked)
+						pObject.translate(path_segment, 1);
+					else
+						pObject.speed.x=0;
+				}
+				for(PhysicsComponent obstacle:collidedObstacles){
+					eventE.queue(new CharacterCollisionEvent(pObject,obstacle));
+				}
 			}
 		}
 	}
