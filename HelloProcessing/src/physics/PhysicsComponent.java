@@ -45,6 +45,14 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 		this.max_speed = max_speed;
 	}
 	
+	public void setSpeed(Vec2 speed){
+		this.speed.set(speed);
+	}
+	
+	public void setSpeed(float x, float y){
+		this.speed.set(x, y);
+	}
+	
 	public Rectangle getPath(Vec2 force, int milliseconds) {
 		int newX = (int)(this.shape.getX()+force.x*milliseconds);
 		int newY = (int)(this.shape.getY()+force.y*milliseconds);
