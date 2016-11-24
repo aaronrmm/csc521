@@ -1,8 +1,11 @@
 package scripting;
 
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.script.*;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import common.ScriptComponent;
 
@@ -71,7 +74,7 @@ public class ScriptManager {
 		}
 	}
 	
-	private static ArrayList<ScriptComponent> scripts = new ArrayList<ScriptComponent>();
+	private static ConcurrentLinkedQueue<ScriptComponent> scripts = new ConcurrentLinkedQueue<ScriptComponent>();
 	
 	public static void run_scripts(){
 		for(ScriptComponent script : scripts){
