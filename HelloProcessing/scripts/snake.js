@@ -34,6 +34,13 @@ function update_snake() {
 			snake_neck.setProperty("time_of_creation", time.getTime());
 			snake_neck.setProperty("tag", "snake_segment");
 		}
+
+		if(snake_head.physicsC.getX()>300 ||
+			snake_head.physicsC.getX()<0 ||
+			snake_head.physicsC.getY()>300 ||
+			snake_head.physicsC.getY()<0){
+			kill_snake();
+		}
 	}
 	else
 		init();
@@ -64,9 +71,7 @@ function update_segment(segment){
 function on_collision(event){
 	if(event.object1.getGameObject().alive&&event.object2.getGameObject().alive){
 		if(event.object1.getGameObject()==snake_head && event.object2.getGameObject().getProperty("tag")=="snake_segment" && event.object2.getGameObject()!=snake_neck){
-			snake_head.kill();
-			snake_size = 1;
-			init();
+			kill_snake();
 		}
 		if(event.object1.getGameObject()==snake_head && event.object2.getGameObject().getProperty("tag")=="apple"){
 			event.object2.getGameObject().kill();
@@ -75,6 +80,12 @@ function on_collision(event){
 		}
 	}
 	//if snake with apple
+}
+
+function kill_snake(){
+	snake_head.kill();
+	snake_size = 1;
+	init();
 }
 
 function on_input(event){
