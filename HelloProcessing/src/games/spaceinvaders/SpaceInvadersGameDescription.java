@@ -92,6 +92,9 @@ public class SpaceInvadersGameDescription implements GameDescription{
 			platform.setProperty("tag", "alien");
 			aliens_alive ++;
 		}
+
+		platformF.create(-5,100,5,300);//left boundary
+		platformF.create(300,100,5,300);//right boundary
 	}
 	@Override
 	public void update(ClientInputEvent p) {

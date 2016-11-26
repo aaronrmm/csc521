@@ -108,8 +108,8 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 	
 
 	@Override
-	public PhysicsComponent createPhysicsComponent(GameObject player, int x, int y, int width, int height, boolean isDynamic) {
-		PhysicsComponent physicsComponent = new PhysicsComponent(player, new Rectangle(x,y, width, height), false, this);
+	public PhysicsComponent createPhysicsComponent(GameObject player, int x, int y, int width, int height, boolean isDynamic, boolean isSolid) {
+		PhysicsComponent physicsComponent = new PhysicsComponent(player, new Rectangle(x,y, width, height), isSolid, this);
 		if (isDynamic) this.addDynamicObject(physicsComponent, x, y);
 		else this.addStaticObject(physicsComponent, x, y);
 		return physicsComponent;

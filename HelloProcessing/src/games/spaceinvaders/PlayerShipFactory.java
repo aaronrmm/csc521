@@ -27,7 +27,7 @@ public class PlayerShipFactory {
 		GameObject player = new GameObject(EntityClass.PLAYER);
 		player.setProperty("tag", "player");
 		player.networked = true;
-		PhysicsComponent physicsComponent = physics.createPhysicsComponent(player, x, y, 20, 20, true);
+		PhysicsComponent physicsComponent = physics.createPhysicsComponent(player, x, y, 20, 20, true, true);
 		physicsComponent.setMaxSpeed(3);
 		physicsComponent.setFriction(.02f);
 		player.add(physicsComponent);
