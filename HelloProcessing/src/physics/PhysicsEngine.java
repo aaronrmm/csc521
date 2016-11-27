@@ -15,6 +15,7 @@ public interface PhysicsEngine {
 
 	void remove(PhysicsComponent physicsComponent);
 
-	PhysicsComponent createPhysicsComponent(GameObject player, int x, int y, int width, int height, boolean isDynamic);
+	PhysicsComponent createPhysicsComponent(GameObject player, int x, int y, int width, int height, boolean isDynamic,
+			boolean isSolid);
 
 }
