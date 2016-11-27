@@ -41,7 +41,7 @@ public class AppleFactory extends PlayerObjectFactory{
 		PhysicsComponent physics = new PhysicsComponent(apple, new Rectangle(x,y, width, height), false, physE);
 		apple.add(physics);
 		this.physE.addStaticObject(physics, x, y);
-		RenderableComponent renderable = new RenderableComponent(apple, physics, renderE, new int[]{255,100,0,255});
+		RenderableComponent renderable = new RenderableComponent(apple, physics, renderE, new int[]{255,20,20,255});
 		apple.add(renderable);
 		this.renderE.addObject(renderable);
 		apple.alive = true;

@@ -57,9 +57,9 @@ function init(){
 
 function random_apple(){
 	apples++;
-	x = Math.floor((Math.random()*300));
-	y = Math.floor((Math.random()*300));
-	apple = apple_factory.create(x, y, 15, 15, 0);
+	x = Math.floor((Math.random()*296+2));
+	y = Math.floor((Math.random()*296+2));
+	apple = apple_factory.create(x, y, grid_size*2, grid_size*2, 0);
 	apple.setProperty("tag", "apple");
 }
 
