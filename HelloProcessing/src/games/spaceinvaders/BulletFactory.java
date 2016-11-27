@@ -8,14 +8,13 @@ import common.RenderableComponent;
 import common.RenderingEngine;
 import common.events.AbstractEvent;
 import common.events.CharacterDeathEvent;
-import common.factories.GameObjectFactory;
 import game.Game;
 import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 import physics.Rectangle;
 import scripting.ScriptManager;
 
-public class BulletFactory extends GameObjectFactory{
+public class BulletFactory{
 
 	private PhysicsEngine physics;
 	private RenderingEngine renderer;

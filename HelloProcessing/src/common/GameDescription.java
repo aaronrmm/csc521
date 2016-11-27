@@ -1,9 +1,9 @@
 package common;
 
 import common.events.ClientInputEvent;
-import common.factories.PlatformObjectFactory;
-import common.factories.PlayerObjectFactory;
-import common.factories.SpawnPointFactory;
+import games.platforms.PlatformObjectFactory;
+import games.platforms.PlayerObjectFactory;
+import games.platforms.SpawnPointFactory;
 import physics.PhysicsEngine;
 
 public interface GameDescription {

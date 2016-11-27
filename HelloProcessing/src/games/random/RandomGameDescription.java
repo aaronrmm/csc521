@@ -6,9 +6,9 @@ import common.GameObject;
 import common.RenderingEngine;
 import common.ScriptComponent;
 import common.events.ClientInputEvent;
-import common.factories.PlatformObjectFactory;
-import common.factories.PlayerObjectFactory;
-import common.factories.SpawnPointFactory;
+import games.platforms.PlatformObjectFactory;
+import games.platforms.PlayerObjectFactory;
+import games.platforms.SpawnPointFactory;
 import physics.PhysicsEngine;
 import scripting.ScriptManager;
 

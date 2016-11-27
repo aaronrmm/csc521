@@ -30,7 +30,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 		
 		for(PhysicsComponent pObject: pObjects.values()){
 			for(Vec2 force : pObject.constantForces){
-				pObject.speed = pObject.speed.add(force);
+				pObject.speed = pObject.speed.add(force.mul(milliseconds));
 			}
 			for(Vec2 force : pObject.impulseForces){
 				pObject.speed = pObject.speed.add(force);
@@ -40,9 +40,13 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			}
 			pObject.impulseForces.clear();
 			//limit speed to MAX_SPEED
-			if(pObject.speed.length() > pObject.max_speed) pObject.speed = pObject.speed.mul(pObject.max_speed/pObject.speed.length());
+			//if(pObject.speed.length() > pObject.max_speed) pObject.speed = pObject.speed.mul(pObject.max_speed/pObject.speed.length());
+			if(pObject.speed.x>pObject.max_speed) pObject.speed.x = pObject.max_speed;
+			if(pObject.speed.x<-pObject.max_speed) pObject.speed.x = -pObject.max_speed;
+			if(pObject.speed.y>pObject.max_speed) pObject.speed.y = pObject.max_speed;
+			if(pObject.speed.y<-pObject.max_speed) pObject.speed.y = -pObject.max_speed;
 			//divide up path
-			float segment_length = 2f;
+			float segment_length = 400f;
 			Vec2 trajectory = pObject.speed.mul(milliseconds);
 			while(trajectory.length()>.1){
 				Vec2 path_segment = (trajectory.length()>segment_length)? trajectory.mul(segment_length/trajectory.length()): trajectory.clone();
@@ -74,8 +78,6 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 							}
 					if(! path_blocked)
 						pObject.translate(path_segment, 1);
-					else
-						pObject.speed.x=0;
 				}
 				for(PhysicsComponent obstacle:collidedObstacles){
 					eventE.queue(new CharacterCollisionEvent(pObject,obstacle));

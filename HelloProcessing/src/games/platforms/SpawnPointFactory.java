@@ -1,4 +1,4 @@
-package common.factories;
+package games.platforms;
 
 import common.EntityClass;
 import common.GameObject;

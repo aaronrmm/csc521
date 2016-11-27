@@ -9,11 +9,11 @@ import common.events.CharacterCollisionEvent;
 import common.events.CharacterSpawnEvent;
 import common.events.ClientInputEvent;
 import common.events.GenericListener;
-import common.factories.PlatformObjectFactory;
-import common.factories.PlayerObjectFactory;
-import common.factories.SpawnPointFactory;
 import common.timelines.Timeline;
 import game.Game;
+import games.platforms.PlatformObjectFactory;
+import games.platforms.PlayerObjectFactory;
+import games.platforms.SpawnPointFactory;
 import physics.PhysicsEngine;
 import scripting.ScriptManager;
 

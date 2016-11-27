@@ -19,9 +19,6 @@ import common.events.CharacterDeathEvent;
 import common.events.CharacterSpawnEvent;
 import common.events.ClientInputEvent;
 import common.events.GenericListener;
-import common.factories.PlatformObjectFactory;
-import common.factories.PlayerObjectFactory;
-import common.factories.SpawnPointFactory;
 import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 import physics.Rectangle;
@@ -31,7 +28,7 @@ public class PlatformsGameDescription implements GameDescription, GenericListene
 	private static final Logger logger = Logger.getLogger(PlatformsGameDescription.class.getName());
 	private static final boolean DEBUG_MODE = true;
 	private static final int NUMBER_OF_SPAWN_POINTS = 2;
-	private static final int NUMBER_OF_MOVING_OBSTACLES = 10;
+	private static final int NUMBER_OF_MOVING_OBSTACLES = 30;
 	private static final int WIDTH = 300;
 	private static final int HEIGHT = 300;
 	private PlayerObjectFactory playerF;
@@ -56,11 +53,11 @@ public class PlatformsGameDescription implements GameDescription, GenericListene
 		//moving platforms at mid-height
 		int position = 0;
 		for (int i = 0; i < NUMBER_OF_MOVING_OBSTACLES/2; i++) {
-			int width = (int) (Math.random() * WIDTH *1 / NUMBER_OF_MOVING_OBSTACLES)+3;
+			int width = (int) (Math.random() * WIDTH *1 / NUMBER_OF_MOVING_OBSTACLES)+30;
 			int height = 3;
 			int x = position+(int)(Math.random() * WIDTH/2);
 			int seed = (int)(Math.random()*300);
-			int y = HEIGHT/2-height+(int)(Math.random()*HEIGHT);
+			int y = HEIGHT/2-height+(int)(Math.random()*HEIGHT/4);
 			GameObject movingP = platformF.create(x, y, width, height);
 			movingP.renderingC.setColor(new int[]{110,0,120,255});
 			movingP.add(new OscillatingController(movingP, (PhysicsComponent)movingP.getComponent(PhysicsComponent.class), physicsE, x, seed));

@@ -13,13 +13,13 @@ import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Command;
 import common.events.SceneChangeEvent;
 import common.events.TimeUpdateEvent;
-import common.factories.PlatformObjectFactory;
-import common.factories.PlayerObjectFactory;
-import common.factories.SpawnPointFactory;
 import game.Game;
 import game.InputHandler;
 import game.Scene;
+import games.platforms.PlatformObjectFactory;
 import games.platforms.PlatformsGameDescription;
+import games.platforms.PlayerObjectFactory;
+import games.platforms.SpawnPointFactory;
 import networking.ServersideNetworking;
 import scripting.ScriptManager;
 
@@ -65,6 +65,14 @@ public class HW3ServerMain {
 					input.command = Command.speed_up_replay;
 				if(key=='h')
 					input.command = Command.slow_replay;
+				if(key=='w')
+					input.command = Command.up;
+				if(key=='a')
+					input.command = Command.left;
+				if(key=='s')
+					input.command = Command.down;
+				if(key=='d')
+					input.command = Command.right;
 				Game.eventE.queue(input);
 			}
 		};

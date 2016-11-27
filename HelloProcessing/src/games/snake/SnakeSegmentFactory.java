@@ -6,7 +6,7 @@ import common.GameObject;
 import common.RenderableComponent;
 import common.RenderingEngine;
 import common.ScriptComponent;
-import common.factories.PlayerObjectFactory;
+import games.platforms.PlayerObjectFactory;
 import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 import physics.Rectangle;

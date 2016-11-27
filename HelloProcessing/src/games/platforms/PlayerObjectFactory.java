@@ -1,4 +1,4 @@
-package common.factories;
+package games.platforms;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +35,7 @@ public class PlayerObjectFactory {
 		player.add(controller);
 		PhysicsComponent physicsComponent = new PhysicsComponent(player, new Rectangle(x,y,10,10), true, physics);
 		player.add(physicsComponent);
-		physicsComponent.addConstantForce(new Vec2(0,1));
+		physicsComponent.addConstantForce(new Vec2(0,.1f));
 		this.physics.addDynamicObject(physicsComponent, x, y);
 		RenderableComponent renderable = new RenderableComponent(player, physicsComponent, renderer);
 		this.renderer.addObject(renderable);
