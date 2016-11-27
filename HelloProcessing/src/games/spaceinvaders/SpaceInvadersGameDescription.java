@@ -4,7 +4,6 @@ import common.EventManagementEngine;
 import common.GameDescription;
 import common.GameObject;
 import common.RenderingEngine;
-import common.ScriptComponent;
 import common.events.CharacterCollisionEvent;
 import common.events.CharacterSpawnEvent;
 import common.events.ClientInputEvent;
@@ -21,7 +20,10 @@ public class SpaceInvadersGameDescription implements GameDescription{
 
 	private static final int INVADERS = 15;
 	
-	games.spaceinvaders.PlayerShipFactory playerF2;
+	PlayerShipFactory playerF2;
+	AlienShipFactory alienF;
+	
+	
 	PlatformObjectFactory platformF;
 	public int aliens_alive;
 
@@ -36,7 +38,8 @@ public class SpaceInvadersGameDescription implements GameDescription{
 	public void generateGame(EventManagementEngine eventE, RenderingEngine renderingE, PhysicsEngine physicsE,
 			PlayerObjectFactory playerF, PlatformObjectFactory platformF, SpawnPointFactory spawnF) {
 		
-		games.spaceinvaders.PlayerShipFactory playerF2 = new games.spaceinvaders.PlayerShipFactory(physicsE, renderingE, eventE);
+		playerF2 = new PlayerShipFactory(physicsE, renderingE, eventE);
+		alienF = new AlienShipFactory(physicsE, renderingE, eventE);
 		this.platformF = platformF;
 		
 		BulletFactory bulletF = new BulletFactory(physicsE, renderingE);
@@ -76,20 +79,11 @@ public class SpaceInvadersGameDescription implements GameDescription{
 	public void initiate(){
 		aliens_alive = 0;
 		for (int i=0; i< INVADERS/2; i++){
-			GameObject platform = platformF.create(i*35, 0, 15, 15);
-			platform.networked = true;
-			platform.add(new ScriptComponent("alienupdate", platform, platform));
-			platform.setProperty("origin", i*35);
-			platform.setProperty("tag", "alien");
-			platform.alive = true;
+			alienF.create(i*35, 0, 0);
 			aliens_alive ++;
 		}
 		for (int i=0; i< INVADERS/2-1; i++){
-			GameObject platform = platformF.create((int)((i+.5)*35), 23, 15, 15);
-			platform.networked = true;
-			platform.add(new ScriptComponent("alienupdate", platform, platform));
-			platform.setProperty("origin", (i+.5)*35);
-			platform.setProperty("tag", "alien");
+			alienF.create((int)((i+.5)*35), 23, 0);
 			aliens_alive ++;
 		}
 
