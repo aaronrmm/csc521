@@ -10,18 +10,21 @@ import common.EntityClass;
 import common.EventManagementEngine;
 import common.GameDescription;
 import common.GameObject;
-import common.OscillatingController;
 import common.PlayerInputComponent;
 import common.RenderableComponent;
 import common.RenderingEngine;
+import common.ScriptComponent;
 import common.events.CharacterCollisionEvent;
 import common.events.CharacterDeathEvent;
 import common.events.CharacterSpawnEvent;
 import common.events.ClientInputEvent;
 import common.events.GenericListener;
+import common.timelines.Timeline;
+import game.Game;
 import physics.PhysicsComponent;
 import physics.PhysicsEngine;
 import physics.Rectangle;
+import scripting.ScriptManager;
 
 public class PlatformsGameDescription implements GameDescription, GenericListener<ClientInputEvent>{
 
@@ -44,6 +47,8 @@ public class PlatformsGameDescription implements GameDescription, GenericListene
 		this.playerF = playerF;
 		this.eventE = eventE;
 		ClientInputEvent.registrar.Register(this);
+		Timeline game_time = new Timeline(Game.eventtime, 1);
+		ScriptManager.bindArgument("time", game_time);
 		
 		//player spawn points dividing top of screen
 		for(int i=0;i<NUMBER_OF_SPAWN_POINTS;i++){
@@ -51,23 +56,24 @@ public class PlatformsGameDescription implements GameDescription, GenericListene
 			spawnPoints.add(spawn);
 		}
 		//moving platforms at mid-height
-		int position = 0;
 		for (int i = 0; i < NUMBER_OF_MOVING_OBSTACLES/2; i++) {
 			int width = (int) (Math.random() * WIDTH *1 / NUMBER_OF_MOVING_OBSTACLES)+30;
 			int height = 3;
-			int x = position+(int)(Math.random() * WIDTH/2);
-			int seed = (int)(Math.random()*300);
-			int y = HEIGHT/2-height+(int)(Math.random()*HEIGHT/4);
+			int x = (int)(Math.random() * WIDTH/2+5);
+			int y = -height+(int)(Math.random()*HEIGHT);
 			GameObject movingP = platformF.create(x, y, width, height);
+			movingP.setProperty("originX", x);
+			movingP.setProperty("originY", y);
 			movingP.renderingC.setColor(new int[]{110,0,120,255});
-			movingP.add(new OscillatingController(movingP, (PhysicsComponent)movingP.getComponent(PhysicsComponent.class), physicsE, x, seed));
-			position += width;
+			movingP.setProperty("seed",(int)(Math.random()*300));
+			ScriptComponent script = new ScriptComponent("update_platform", movingP, movingP);
+			movingP.add(script);
+			ScriptManager.addScriptComponent(script);
 			movingP.networked = true;
 			gameObjects.add(movingP);
 		}
 		
 		//stationary platforms at bottom of screen
-		position = 0;
 		for (int i = 0; i < 2; i++) {
 			int width = (int) (WIDTH/3);
 			int height = (int) (Math.random() * 3+10);
@@ -75,7 +81,6 @@ public class PlatformsGameDescription implements GameDescription, GenericListene
 			int y = HEIGHT-height;
 			GameObject platform = platformF.create(x, y, width, height);
 			platform.networked = true;
-			position += width;
 		}
 		
 		//killzones at edges of screen
