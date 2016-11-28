@@ -10,7 +10,6 @@ import common.EntityClass;
 import common.EventManagementEngine;
 import common.GameDescription;
 import common.GameObject;
-import common.PlayerInputComponent;
 import common.RenderableComponent;
 import common.RenderingEngine;
 import common.ScriptComponent;
@@ -94,23 +93,8 @@ public class PlatformsGameDescription implements GameDescription, GenericListene
 					case 2: killzoneBotRect = new Rectangle(width,-width,WIDTH-2*width,width); break;//top
 					case 3: killzoneBotRect = new Rectangle(width,HEIGHT-width,WIDTH-2*width,width); break;//bottom
 					}
-					PhysicsComponent killzoneBotP = new PhysicsComponent(killzoneBot, killzoneBotRect, physicsE){
-						/**
-						 * 
-						 */
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void update(CharacterCollisionEvent collision){
-							if(collision.object2 == this && collision.object1.getGameObject().entityClass == EntityClass.PLAYER){
-								eventE.queue(new CharacterDeathEvent(collision.object1.getGameObject()));
-							}
-						}
-					};
+					PhysicsComponent killzoneBotP = new PhysicsComponent(killzoneBot, killzoneBotRect, physicsE);
 					killzoneBotP.setGameObject(killzoneBot);
-
-					
-					
 					
 					CharacterCollisionEvent.registrar.Register(killzoneBotP);
 					physicsE.addStaticObject(killzoneBotP, killzoneBotRect.x, killzoneBotRect.y);
@@ -121,14 +105,19 @@ public class PlatformsGameDescription implements GameDescription, GenericListene
 						killzoneBot.add(renderable);
 					}
 				}
+
+				CharacterCollisionEvent.registrar.Register(new GenericListener<CharacterCollisionEvent>(){
+					@Override
+					public void update(CharacterCollisionEvent event) {
+						ScriptManager.executeScript("on_collision", event);
+					}
+				});
 				
 				GenericListener<CharacterDeathEvent> deathListener = new GenericListener<CharacterDeathEvent>(){
 					@Override
 					public void update(CharacterDeathEvent event){
 						GameObject character = event.character;
-						if(character.alive==false)
-							return;
-						long clientId = ((PlayerInputComponent)character.getComponent(PlayerInputComponent.class)).clientId;
+						long clientId = (long) character.getProperty("clientId");
 						eventE.queue(new CharacterSpawnEvent(clientId, event.timestamp+2));
 						event.character.destroy();
 						character.alive = false;
@@ -157,6 +146,7 @@ public class PlatformsGameDescription implements GameDescription, GenericListene
 		GameObject player = playerF.create(x, y, clientId);
 		player.networked = true;
 		gameObjects.add(player);
+		player.setProperty("clientId", clientId);
 		return player;
 	}
 
