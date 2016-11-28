@@ -46,7 +46,7 @@ public class BasicPhysicsEngine implements PhysicsEngine{
 			if(pObject.speed.y>pObject.max_speed) pObject.speed.y = pObject.max_speed;
 			if(pObject.speed.y<-pObject.max_speed) pObject.speed.y = -pObject.max_speed;
 			//divide up path
-			float segment_length = 400f;
+			float segment_length = 2f;
 			Vec2 trajectory = pObject.speed.mul(milliseconds);
 			while(trajectory.length()>.1){
 				Vec2 path_segment = (trajectory.length()>segment_length)? trajectory.mul(segment_length/trajectory.length()): trajectory.clone();
