@@ -38,6 +38,8 @@ public class GameObject implements Serializable{
 	}
 	
 	public void kill(){
+		if(!this.alive)
+			return;
 		this.alive = false;
 		Game.eventE.queue(new CharacterDeathEvent(this, 1));
 	}
