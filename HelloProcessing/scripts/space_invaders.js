@@ -1,5 +1,5 @@
 var turn_frequency = 200;
-var fire_frequency = 200;
+var fire_frequency = 60;
 var charge_frequency = 100;
 var player_is_dead = true;
 var player;
@@ -30,6 +30,8 @@ function alienupdate(alien) {
 
 function on_collision(event){
 	if(event.object1.getGameObject().alive&&event.object2.getGameObject().alive){
+		print(event.object1.getGameObject().getProperty("tag"));
+		print(event.object2.getGameObject().getProperty("tag"));
 		if(event.object1.getGameObject().getProperty("tag")=="alien_bullet" && event.object2.getGameObject().getProperty("tag")=="player"){
 			event.object1.getGameObject().kill();
 			event.object2.getGameObject().kill();
@@ -48,6 +50,10 @@ function on_collision(event){
 		else if (event.object1.getGameObject().getProperty("tag")=="player" && event.object2.getGameObject().getProperty("tag")=="alien"){
 			player_is_dead = true;
 			event.object1.getGameObject().kill();
+		}
+		else if (event.object1.getGameObject().getProperty("tag")=="alien" && event.object2.getGameObject().getProperty("tag")=="player"){
+			player_is_dead = true;
+			event.object2.getGameObject().kill();
 		}
 	}
 }
