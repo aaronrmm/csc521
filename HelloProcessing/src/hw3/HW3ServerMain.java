@@ -73,6 +73,8 @@ public class HW3ServerMain {
 					input.command = Command.down;
 				if(key=='d')
 					input.command = Command.right;
+				if(key==' ')
+					input.command = Command.jump;
 				Game.eventE.queue(input);
 			}
 		};

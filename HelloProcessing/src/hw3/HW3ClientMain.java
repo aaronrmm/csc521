@@ -45,8 +45,12 @@ public class HW3ClientMain {
 			@Override
 			public void keyPressed(char key) {
 				ClientInputEvent input = new ClientInputEvent();
+				if(key=='w')
+					input.command = Command.up;
 				if(key=='a')
 					input.command = Command.left;
+				if(key=='s')
+					input.command = Command.down;
 				if(key=='d')
 					input.command = Command.right;
 				if(key==' ')
