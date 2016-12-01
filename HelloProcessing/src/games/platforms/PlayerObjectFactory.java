@@ -8,7 +8,6 @@ import org.jbox2d.common.Vec2;
 import common.EntityClass;
 import common.EventManagementEngine;
 import common.GameObject;
-import common.PlayerInputComponent;
 import common.RenderableComponent;
 import common.RenderingEngine;
 import physics.PhysicsComponent;

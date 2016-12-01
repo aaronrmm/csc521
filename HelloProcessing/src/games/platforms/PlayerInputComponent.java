@@ -1,7 +1,10 @@
-package common;
+package games.platforms;
 
 import org.jbox2d.common.Vec2;
 
+import common.AbstractComponent;
+import common.EventManagementEngine;
+import common.GameObject;
 import common.events.ClientInputEvent;
 import common.events.ClientInputEvent.Command;
 import common.events.GenericListener;
