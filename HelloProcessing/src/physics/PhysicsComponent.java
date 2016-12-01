@@ -54,15 +54,15 @@ public class PhysicsComponent extends AbstractComponent implements GenericListen
 	}
 	
 	public Rectangle getPath(Vec2 force, int milliseconds) {
-		int newX = (int)(this.shape.getX()+force.x*milliseconds);
-		int newY = (int)(this.shape.getY()+force.y*milliseconds);
+		int newX = (int)Math.round(this.shape.getX()+force.x*milliseconds);
+		int newY = (int)Math.round(this.shape.getY()+force.y*milliseconds);
 		Rectangle path = new Rectangle(newX, newY, this.shape.width, this.shape.height);
 		return path;
 		
 	}
 	public void translate(Vec2 force, int milliseconds) {
-		int newX = (int)(this.shape.getX()+force.x*milliseconds);
-		int newY = (int)(this.shape.getY()+force.y*milliseconds);
+		int newX = (int)Math.round(this.shape.getX()+force.x*milliseconds);
+		int newY = (int)Math.round(this.shape.getY()+force.y*milliseconds);
 		this.shape.setLocation(newX, newY);
 	}
 	
