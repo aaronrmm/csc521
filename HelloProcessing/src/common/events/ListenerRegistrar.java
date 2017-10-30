@@ -44,7 +44,7 @@ public class ListenerRegistrar <T extends AbstractEvent> {
 		if(event.getDebug())
 			logger.log(Level.FINEST,"handling "+event.toString());
 		for(GenericListener<T> listener:removeBuffer.get(sceneId)){
-			queue.remove(listener);
+			queue.get(sceneId).remove(listener);
 		}
 		removeBuffer.get(sceneId).clear();
 		for(GenericListener<T> listener:buffer.get(sceneId)){
